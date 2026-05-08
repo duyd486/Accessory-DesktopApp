@@ -13,10 +13,11 @@
     <Folder Include="Assets\" />
     <Folder Include="Converters\" />
     <Folder Include="Interfaces\" />
-    <Folder Include="Models\" />
-    <Folder Include="Views\" />
-    <Folder Include="ViewModels\" />
-    <Folder Include="Singletons\" />
+    <Folder Include="Views\Components\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
   </ItemGroup>
 
 </Project>
