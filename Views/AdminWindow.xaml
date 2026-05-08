@@ -104,7 +104,7 @@
                 </ListBox>
             </Grid>
 
-            <Button Grid.Row="2" Content="Logout" Command="{Binding LogoutCommand}" FontSize="15" Height="44" Background="#B84A4A" Style="{StaticResource SidebarButtonStyle}" />
+            <Button Grid.Row="2" Content="Đăng xuất" Command="{Binding LogoutCommand}" FontSize="15" Height="44" Background="#B84A4A" Style="{StaticResource SidebarButtonStyle}" />
         </Grid>
 
         <ContentControl Grid.Column="1" Content="{Binding CurrentViewModel}">

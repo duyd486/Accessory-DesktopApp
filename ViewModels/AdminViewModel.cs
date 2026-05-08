@@ -18,13 +18,13 @@ namespace Accessory_DesktopApp.ViewModels
 
         public ObservableCollection<string> MenuItems { get; } = new()
         {
-            "Dashboard", "User", "Product", "Category", "Order"
+            "Thống kê", "Người dùng", "Sản phẩm", "Danh mục", "Đơn hàng"
         };
 
         public AdminViewModel(AdminWindow adminWindow)
         {
             _adminWindow = adminWindow;
-            ChangeView("Dashboard");
+            ChangeView("Thống kê");
         }
 
         [RelayCommand]
@@ -33,19 +33,19 @@ namespace Accessory_DesktopApp.ViewModels
             SelectedMenuItem = view;
             switch (view)
             {
-                case "Dashboard":
+                case "Thống kê":
                     CurrentViewModel = new DashboardViewModel();
                     break;
-                case "User":
+                case "Người dùng":
                     CurrentViewModel = new UserViewModel();
                     break;
-                case "Product":
+                case "Sản phẩm":
                     CurrentViewModel = new ProductViewModel();
                     break;
-                case "Category":
+                case "Danh mục":
                     CurrentViewModel = new CategoryViewModel();
                     break;
-                case "Order":
+                case "Đơn hàng":
                     CurrentViewModel = new OrderViewModel();
                     break;
             }
