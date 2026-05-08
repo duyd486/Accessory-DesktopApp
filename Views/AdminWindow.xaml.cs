@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Accessory_DesktopApp.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -20,6 +21,7 @@ namespace Accessory_DesktopApp.Views
         public AdminWindow()
         {
             InitializeComponent();
+            DataContext = new AdminViewModel(this);
         }
     }
 }

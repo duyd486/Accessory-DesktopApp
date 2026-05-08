@@ -1,5 +1,4 @@
-﻿using Accessory_DesktopApp.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -9,19 +8,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Accessory_DesktopApp.Views
+namespace Accessory_DesktopApp.Views.Pages
 {
     /// <summary>
-    /// Interaction logic for StaffWindow.xaml
+    /// Interaction logic for OrderView.xaml
     /// </summary>
-    public partial class StaffWindow : Window
+    public partial class OrderView : UserControl
     {
-        public StaffWindow()
+        public OrderView()
         {
             InitializeComponent();
-            DataContext = new StaffViewModel();
         }
     }
 }

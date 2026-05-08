@@ -22,26 +22,28 @@ namespace Accessory_DesktopApp.ViewModels
             _loginWindow = loginWindow;
         }
 
+        private void Dev()
+        {
+            MessageBox.Show("Đăng nhập thành công với quyền admin");
+            AdminWindow adminWindow = new AdminWindow();
+            adminWindow.Show();
+            _loginWindow.Close();
+        }
+
         [RelayCommand]
         private async Task LoginAsync()
         {
+            Dev();
+            return;
+
+
             if (EmailText == null || PasswordText == null)
             {
                 MessageBox.Show("Vui lòng điền đủ tài khoản và mật khẩu");
                 return;
             }
 
-            MessageBox.Show($"Email: {EmailText}\nPassword: {PasswordText}");
-
             bool result = await ApiManager.GetInstance().LoginAsync(EmailText, PasswordText);
-
-            //if (result && ApiManager.GetInstance().GetCurrentUser() != null)
-            //{
-            //    MainWindow mainWindow = new MainWindow();
-            //    mainWindow.Show();
-            //    //loginView?.Close();
-            //}
-            //bool result = await ApiManager.GetInstance().LoginAsync("adele@gmail.com", "12345678");
 
             if (result && ApiManager.GetInstance().GetCurrentUser() != null)
             {

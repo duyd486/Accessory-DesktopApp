@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Accessory_DesktopApp.Views"
         mc:Ignorable="d"
-        Title="StaffWindow" Height="450" Width="800">
+        WindowStartupLocation="CenterScreen"
+        Title="StaffWindow" Height="720" Width="1080">
     <Grid>
         <TextBlock Text="Staff Window" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
     </Grid>
