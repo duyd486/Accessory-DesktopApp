@@ -4,9 +4,243 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Accessory_DesktopApp.Views.Pages"
+             xmlns:converters="clr-namespace:Accessory_DesktopApp.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="820">
-    <Grid>
-        <TextBlock Text="Dashboard View" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
-    </Grid>
+
+    <UserControl.Resources>
+        <converters:MoneyVndConverter x:Key="MoneyVnd" />
+        <converters:MaxTotalRevenueConverter x:Key="MaxTotalRevenue" />
+        <converters:BarHeightConverter x:Key="BarHeight" />
+
+        <Style x:Key="StatCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="16" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.15" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="StatTitleStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#7A7A7A" />
+            <Setter Property="FontSize" Value="12" />
+        </Style>
+
+        <Style x:Key="StatValueStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="22" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="0,6,0,0" />
+        </Style>
+
+        <Style x:Key="IconBadgeStyle" TargetType="Border">
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <Grid Margin="24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel>
+                    <TextBlock Text="Thống kê &amp; Giám sát" FontSize="22" FontWeight="Bold" />
+                    <TextBlock Text="Thống kê và giám sát hệ thống" Foreground="#7A7A7A" Margin="0,6,0,0" />
+                </StackPanel>
+
+                <Button Grid.Column="1" Content="Làm mới" Padding="12,6" Margin="12,0,0,0" Command="{Binding RefreshCommand}" />
+            </Grid>
+
+            <Separator Grid.Row="1" Margin="0,16,0,0" />
+
+            <UniformGrid Grid.Row="2" Columns="4" Margin="0,16,0,0">
+                <Border Style="{StaticResource StatCardStyle}" Margin="0,0,12,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel>
+                            <TextBlock Text="Tổng khách hàng" Style="{StaticResource StatTitleStyle}" />
+                            <TextBlock Text="{Binding CountCustomers}" Style="{StaticResource StatValueStyle}" />
+                        </StackPanel>
+
+                        <Border Grid.Column="1" Style="{StaticResource IconBadgeStyle}" Background="#1E0D6EFD">
+                            <TextBlock Text="👥" FontSize="18" />
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource StatCardStyle}" Margin="0,0,12,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel>
+                            <TextBlock Text="Tổng số sản phẩm" Style="{StaticResource StatTitleStyle}" />
+                            <TextBlock Text="{Binding CountProducts}" Style="{StaticResource StatValueStyle}" />
+                        </StackPanel>
+
+                        <Border Grid.Column="1" Style="{StaticResource IconBadgeStyle}" Background="#1E198754">
+                            <TextBlock Text="📦" FontSize="18" />
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource StatCardStyle}" Margin="0,0,12,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel>
+                            <TextBlock Text="Số đơn trong tháng" Style="{StaticResource StatTitleStyle}" />
+                            <TextBlock Text="{Binding CountOrders}" Style="{StaticResource StatValueStyle}" />
+                        </StackPanel>
+
+                        <Border Grid.Column="1" Style="{StaticResource IconBadgeStyle}" Background="#1E6C757D">
+                            <TextBlock Text="🧾" FontSize="18" />
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource StatCardStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel>
+                            <TextBlock Text="Vi phạm chưa xử lý" Style="{StaticResource StatTitleStyle}" />
+                            <TextBlock Text="0" Style="{StaticResource StatValueStyle}" />
+                        </StackPanel>
+
+                        <Border Grid.Column="1" Style="{StaticResource IconBadgeStyle}" Background="#1EDC3545">
+                            <TextBlock Text="⚠" FontSize="18" />
+                        </Border>
+                    </Grid>
+                </Border>
+            </UniformGrid>
+
+            <Grid Grid.Row="3" Margin="0,24,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{StaticResource StatCardStyle}" Margin="0,0,12,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Biểu đồ doanh thu 12 tháng gần nhất" FontWeight="Bold" />
+
+                        <Border Grid.Row="1" Margin="0,16,0,0" Background="#F5F6F8" CornerRadius="8" Padding="12">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="220" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <Border x:Name="ChartPlotArea" Grid.Row="0" Height="200" Background="Transparent" VerticalAlignment="Bottom">
+                                    <ItemsControl ItemsSource="{Binding MonthlyRevenue}" VerticalAlignment="Bottom">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <UniformGrid Rows="1" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="6,0" VerticalAlignment="Bottom">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="*" />
+                                                        <RowDefinition Height="Auto" />
+                                                    </Grid.RowDefinitions>
+
+                                                    <TextBlock Grid.Row="0" FontSize="10" Foreground="#666" HorizontalAlignment="Center" Margin="0,0,0,6"
+                                                               Text="{Binding Total, Converter={StaticResource MoneyVnd}}" />
+
+                                                    <Border Grid.Row="1" Background="#0D6EFD" CornerRadius="4" VerticalAlignment="Bottom" HorizontalAlignment="Stretch">
+                                                        <Border.Height>
+                                                            <MultiBinding Converter="{StaticResource BarHeight}">
+                                                                <Binding Path="Total" />
+                                                                <Binding Path="ItemsSource" RelativeSource="{RelativeSource AncestorType=ItemsControl}" Converter="{StaticResource MaxTotalRevenue}" />
+                                                                <Binding ElementName="ChartPlotArea" Path="ActualHeight" />
+                                                            </MultiBinding>
+                                                        </Border.Height>
+                                                    </Border>
+
+                                                    <TextBlock Grid.Row="2" FontSize="10" Foreground="#666" HorizontalAlignment="Center" Margin="0,6,0,0"
+                                                               TextWrapping="Wrap" TextAlignment="Center" Text="{Binding Label}" />
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Border>
+
+                                <TextBlock Grid.Row="1" Text="* Biểu đồ cột đơn giản (không dùng Chart.js)" Foreground="#7A7A7A" FontSize="11" Margin="0,12,0,0" />
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Column="1" Style="{StaticResource StatCardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Tỉ lệ đặt đơn" FontWeight="Bold" />
+                        <TextBlock Text="Chưa triển khai" Foreground="#7A7A7A" Margin="0,12,0,0" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <Border Grid.Row="4" Style="{StaticResource StatCardStyle}" Margin="0,24,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Doanh thu theo năm" FontWeight="Bold" />
+
+                    <DataGrid Grid.Row="1" Margin="0,12,0,0"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True"
+                              CanUserAddRows="False"
+                              HeadersVisibility="Column"
+                              ItemsSource="{Binding RevenueByYear}"
+                              MinHeight="180">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Năm" Binding="{Binding DisplayYear}" Width="*" />
+                            <DataGridTextColumn Header="Doanh thu" Binding="{Binding Total, Converter={StaticResource MoneyVnd}}" Width="*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+        </Grid>
+    </ScrollViewer>
 </UserControl>
