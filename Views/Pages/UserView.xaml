@@ -6,50 +6,55 @@
              xmlns:local="clr-namespace:Accessory_DesktopApp.Views.Pages"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="820">
-    <Grid Background="#F5F5F5">
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="24">
+    <Grid Background="White">
+        <StackPanel Margin="24">
+            <!-- Title -->
 
-                <!-- Title -->
-                <TextBlock
-                    Text="Quản lý khách hàng"
-                    FontSize="28"
-                    FontWeight="Bold"
-                    Foreground="#222222" />
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-                <TextBlock
-                    Margin="0,6,0,24"
-                    Text="Quản lý tài khoản và quyền hạn"
-                    FontSize="14"
-                    Foreground="#777777" />
+                <StackPanel>
+                    <TextBlock Text="Quản lý khách hàng" FontSize="22" FontWeight="Bold" />
+                    <TextBlock Text="Quản lý tài khoản và quyền hạn" Foreground="#7A7A7A" Margin="0,6,0,0" />
+                </StackPanel>
 
-                <!-- Search Card -->
-                <Border
+                <Button Grid.Column="1" Content="Làm mới" Padding="12,6" Margin="12,0,0,0" Command="{Binding RefreshCommand}" />
+            </Grid>
+
+            <Separator Grid.Row="1" Margin="0,16,0,20" />
+
+
+            <!-- Search Card -->
+            <Border
+                    Style="{StaticResource StatCardStyle}"
                     Padding="16"
                     Margin="0,0,0,20"
                     Background="White"
                     CornerRadius="12">
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
 
-                        <StackPanel>
-                            <TextBlock
+                    <StackPanel>
+                        <TextBlock
                                 Margin="0,0,0,6"
                                 Text="Tìm kiếm"
                                 FontWeight="SemiBold" />
 
-                            <TextBox
+                        <TextBox
                                 Height="40"
                                 Padding="10,0"
                                 VerticalContentAlignment="Center"
                                 Text="{Binding SearchKeyword, UpdateSourceTrigger=PropertyChanged}" />
-                        </StackPanel>
+                    </StackPanel>
 
-                        <Button
+                    <Button
                             Grid.Column="1"
                             Width="120"
                             Height="40"
@@ -57,55 +62,55 @@
                             VerticalAlignment="Top"
                             Command="{Binding SearchCommand}"
                             Content="Tìm kiếm" />
-                    </Grid>
-                </Border>
+                </Grid>
+            </Border>
 
-                <!-- DataGrid -->
-                <Border
-                    Padding="12"
+            <!-- DataGrid -->
+            <Border
+                    Padding="10"
+                    Style="{StaticResource StatCardStyle}"
                     Background="White"
                     CornerRadius="12">
 
-                    <DataGrid
+                <DataGrid
                         ItemsSource="{Binding FilteredCustomers}"
                         AutoGenerateColumns="False"
                         CanUserAddRows="False"
                         HeadersVisibility="Column"
                         IsReadOnly="True"
-                        BorderThickness="0"
+                        BorderThickness="0.4"
                         GridLinesVisibility="Horizontal"
                         RowHeight="50"
                         ColumnHeaderHeight="45"
                         SelectionMode="Single">
 
-                        <DataGrid.Columns>
+                    <DataGrid.Columns>
 
-                            <DataGridTextColumn
+                        <DataGridTextColumn
                                 Width="2*"
                                 Header="Người dùng"
                                 Binding="{Binding name}" />
 
-                            <DataGridTextColumn
+                        <DataGridTextColumn
                                 Width="2*"
                                 Header="Email"
                                 Binding="{Binding email}" />
 
-                            <DataGridTextColumn
+                        <DataGridTextColumn
                                 Width="*"
                                 Header="Số điện thoại"
                                 Binding="{Binding phone}" />
 
-                            <DataGridTextColumn
+                        <DataGridTextColumn
                                 Width="2*"
                                 Header="Địa chỉ"
                                 Binding="{Binding address}" />
 
-                        </DataGrid.Columns>
+                    </DataGrid.Columns>
 
-                    </DataGrid>
-                </Border>
+                </DataGrid>
+            </Border>
 
-            </StackPanel>
-        </ScrollViewer>
+        </StackPanel>
     </Grid>
 </UserControl>

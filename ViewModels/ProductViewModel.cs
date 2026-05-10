@@ -53,8 +53,6 @@ namespace Accessory_DesktopApp.ViewModels
                 .HttpGetAsync<ProductListData>("list-product-v2")
                 .ConfigureAwait(false);
 
-            //MessageBox.Show(response.data.ToString() ?? "No response");
-
             if (response?.list_products == null)
                 return;
 
@@ -128,6 +126,13 @@ namespace Accessory_DesktopApp.ViewModels
                 FilteredProducts.Add(item);
             }
         }
+
+        [RelayCommand]
+        private void Refresh()
+        {
+            _ = FetchProductsAsync();
+        }
+
 
         [RelayCommand]
         private void OpenAdd()

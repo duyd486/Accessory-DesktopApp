@@ -1,4 +1,4 @@
-using Accessory_DesktopApp.Models;
+using Accessory_DesktopApp.Models.Dtos;
 using System.Globalization;
 using System.Windows.Data;
 

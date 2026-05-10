@@ -61,6 +61,12 @@ namespace Accessory_DesktopApp.ViewModels
         }
 
         [RelayCommand]
+        private void Refresh()
+        {
+            _ = FetchCustomersAsync();
+        }
+
+        [RelayCommand]
         private void Search()
         {
             ApplyFilter();

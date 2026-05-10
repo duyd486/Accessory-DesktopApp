@@ -6,7 +6,267 @@
              xmlns:local="clr-namespace:Accessory_DesktopApp.Views.Pages"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="820">
-    <Grid>
-        <TextBlock Text="Order View" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/> 
+    <Grid Background="White">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+
+        <Grid Grid.Row="0" Margin="24">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel>
+                <TextBlock Text="Quản lý Đơn hàng" FontSize="22" FontWeight="Bold" />
+                <TextBlock Text="Kiểm duyệt cập nhật đơn hàng" Foreground="#7A7A7A" Margin="0,6,0,0" />
+            </StackPanel>
+
+            <Button Grid.Column="1" Content="Làm mới" Padding="12,6" Margin="12,0,0,0" Command="{Binding RefreshCommand}" />
+        </Grid>
+
+        <Separator Grid.Row="1" Margin="24,-144,24,0" />
+
+        <!-- Filter -->
+        <Border
+            Style="{StaticResource StatCardStyle}"
+            Grid.Row="1"
+            Padding="0"
+            Margin="24,16,24,20"
+            CornerRadius="10">
+
+            <Grid Margin="16">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="260"/>
+                    <ColumnDefinition Width="220"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Search -->
+                <StackPanel Grid.Column="0">
+
+                    <TextBlock
+                        Margin="0,0,0,6"
+                        FontWeight="SemiBold"
+                        Text="Tìm kiếm"/>
+
+                    <TextBox
+                        Height="38"
+                        VerticalContentAlignment="Center"
+                        Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}"/>
+
+                </StackPanel>
+
+                <!-- Status -->
+                <StackPanel
+                    Grid.Column="1"
+                    Margin="16,0,0,0">
+
+                    <TextBlock
+                        Margin="0,0,0,6"
+                        FontWeight="SemiBold"
+                        Text="Trạng thái"/>
+
+                    <ComboBox
+                        Height="38"
+                        SelectedValuePath="Tag"
+                        SelectedValue="{Binding FilterStatus}">
+
+                        <ComboBoxItem Content="Tất cả trạng thái" Tag=""/>
+                        <ComboBoxItem Content="Đã hủy" Tag="0"/>
+                        <ComboBoxItem Content="Đang xử lí" Tag="1"/>
+                        <ComboBoxItem Content="Chờ thanh toán" Tag="2"/>
+                        <ComboBoxItem Content="Đã thanh toán" Tag="3"/>
+                        <ComboBoxItem Content="Chuẩn bị hàng" Tag="4"/>
+                        <ComboBoxItem Content="Đang giao" Tag="5"/>
+                        <ComboBoxItem Content="Đã hoàn thành" Tag="6"/>
+
+                    </ComboBox>
+
+                </StackPanel>
+
+                <!-- Search Button -->
+                <Button
+                    Grid.Column="2"
+                    Width="100"
+                    Height="38"
+                    Margin="16,24,0,0"
+                    VerticalAlignment="Top"
+                    Command="{Binding SearchCommand}"
+                    Content="Tìm kiếm"/>
+
+            </Grid>
+
+        </Border>
+
+        <!-- Table -->
+        <Border
+            Style="{StaticResource StatCardStyle}"
+            Grid.Row="2"
+            Margin="24,0,24,24"
+            Padding="10 10 10 10"
+            CornerRadius="10">
+
+            <DataGrid
+                ItemsSource="{Binding FilteredOrders}"
+                AutoGenerateColumns="False"
+                CanUserAddRows="False"
+                HeadersVisibility="Column"
+                IsReadOnly="False"
+                BorderThickness="0.2"
+                SelectionMode="Single"
+                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                ScrollViewer.HorizontalScrollBarVisibility="Auto">
+
+                <DataGrid.Columns>
+
+                    <!-- Order Code -->
+                    <DataGridTemplateColumn
+                        Width="140"
+                        Header="Mã đơn">
+
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+
+                                <TextBlock
+                                    Margin="8"
+                                    FontWeight="Bold"
+                                    Text="{Binding DisplayOrderCode}"/>
+
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+
+                    </DataGridTemplateColumn>
+
+                    <!-- Date -->
+                    <DataGridTextColumn
+                        Width="180"
+                        Header="Ngày đặt"
+                        Binding="{Binding DisplayDate}"/>
+
+                    <!-- Products -->
+                    <DataGridTemplateColumn
+                        Width="350"
+                        Header="Tên sản phẩm">
+
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+
+                                <ItemsControl ItemsSource="{Binding products}">
+
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+
+                                            <TextBlock
+                                                Margin="4"
+                                                TextWrapping="Wrap">
+
+                                                <Run Text="- "/>
+                                                <Run Text="{Binding product_name}"/>
+                                                <Run Text=" (SL: "/>
+                                                <Run Text="{Binding quantity}"/>
+                                                <Run Text=")"/>
+
+                                            </TextBlock>
+
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+
+                                </ItemsControl>
+
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+
+                    </DataGridTemplateColumn>
+
+                    <!-- User -->
+                    <DataGridTextColumn
+                        Width="160"
+                        Header="Người đặt"
+                        Binding="{Binding user_name}"/>
+
+                    <!-- Total -->
+                    <DataGridTemplateColumn
+                        Width="160"
+                        Header="Tổng tiền">
+
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+
+                                <TextBlock
+                                    Margin="8"
+                                    FontWeight="Bold"
+                                    Foreground="#D32F2F"
+                                    Text="{Binding DisplayTotalPrice}"/>
+
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+
+                    </DataGridTemplateColumn>
+
+                    <!-- Status -->
+                    <DataGridTemplateColumn
+                        Width="140"
+                        Header="Trạng thái">
+
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+
+                                <ComboBox
+                                    Height="34"
+                                    Margin="20 0 20 0"
+                                    SelectedValue="{Binding status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    SelectedValuePath="Tag">
+                                    
+                                    <ComboBoxItem Content="Đã hủy" Tag="0"/>
+                                    <ComboBoxItem Content="Đang xử lí" Tag="1"/>
+                                    <ComboBoxItem Content="Chờ thanh toán" Tag="2"/>
+                                    <ComboBoxItem Content="Đã thanh toán" Tag="3"/>
+                                    <ComboBoxItem Content="Chuẩn bị hàng" Tag="4"/>
+                                    <ComboBoxItem Content="Đang giao" Tag="5"/>
+                                    <ComboBoxItem Content="Đã hoàn thành" Tag="6"/>
+
+                                </ComboBox>
+
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+
+                    </DataGridTemplateColumn>
+
+                    <!-- Action -->
+                    <DataGridTemplateColumn
+                        Width="140"
+                        Header="Hành động">
+
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+
+                                <Button
+                                    Width="90"
+                                    Height="34"
+                                    Background="#43A047"
+                                    Foreground="White"
+                                    Command="{Binding DataContext.UpdateOrderStatusCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                    CommandParameter="{Binding}"
+                                    Content="Lưu"/>
+
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+
+                    </DataGridTemplateColumn>
+
+                </DataGrid.Columns>
+
+            </DataGrid>
+
+        </Border>
+
     </Grid>
 </UserControl>

@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Accessory_DesktopApp.Models;
+namespace Accessory_DesktopApp.Models.Dtos;
 
 public sealed class StatisticsDto
 {
