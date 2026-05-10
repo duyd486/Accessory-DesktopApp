@@ -6,7 +6,106 @@
              xmlns:local="clr-namespace:Accessory_DesktopApp.Views.Pages"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="820">
-    <Grid>
-        <TextBlock Text="User View" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
+    <Grid Background="#F5F5F5">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="24">
+
+                <!-- Title -->
+                <TextBlock
+                    Text="Quản lý khách hàng"
+                    FontSize="28"
+                    FontWeight="Bold"
+                    Foreground="#222222" />
+
+                <TextBlock
+                    Margin="0,6,0,24"
+                    Text="Quản lý tài khoản và quyền hạn"
+                    FontSize="14"
+                    Foreground="#777777" />
+
+                <!-- Search Card -->
+                <Border
+                    Padding="16"
+                    Margin="0,0,0,20"
+                    Background="White"
+                    CornerRadius="12">
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel>
+                            <TextBlock
+                                Margin="0,0,0,6"
+                                Text="Tìm kiếm"
+                                FontWeight="SemiBold" />
+
+                            <TextBox
+                                Height="40"
+                                Padding="10,0"
+                                VerticalContentAlignment="Center"
+                                Text="{Binding SearchKeyword, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+
+                        <Button
+                            Grid.Column="1"
+                            Width="120"
+                            Height="40"
+                            Margin="16,24,0,0"
+                            VerticalAlignment="Top"
+                            Command="{Binding SearchCommand}"
+                            Content="Tìm kiếm" />
+                    </Grid>
+                </Border>
+
+                <!-- DataGrid -->
+                <Border
+                    Padding="12"
+                    Background="White"
+                    CornerRadius="12">
+
+                    <DataGrid
+                        ItemsSource="{Binding FilteredCustomers}"
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False"
+                        HeadersVisibility="Column"
+                        IsReadOnly="True"
+                        BorderThickness="0"
+                        GridLinesVisibility="Horizontal"
+                        RowHeight="50"
+                        ColumnHeaderHeight="45"
+                        SelectionMode="Single">
+
+                        <DataGrid.Columns>
+
+                            <DataGridTextColumn
+                                Width="2*"
+                                Header="Người dùng"
+                                Binding="{Binding name}" />
+
+                            <DataGridTextColumn
+                                Width="2*"
+                                Header="Email"
+                                Binding="{Binding email}" />
+
+                            <DataGridTextColumn
+                                Width="*"
+                                Header="Số điện thoại"
+                                Binding="{Binding phone}" />
+
+                            <DataGridTextColumn
+                                Width="2*"
+                                Header="Địa chỉ"
+                                Binding="{Binding address}" />
+
+                        </DataGrid.Columns>
+
+                    </DataGrid>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>
