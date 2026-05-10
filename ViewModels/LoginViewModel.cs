@@ -22,32 +22,25 @@ namespace Accessory_DesktopApp.ViewModels
             _loginWindow = loginWindow;
         }
 
-        private void AdminDev()
+        private void Dev()
         {
-            EmailText = "tomnguyenhieu2004@gmail.com";
-            PasswordText = "12345678";
-        }
-
-        private void StaffDev()
-        {
-            EmailText = "feyd153@gmail.com";
-            PasswordText = "12345678";
+            MessageBox.Show("Đăng nhập thành công với quyền admin");
+            AdminWindow adminWindow = new AdminWindow();
+            adminWindow.Show();
+            _loginWindow.Close();
         }
 
         [RelayCommand]
         private async Task LoginAsync()
         {
-            //Dev();
-            //return;
+            // Dev();
+            // return;
 
 
             if (EmailText == null || PasswordText == null)
             {
-                AdminDev();
-                //StaffDev();
-
-                //MessageBox.Show("Vui lòng điền đủ tài khoản và mật khẩu");
-                //return;
+                MessageBox.Show("Vui lòng điền đủ tài khoản và mật khẩu");
+                return;
             }
 
             bool result = await ApiManager.GetInstance().LoginAsync(EmailText, PasswordText);
@@ -63,9 +56,9 @@ namespace Accessory_DesktopApp.ViewModels
                         _loginWindow.Close();
                         break;
                     case 2:
-                        MessageBox.Show("Đăng nhập thành công với quyền nhân viên");
-                        StaffWindow staffWindow = new StaffWindow();
-                        staffWindow.Show();
+                        StaffWindow saffWindow = new StaffWindow();
+                        saffWindow.Show();
+                        MessageBox.Show("Đăng nhập thành công với quyền user");
                         _loginWindow.Close();
                         break;
                     default:

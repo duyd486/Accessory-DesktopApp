@@ -11,24 +11,32 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
+using Accessory_DesktopApp.Models;
 
 namespace Accessory_DesktopApp.Views 
 {
     public partial class AddCategoryDialog : Window
     {
-        public string CategoryName { get; private set; }  
-        public string ParentName { get; private set; }    
-        public string ImagePath { get; private set; }
-        public AddCategoryDialog()
+        public string title { get; private set; }  
+        public int parent_id { get; private set; }    
+        public string thumbnail_url { get; private set; }
+        public AddCategoryDialog(CategoryItem item = null)
         {
             InitializeComponent();
+            if (item != null)
+            {
+                NameTextBox.Text = item.title;
+                ImagePathTextBox.Text = item.thumbnail_url;
+            }
         }
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
-            CategoryName = NameTextBox.Text;
-            ParentName = ParentTextBox.Text;
-            ImagePath = ImagePathTextBox.Text;
+            title = NameTextBox.Text;
+            int temp;
+            int.TryParse(ParentTextBox.Text, out temp);
+            parent_id = temp;
+            thumbnail_url = ImagePathTextBox.Text;
             DialogResult = true;
         }
 

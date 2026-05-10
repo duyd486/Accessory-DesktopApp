@@ -1,5 +1,4 @@
 ﻿using Accessory_DesktopApp.Models;
-using Accessory_DesktopApp.Models.Response;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -56,7 +55,6 @@ namespace Accessory_DesktopApp.Singletons
 
         public async Task<bool> LoginAsync(string email, string password)
         {
-            client.DefaultRequestHeaders.Remove("Authorization");
             try
             {
                 var payload = new { email = email, password = password };
@@ -68,13 +66,21 @@ namespace Accessory_DesktopApp.Singletons
 
                 string result = await response.Content.ReadAsStringAsync();
 
-                ResponseBase<UserResponse>? res = JsonSerializer.Deserialize<ResponseBase<UserResponse>>(result);
+                LoginResponse? res = JsonSerializer.Deserialize<LoginResponse>(result);
 
                 if (res?.status == true)
                 {
-                    currentUser = res?.data?.user;
-                    MessageBox.Show("Đăng nhập thành công, xin chào " + res?.data?.user?.name);
-                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + res?.data?.token);
+                    currentUser = res.data?.user;
+
+                    if (currentUser != null)
+                    {
+                        currentUser.token = res.data?.token;
+                    }
+
+                    MessageBox.Show("Đăng nhập thành công " + currentUser?.name);
+
+                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + currentUser?.token);
+
                     return true;
                 }
                 else
@@ -119,36 +125,6 @@ namespace Accessory_DesktopApp.Singletons
             }
         }
 
-        public async Task<T?> HttpGetPlainAsync<T>(string url)
-        {
-            try
-            {
-                HttpResponseMessage response = await client.GetAsync(baseUrl + url).ConfigureAwait(false);
-                response.EnsureSuccessStatusCode();
-
-                string result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-                return JsonSerializer.Deserialize<T>(
-                    result,
-                    new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true
-                    });
-            }
-            catch (Exception ex)
-            {
-                if (Application.Current?.Dispatcher?.CheckAccess() == true)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-                else
-                {
-                    Application.Current?.Dispatcher?.Invoke(() => MessageBox.Show(ex.Message));
-                }
-                return default;
-            }
-        }
-
         public async Task HttpGetNoDataAsync(string url)
         {
             HttpResponseMessage response = await client.GetAsync(baseUrl + url);
@@ -157,67 +133,18 @@ namespace Accessory_DesktopApp.Singletons
 
         public async Task HttpPostNoDataAsync(string url, object? payload = null)
         {
-            try
-            {
-                var json = JsonSerializer.Serialize(payload ?? new { });
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var json = JsonSerializer.Serialize(payload ?? new { });
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var response = await client.PostAsync(baseUrl + url, content);
-                response.EnsureSuccessStatusCode();
-            } catch(Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            var response = await client.PostAsync(baseUrl + url, content);
+            response.EnsureSuccessStatusCode();
         }
 
-        public async Task<T?> HttpPostFormAsync<T>(
-            string url,
-            MultipartFormDataContent form)
+        public async Task<T> HttpPostFormAsync<T>(string url, MultipartFormDataContent form)
         {
             try
             {
-                var response = await client
-                    .PostAsync(baseUrl + url, form)
-                    .ConfigureAwait(false);
-
-                var result = await response.Content
-                    .ReadAsStringAsync()
-                    .ConfigureAwait(false);
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    Application.Current.Dispatcher.Invoke(() =>
-                        MessageBox.Show(result));
-
-                    return default;
-                }
-
-                var res = JsonSerializer.Deserialize<ResponseBase<T>>(
-                    result,
-                    new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true
-                    });
-
-                return res!.data;
-            }
-            catch (Exception ex)
-            {
-                Application.Current.Dispatcher.Invoke(() =>
-                    MessageBox.Show(ex.ToString()));
-
-                return default;
-            }
-        }
-
-        public async Task<T> HttpPostJsonAsync<T>(string url, object? payload = null)
-        {
-            try
-            {
-                var json = JsonSerializer.Serialize(payload ?? new { });
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-                var response = await client.PostAsync(baseUrl + url, content).ConfigureAwait(false);
+                var response = await client.PostAsync(baseUrl + url, form).ConfigureAwait(false);
                 response.EnsureSuccessStatusCode();
 
                 var result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -228,40 +155,6 @@ namespace Accessory_DesktopApp.Singletons
             {
                 Application.Current.Dispatcher.Invoke(() => MessageBox.Show(ex.Message));
                 return default!;
-            }
-        }
-
-        public async Task<T?> HttpPostPlainAsync<T>(string url, object? payload = null)
-        {
-            try
-            {
-                var json = JsonSerializer.Serialize(payload ?? new { });
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-                var response = await client.PostAsync(baseUrl + url, content).ConfigureAwait(false);
-                response.EnsureSuccessStatusCode();
-
-                var result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-                return JsonSerializer.Deserialize<T>(
-                    result,
-                    new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true
-                    });
-            }
-            catch (Exception ex)
-            {
-                if (Application.Current?.Dispatcher?.CheckAccess() == true)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-                else
-                {
-                    Application.Current?.Dispatcher?.Invoke(() => MessageBox.Show(ex.Message));
-                }
-
-                return default;
             }
         }
 
@@ -285,7 +178,7 @@ namespace Accessory_DesktopApp.Singletons
 
     public class ResponseBase<T>
     {
-        public bool status { get; set; }
+        public int? code { get; set; }
         public T data { get; set; } = default!;
         public string? message { get; set; }
     }
