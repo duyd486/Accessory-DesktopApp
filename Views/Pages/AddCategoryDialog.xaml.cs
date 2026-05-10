@@ -10,22 +10,25 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Win32;
 
 namespace Accessory_DesktopApp.Views.Pages
 {
     /// <summary>
-    /// Interaction logic for CategoryView.xaml
+    /// Interaction logic for AddCategoryDialog.xaml
     /// </summary>
-    public partial class CategoryView : UserControl
+    public partial class AddCategoryDialog : Window
     {
-        public CategoryView()
+        private bool DialogResult;
+
+        public AddCategoryDialog()
         {
             InitializeComponent();
         }
 
-        private void CategoryDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void InitializeComponent()
         {
-
+            throw new NotImplementedException();
         }
     }
 }
