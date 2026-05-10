@@ -6,13 +6,19 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Windows;
-
+using System.Net.Http;
+using System.Text.Json;
 namespace Accessory_DesktopApp.ViewModels
 {
     public partial class CategoryViewModel : ObservableObject
     {
+        private readonly HttpClient _httpClient = new HttpClient();
+        private const string BaseUrl = "https://localhost:7210";
+
         [ObservableProperty]
         private ObservableCollection<CategoryItem> categories;
 
@@ -24,27 +30,49 @@ namespace Accessory_DesktopApp.ViewModels
             LoadCategories();
         }
 
-        private void LoadCategories()
+        private async void LoadCategories()
         {
-            categories = new ObservableCollection<CategoryItem>
+            try
             {
-                new CategoryItem { Id = "#1", Name = "Laptop", ParentName = "---" },
-                new CategoryItem { Id = "#6", Name = "⌞ Laptop Gaming", ParentName = "Laptop" },
-                new CategoryItem { Id = "#2", Name = "Điện thoại", ParentName = "---" },
-            };
+                var response = await _httpClient.GetStringAsync($"{BaseUrl}/api/list-category");
+                var result = JsonSerializer.Deserialize<ApiResponse>(response);
+                categories = new ObservableCollection<CategoryItem>();
+            }
+            catch (HttpRequestException)
+            {
+                categories = new ObservableCollection<CategoryItem>();
+            }
         }
-
         [RelayCommand]
-        private void Delete(string id)
+        private async Task Delete(string id)
         {
-            var item = categories.FirstOrDefault(c => c.Id == id);
-            if (item != null) categories.Remove(item);
+            await _httpClient.GetAsync($"{BaseUrl}/api/delete-cate?category_id={id}");
         }
 
         [RelayCommand]
         private void Add()
         {
-          
+            var dialog = new AddCategoryDialog();
+            dialog.Owner = Application.Current.MainWindow;
+
+            if (dialog.ShowDialog() == true)
+            {
+                Categories.Add(new CategoryItem
+                {
+                    Id = $"#{Categories.Count + 1}",
+                    Name = dialog.CategoryName,
+                    ParentName = string.IsNullOrEmpty(dialog.ParentName) ? "---" : dialog.ParentName,
+                    ImagePath = dialog.ImagePath
+                });
+            }
+        }
+
+        [RelayCommand]
+        private void Edit(CategoryItem item)
+        {
+            var dialog = new AddCategoryDialog();
+            dialog.Owner = Application.Current.MainWindow;
+            dialog.ShowDialog();
         }
     }
 }
