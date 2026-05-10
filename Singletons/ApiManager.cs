@@ -1,4 +1,5 @@
 ﻿using Accessory_DesktopApp.Models;
+using Accessory_DesktopApp.Models.Response;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -64,13 +65,13 @@ namespace Accessory_DesktopApp.Singletons
 
                 string result = await response.Content.ReadAsStringAsync();
 
-                ResponseBase<User>? res = JsonSerializer.Deserialize<ResponseBase<User>>(result);
+                ResponseBase<UserResponse>? res = JsonSerializer.Deserialize<ResponseBase<UserResponse>>(result);
 
-                if (res?.code == 200)
+                if (res?.status == true)
                 {
-                    MessageBox.Show("Đăng nhập thành công" + res.data?.name);
-                    currentUser = res?.data;
-                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + currentUser?.token);
+                    currentUser = res?.data?.user;
+                    MessageBox.Show("Đăng nhập thành công, xin chào " + res?.data?.user?.name);
+                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + res?.data?.token);
                     return true;
                 }
                 else
@@ -123,11 +124,17 @@ namespace Accessory_DesktopApp.Singletons
 
         public async Task HttpPostNoDataAsync(string url, object? payload = null)
         {
-            var json = JsonSerializer.Serialize(payload ?? new { });
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            try
+            {
+                var json = JsonSerializer.Serialize(payload ?? new { });
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync(baseUrl + url, content);
-            response.EnsureSuccessStatusCode();
+                var response = await client.PostAsync(baseUrl + url, content);
+                response.EnsureSuccessStatusCode();
+            } catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         public async Task<T> HttpPostFormAsync<T>(string url, MultipartFormDataContent form)
@@ -168,7 +175,7 @@ namespace Accessory_DesktopApp.Singletons
 
     public class ResponseBase<T>
     {
-        public int? code { get; set; }
+        public bool status { get; set; }
         public T data { get; set; } = default!;
         public string? message { get; set; }
     }

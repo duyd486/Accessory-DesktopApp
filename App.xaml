@@ -7,11 +7,11 @@
              StartupUri="Views/LoginWindow.xaml">
     <Application.Resources>
         
-        
         <DataTemplate DataType="{x:Type vm:LoginViewModel}">
             <views:LoginWindow />
         </DataTemplate>
-        
+
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         
     </Application.Resources>
 </Application>
