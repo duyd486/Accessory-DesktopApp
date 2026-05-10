@@ -52,8 +52,8 @@ namespace Accessory_DesktopApp.ViewModels
             if (EmailText == null || PasswordText == null)
             {
                 //MessageBox.Show("Vui lòng điền đủ tài khoản và mật khẩu");
-                //AdminDev();
-                StaffDev();
+                AdminDev();
+                //StaffDev();
                 //return;
             }
 

@@ -3,12 +3,15 @@ using Accessory_DesktopApp.Models.Response;
 using Accessory_DesktopApp.Singletons;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace Accessory_DesktopApp.ViewModels
 {
@@ -25,6 +28,9 @@ namespace Accessory_DesktopApp.ViewModels
 
         [ObservableProperty]
         private ProductDto productForm = new();
+
+        [ObservableProperty]
+        private BitmapImage? thumbnailPreview;
 
         [ObservableProperty]
         private bool isDialogOpen;
@@ -147,6 +153,8 @@ namespace Accessory_DesktopApp.ViewModels
         [RelayCommand]
         private void OpenEdit(ProductDto product)
         {
+            ThumbnailPreview = null;
+
             DialogTitle = "Cập nhật sản phẩm";
 
             ProductForm = new ProductDto
@@ -158,6 +166,21 @@ namespace Accessory_DesktopApp.ViewModels
                 quantity = product.quantity,
                 description = product.description,
             };
+
+            // Preview ảnh cũ
+            if (!string.IsNullOrEmpty(product.thumbnail_url))
+            {
+                ThumbnailPreview = new BitmapImage();
+
+                ThumbnailPreview.BeginInit();
+                ThumbnailPreview.UriSource = new Uri(product.thumbnail_url);
+                ThumbnailPreview.CacheOption = BitmapCacheOption.OnLoad;
+                ThumbnailPreview.EndInit();
+            }
+            else
+            {
+                ThumbnailPreview = null;
+            }
 
             IsDialogOpen = true;
         }
@@ -175,24 +198,76 @@ namespace Accessory_DesktopApp.ViewModels
 
             if (ProductForm.id != null)
             {
-                form.Add(new StringContent(ProductForm.id.ToString()), "id");
+                form.Add(
+                    new StringContent(ProductForm.id.ToString()),
+                    "id");
             }
 
-            form.Add(new StringContent(ProductForm.name ?? ""), "name");
-            form.Add(new StringContent(ProductForm.category_id.ToString()), "category_id");
-            form.Add(new StringContent(ProductForm.description ?? ""), "description");
+            form.Add(
+                new StringContent(ProductForm.name ?? ""),
+                "name");
+
+            form.Add(
+                new StringContent(ProductForm.category_id.ToString()),
+                "categoryId");
+
+            form.Add(
+                new StringContent(ProductForm.description ?? ""),
+                "description");
+
             form.Add(new StringContent(ProductForm.price.ToString()), "price");
+
             form.Add(new StringContent(ProductForm.quantity.ToString()), "quantity");
 
-            MessageBox.Show($"Submitting: {ProductForm.name}, Category ID: {ProductForm.category_id}, Price: {ProductForm.price}, Quantity: {ProductForm.quantity}");
 
-            await ApiManager
+            // IMAGE
+            if (!string.IsNullOrEmpty(ProductForm.thumbnail_url))
+            {
+                var bytes = await File.ReadAllBytesAsync(ProductForm.thumbnail_url);
+
+                var fileContent = new ByteArrayContent(bytes);
+
+                fileContent.Headers.ContentType =
+                    new System.Net.Http.Headers.MediaTypeHeaderValue("image/png");
+
+                form.Add(
+                    fileContent,
+                    "thumbnail",
+                    "image.png");
+            }
+
+            var response = await ApiManager
                 .GetInstance()
-                .HttpPostNoDataAsync("update-or-create-product", ProductForm);
+                .HttpPostFormAsync<object>("update-or-create-product", form);
 
             IsDialogOpen = false;
 
+            if (response == null)
+            {
+                MessageBox.Show("Lỗi khi lưu sản phẩm");
+                return;
+            }
+
+            MessageBox.Show("Lưu sản phẩm thành công");
+
             await FetchProductsAsync();
+        }
+
+        [RelayCommand]
+        private void PickImage()
+        {
+            var dialog = new OpenFileDialog
+            {
+                Filter = "Image Files|*.png;*.jpg;*.jpeg"
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                ProductForm.thumbnail_url = dialog.FileName;
+
+                ThumbnailPreview = new BitmapImage(
+                    new Uri(dialog.FileName));
+            }
         }
 
         [RelayCommand]

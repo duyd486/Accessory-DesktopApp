@@ -137,7 +137,47 @@ namespace Accessory_DesktopApp.Singletons
             }
         }
 
-        public async Task<T> HttpPostFormAsync<T>(string url, object? payload = null)
+        public async Task<T?> HttpPostFormAsync<T>(
+            string url,
+            MultipartFormDataContent form)
+        {
+            try
+            {
+                var response = await client
+                    .PostAsync(baseUrl + url, form)
+                    .ConfigureAwait(false);
+
+                var result = await response.Content
+                    .ReadAsStringAsync()
+                    .ConfigureAwait(false);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                        MessageBox.Show(result));
+
+                    return default;
+                }
+
+                var res = JsonSerializer.Deserialize<ResponseBase<T>>(
+                    result,
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+                return res!.data;
+            }
+            catch (Exception ex)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                    MessageBox.Show(ex.ToString()));
+
+                return default;
+            }
+        }
+
+        public async Task<T> HttpPostJsonAsync<T>(string url, object? payload = null)
         {
             try
             {

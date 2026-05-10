@@ -37,7 +37,7 @@
                     <TextBlock Text="Thống kê và giám sát hệ thống" Foreground="#7A7A7A" Margin="0,6,0,0" />
                 </StackPanel>
 
-                <Button Grid.Column="1" Content="Làm mới" Padding="12,6" Margin="12,0,0,0" Command="{Binding RefreshCommand}" />
+                <Button Style="{StaticResource PrimaryButtonStyle}" Background="Gray" Width="80" Grid.Column="1" Content="Làm mới" Padding="12,6" Margin="12,0,0,0" Command="{Binding RefreshCommand}" />
             </Grid>
 
             <Separator Grid.Row="1" Margin="0,16,0,0" />
@@ -200,15 +200,40 @@
                     <TextBlock Text="Doanh thu theo năm" FontWeight="Bold" />
 
                     <DataGrid Grid.Row="1" Margin="0,12,0,0"
+                              Style="{StaticResource MinimalDataGrid}"
+                              FontSize="15"
                               AutoGenerateColumns="False"
                               IsReadOnly="True"
+                              Background="White"
                               CanUserAddRows="False"
                               HeadersVisibility="Column"
                               ItemsSource="{Binding RevenueByYear}"
                               MinHeight="180">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Năm" Binding="{Binding DisplayYear}" Width="*" />
-                            <DataGridTextColumn Header="Doanh thu" Binding="{Binding Total, Converter={StaticResource MoneyVnd}}" Width="*" />
+                            <DataGridTemplateColumn
+                                Width="*"
+                                Header="Năm">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock
+                                            VerticalAlignment="Center"
+                                            Margin="8"
+                                            Text="{Binding DisplayYear}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn
+                                Width="*"
+                                Header="Doanh thu">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock
+                                            VerticalAlignment="Center"
+                                            Margin="8"
+                                            Text="{Binding Total, Converter={StaticResource MoneyVnd}}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>

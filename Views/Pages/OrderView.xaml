@@ -27,7 +27,7 @@
                 <TextBlock Text="Kiểm duyệt cập nhật đơn hàng" Foreground="#7A7A7A" Margin="0,6,0,0" />
             </StackPanel>
 
-            <Button Grid.Column="1" Content="Làm mới" Padding="12,6" Margin="12,0,0,0" Command="{Binding RefreshCommand}" />
+            <Button Style="{StaticResource PrimaryButtonStyle}" Background="Gray" Width="80" Grid.Column="1" Content="Làm mới" Padding="12,6" Margin="12,0,0,0" Command="{Binding RefreshCommand}" />
         </Grid>
 
         <Separator Grid.Row="1" Margin="24,-144,24,0" />
@@ -76,8 +76,9 @@
 
                     <ComboBox
                         Height="38"
+                        VerticalContentAlignment="Center"
                         SelectedValuePath="Tag"
-                        SelectedValue="{Binding FilterStatus}">
+                        SelectedValue="{Binding FilterStatus}" SelectionChanged="ComboBox_SelectionChanged">
 
                         <ComboBoxItem Content="Tất cả trạng thái" Tag=""/>
                         <ComboBoxItem Content="Đã hủy" Tag="0"/>
@@ -94,6 +95,8 @@
 
                 <!-- Search Button -->
                 <Button
+                    Background="DimGray"
+                    Style="{StaticResource PrimaryButtonStyle}"
                     Grid.Column="2"
                     Width="100"
                     Height="38"
@@ -115,12 +118,14 @@
             CornerRadius="10">
 
             <DataGrid
+                Style="{StaticResource MinimalDataGrid}"
                 ItemsSource="{Binding FilteredOrders}"
                 AutoGenerateColumns="False"
                 CanUserAddRows="False"
                 HeadersVisibility="Column"
                 IsReadOnly="False"
                 BorderThickness="0.2"
+                FontSize="13"
                 SelectionMode="Single"
                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                 ScrollViewer.HorizontalScrollBarVisibility="Auto">
@@ -136,6 +141,7 @@
                             <DataTemplate>
 
                                 <TextBlock
+                                    VerticalAlignment="Center"
                                     Margin="8"
                                     FontWeight="Bold"
                                     Text="{Binding DisplayOrderCode}"/>
@@ -146,10 +152,22 @@
                     </DataGridTemplateColumn>
 
                     <!-- Date -->
-                    <DataGridTextColumn
+                    <DataGridTemplateColumn
                         Width="180"
-                        Header="Ngày đặt"
-                        Binding="{Binding DisplayDate}"/>
+                        Header="Ngày đặt">
+
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    Margin="8"
+                                    Text="{Binding DisplayDate}"/>
+
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+
+                    </DataGridTemplateColumn>
 
                     <!-- Products -->
                     <DataGridTemplateColumn
@@ -187,10 +205,22 @@
                     </DataGridTemplateColumn>
 
                     <!-- User -->
-                    <DataGridTextColumn
-                        Width="160"
-                        Header="Người đặt"
-                        Binding="{Binding user_name}"/>
+                    <DataGridTemplateColumn
+                        Width="180"
+                        Header="Người đặt">
+
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    Margin="8"
+                                    Text="{Binding user_name}"/>
+
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+
+                    </DataGridTemplateColumn>
 
                     <!-- Total -->
                     <DataGridTemplateColumn
@@ -203,6 +233,7 @@
                                 <TextBlock
                                     Margin="8"
                                     FontWeight="Bold"
+                                    VerticalAlignment="Center"
                                     Foreground="#D32F2F"
                                     Text="{Binding DisplayTotalPrice}"/>
 
@@ -221,7 +252,8 @@
 
                                 <ComboBox
                                     Height="34"
-                                    Margin="20 0 20 0"
+                                    Margin="20 10 20 10"
+                                    VerticalContentAlignment="Center"
                                     SelectedValue="{Binding status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     SelectedValuePath="Tag">
                                     
@@ -249,9 +281,10 @@
                             <DataTemplate>
 
                                 <Button
+                                    Style="{StaticResource PrimaryButtonStyle}"
                                     Width="90"
                                     Height="34"
-                                    Background="#43A047"
+                                    Background="#6FBF73"
                                     Foreground="White"
                                     Command="{Binding DataContext.UpdateOrderStatusCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                                     CommandParameter="{Binding}"

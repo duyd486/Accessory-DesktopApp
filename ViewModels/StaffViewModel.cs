@@ -199,7 +199,7 @@ namespace Accessory_DesktopApp.ViewModels
 
             var response = await ApiManager
                 .GetInstance()
-                .HttpPostFormAsync<CreateOrderResponse>("create-bill", body);
+                .HttpPostJsonAsync<CreateOrderResponse>("create-bill", body);
 
 
             if (SelectedPaymentMethod == "online")
