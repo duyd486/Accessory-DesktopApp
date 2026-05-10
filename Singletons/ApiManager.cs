@@ -137,11 +137,14 @@ namespace Accessory_DesktopApp.Singletons
             }
         }
 
-        public async Task<T> HttpPostFormAsync<T>(string url, MultipartFormDataContent form)
+        public async Task<T> HttpPostFormAsync<T>(string url, object? payload = null)
         {
             try
             {
-                var response = await client.PostAsync(baseUrl + url, form).ConfigureAwait(false);
+                var json = JsonSerializer.Serialize(payload ?? new { });
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync(baseUrl + url, content).ConfigureAwait(false);
                 response.EnsureSuccessStatusCode();
 
                 var result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);

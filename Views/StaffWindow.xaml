@@ -6,8 +6,354 @@
         xmlns:local="clr-namespace:Accessory_DesktopApp.Views"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="StaffWindow" Height="720" Width="1080">
+        Title="StaffWindow" Height="900" Width="1600">
+
     <Grid>
-        <TextBlock Text="Staff Window" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- HEADER -->
+        <Border
+            Grid.Row="0"
+            Background="#111111">
+            <TextBlock Text="Accessory Store" Margin="20 7 0 0" FontSize="30" FontWeight="Bold" Foreground="White"></TextBlock>
+        </Border>
+
+        <Grid Grid.Row="1" Background="#F5F5F5">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- LEFT -->
+            <Grid Grid.Column="0" Margin="24">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Search -->
+                <Border
+                    Style="{StaticResource StatCardStyle}"
+                    Grid.Row="0"
+                    Margin="0,0,0,20">
+
+                    <Grid Margin="16">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="120"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox
+                        Height="40"
+                        VerticalContentAlignment="Center"
+                        FontSize="15"
+                        Text="{Binding SearchKey, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <Button
+                            Style="{StaticResource SecondaryButtonStyle}"
+                        Grid.Column="1"
+                        Height="40"
+                        Margin="12,0,0,0"
+                        Content="Tìm kiếm"
+                        Command="{Binding SearchCommand}"/>
+
+                    </Grid>
+
+                </Border>
+                
+                
+
+                <!-- Product List -->
+                <ScrollViewer Grid.Row="1">
+
+                    <ItemsControl ItemsSource="{Binding FilteredProducts}">
+
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+
+                                <Border
+                                    Width="220"
+                                    Margin="0,0,16,16"
+                                    Background="White"
+                                    BorderBrush="#DDDDDD"
+                                    BorderThickness="1"
+                                    CornerRadius="12">
+
+                                    <Grid Margin="14">
+
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="140"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <!-- Image -->
+                                        <Border
+                                        Grid.Row="0"
+                                        CornerRadius="10"
+                                        ClipToBounds="True">
+
+                                            <Image
+                                            Stretch="UniformToFill"
+                                            Source="{Binding thumbnail_url}"/>
+
+                                        </Border>
+
+                                        <!-- Name -->
+                                        <TextBlock
+                                        Grid.Row="1"
+                                        Margin="0,12,0,0"
+                                        FontSize="15"
+                                        FontWeight="SemiBold"
+                                        Text="{Binding name}"
+                                        TextWrapping="Wrap"/>
+
+                                        <!-- Price -->
+                                        <TextBlock
+                                        Grid.Row="2"
+                                        Margin="0,8,0,0"
+                                        FontSize="16"
+                                        FontWeight="Bold"
+                                        Foreground="#D32F2F"
+                                        Text="{Binding DisplayPrice}"/>
+
+                                        <!-- Button -->
+                                        <Button
+                                            Style="{StaticResource PrimaryButtonStyle}"
+                                        Grid.Row="3"
+                                        Height="36"
+                                        Margin="0,14,0,0"
+                                        Content="Thêm vào giỏ"
+                                        Command="{Binding DataContext.AddToCartCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                        CommandParameter="{Binding}"/>
+
+                                    </Grid>
+
+                                </Border>
+
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+
+                    </ItemsControl>
+
+                </ScrollViewer>
+
+            </Grid>
+
+            <!-- RIGHT -->
+            <Border
+                Style="{StaticResource StatCardStyle}"
+            Grid.Column="1"
+            Margin="0,24,24,24"
+            CornerRadius="12">
+
+                <Grid Margin="20">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Title -->
+                    <TextBlock
+                    FontSize="24"
+                    FontWeight="Bold"
+                    Text="Giỏ hàng"/>
+
+                    <!-- Cart -->
+                    <ScrollViewer Grid.Row="1" Margin="0,20,0,20">
+
+                        <ItemsControl ItemsSource="{Binding CartItems}">
+
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+
+                                    <Border
+                                    Margin="0,0,0,12"
+                                    Padding="12"
+                                    Background="#FAFAFA"
+                                    BorderBrush="#E0E0E0"
+                                    BorderThickness="1"
+                                    CornerRadius="10">
+
+                                        <Grid>
+
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="100"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Info -->
+                                            <StackPanel>
+
+                                                <TextBlock
+                                                FontWeight="SemiBold"
+                                                Text="{Binding name}"
+                                                TextWrapping="Wrap"/>
+
+                                                <TextBlock
+                                                Margin="0,6,0,0"
+                                                Foreground="#D32F2F"
+                                                Text="{Binding DisplayPrice}"/>
+
+                                                <!-- Quantity -->
+                                                <StackPanel
+                                                Margin="0,10,0,0"
+                                                Orientation="Horizontal">
+
+                                                    <Button
+                                                    Width="28"
+                                                    Height="28"
+                                                    Content="-"
+                                                    Command="{Binding DataContext.DecreaseQuantityCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                    CommandParameter="{Binding}"/>
+
+                                                    <TextBlock
+                                                    Width="40"
+                                                    VerticalAlignment="Center"
+                                                    TextAlignment="Center"
+                                                    FontWeight="Bold"
+                                                    Text="{Binding CartQuantity}"/>
+
+                                                    <Button
+                                                    Width="28"
+                                                    Height="28"
+                                                    Content="+"
+                                                    Command="{Binding DataContext.IncreaseQuantityCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                    CommandParameter="{Binding}"/>
+
+                                                </StackPanel>
+
+                                            </StackPanel>
+
+                                            <!-- Total -->
+                                            <StackPanel Grid.Column="1">
+
+                                                <Button
+                                                    Style="{StaticResource PrimaryButtonStyle}"
+                                                Height="28"
+                                                Background="#E53935"
+                                                Foreground="White"
+                                                Content="Xóa"
+                                                Command="{Binding DataContext.RemoveCartItemCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                CommandParameter="{Binding}"/>
+
+                                                <TextBlock
+                                                Margin="0,18,0,0"
+                                                HorizontalAlignment="Right"
+                                                FontWeight="Bold"
+                                                Text="{Binding CartTotalPrice}"/>
+
+                                            </StackPanel>
+
+                                        </Grid>
+
+                                    </Border>
+
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+
+                        </ItemsControl>
+
+                    </ScrollViewer>
+
+                    <!-- Bottom -->
+                    <StackPanel Grid.Row="2">
+
+                        <TextBlock Text="Số điện thoại"/>
+                        <TextBox
+                            Height="28"
+                            Margin="0,6,0,14"
+                            FontSize="17"
+                            VerticalContentAlignment="Center"
+                            Text="{Binding Phone}"/>
+
+                        <TextBlock Text="Địa chỉ"/>
+                        <TextBox
+                            Height="32"
+                            Margin="0,6,0,14"
+                            AcceptsReturn="True"
+                            TextWrapping="Wrap"
+                            FontSize="17"
+                            VerticalContentAlignment="Center"
+                            Text="{Binding Address}"/>
+
+                        <TextBlock Text="Phương thức thanh toán"/>
+
+                        <ComboBox
+                            Height="28"
+                            Margin="0,6,0,14"
+                            VerticalContentAlignment="Center"
+                            ItemsSource="{Binding PaymentMethods}"
+                            SelectedItem="{Binding SelectedPaymentMethod}"/>
+
+                        <TextBlock Text="Kênh bán hàng (Dev Only)"/>
+
+                        <ComboBox
+                            Height="28"
+                            Margin="0,6,0,14"
+                            VerticalAlignment="Center"
+                            ItemsSource="{Binding Channels}"
+                            SelectedItem="{Binding SelectedChannel}"/>
+
+                        <Border
+                            Margin="0,0,0,16"
+                            Padding="14"
+                            Background="#F7F7F7"
+                            CornerRadius="10">
+
+                            <Grid>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock
+                                    FontSize="18"
+                                    FontWeight="SemiBold"
+                                    Text="Tổng tiền"/>
+
+                                <TextBlock
+                                    Grid.Column="1"
+                                    FontSize="22"
+                                    FontWeight="Bold"
+                                    Foreground="#D32F2F"
+                                    Text="{Binding TotalPriceDisplay}"/>
+
+                            </Grid>
+
+                        </Border>
+
+                        <Button
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            Height="46"
+                            FontSize="16"
+                            FontWeight="SemiBold"
+                            Content="Thanh toán"
+                            Command="{Binding CheckoutCommand}"/>
+
+                    </StackPanel>
+
+                </Grid>
+
+            </Border>
+
+        </Grid>
     </Grid>
+
 </Window>
