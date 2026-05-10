@@ -1,23 +1,17 @@
 ﻿using Accessory_DesktopApp.Models;
+using Accessory_DesktopApp.Singletons;
 using Accessory_DesktopApp.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
 using System.Windows;
-using System.Net.Http;
-using System.Text.Json;
+
 namespace Accessory_DesktopApp.ViewModels
 {
     public partial class CategoryViewModel : ObservableObject
     {
-        private readonly HttpClient _httpClient = new HttpClient();
-        private const string BaseUrl = "https://localhost:7210";
 
         [ObservableProperty]
         private ObservableCollection<CategoryItem> categories;
@@ -34,19 +28,23 @@ namespace Accessory_DesktopApp.ViewModels
         {
             try
             {
-                var response = await _httpClient.GetStringAsync($"{BaseUrl}/api/list-category");
-                var result = JsonSerializer.Deserialize<ApiResponse>(response);
-                categories = new ObservableCollection<CategoryItem>();
+                var result = await ApiManager.GetInstance().HttpGetAsync<CategoryResponse>("list-category");
+
+                var allItems = new List<CategoryItem>();
+                foreach (var item in result.categories)
+                {
+                    allItems.Add(item);
+                    if (item.children != null)
+                        allItems.AddRange(item.children);
+                }
+
+                Categories = new ObservableCollection<CategoryItem>(allItems);
             }
-            catch (HttpRequestException)
+            catch (Exception ex)
             {
-                categories = new ObservableCollection<CategoryItem>();
+                MessageBox.Show(ex.Message);
+                Categories = new ObservableCollection<CategoryItem>();
             }
-        }
-        [RelayCommand]
-        private async Task Delete(string id)
-        {
-            await _httpClient.GetAsync($"{BaseUrl}/api/delete-cate?category_id={id}");
         }
 
         [RelayCommand]
@@ -59,20 +57,53 @@ namespace Accessory_DesktopApp.ViewModels
             {
                 Categories.Add(new CategoryItem
                 {
-                    Id = $"#{Categories.Count + 1}",
-                    Name = dialog.CategoryName,
-                    ParentName = string.IsNullOrEmpty(dialog.ParentName) ? "---" : dialog.ParentName,
-                    ImagePath = dialog.ImagePath
+                    id = Categories.Count + 1,
+                    title = dialog.title,
+                    parent_id = 0,
+                    thumbnail_url = dialog.thumbnail_url
                 });
             }
         }
 
         [RelayCommand]
-        private void Edit(CategoryItem item)
+        private async Task Edit(CategoryItem item)
         {
-            var dialog = new AddCategoryDialog();
+            var dialog = new AddCategoryDialog(item);
             dialog.Owner = Application.Current.MainWindow;
-            dialog.ShowDialog();
+
+            if (dialog.ShowDialog() == true)
+            {
+                try
+                {
+                    await ApiManager.GetInstance().HttpPostNoDataAsync("update-or-create-cate", new
+                    {
+                        id = item.id,
+                        title = dialog.title,
+                        parent_id = dialog.parent_id,
+                        thumbnail_url = dialog.thumbnail_url
+                    });
+
+                    LoadCategories();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+        [RelayCommand]
+        private async Task Delete(int id)
+        {
+            try
+            {
+                await ApiManager.GetInstance().HttpGetNoDataAsync($"delete-cate?category_id={id}");
+                LoadCategories();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

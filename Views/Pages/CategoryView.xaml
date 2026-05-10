@@ -99,7 +99,7 @@
 
                 <DataGrid.Columns>
                    
-                    <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="70">
+                    <DataGridTextColumn Header="ID" Binding="{Binding id}" Width="70">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="Foreground" Value="#666"/>
@@ -108,7 +108,7 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
 
-                    <DataGridTextColumn Header="Tên danh mục" Binding="{Binding Name}" Width="*">
+                    <DataGridTextColumn Header="Tên danh mục" Binding="{Binding title}" Width="*">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="VerticalAlignment" Value="Center"/>
@@ -116,7 +116,7 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
 
-                    <DataGridTextColumn Header="Danh mục cấp trên" Binding="{Binding ParentName}" Width="180">
+                    <DataGridTextColumn Header="Danh mục cấp trên" Binding="{Binding parent_id}" Width="180">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="Foreground" Value="#555"/>
@@ -128,7 +128,7 @@
                     <DataGridTemplateColumn Header="Ảnh bìa" Width="100">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Image Source="{Binding ImagePath}" Width="36" Height="36"
+                                <Image Source="{Binding thumbnail_url}" Width="36" Height="36"
                                        Stretch="UniformToFill" HorizontalAlignment="Center"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -156,7 +156,7 @@
                                         HorizontalAlignment="Center"
                                         Command="{Binding DataContext.DeleteCommand,
                                                   RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                        CommandParameter="{Binding Id}">
+                                        CommandParameter="{Binding id}">
                                         <Button.Resources>
                                             <Style TargetType="Border">
                                                 <Setter Property="CornerRadius" Value="4"/>

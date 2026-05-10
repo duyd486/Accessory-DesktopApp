@@ -33,8 +33,8 @@ namespace Accessory_DesktopApp.ViewModels
         [RelayCommand]
         private async Task LoginAsync()
         {
-            Dev();
-            return;
+            // Dev();
+            // return;
 
 
             if (EmailText == null || PasswordText == null)

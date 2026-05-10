@@ -59,18 +59,28 @@ namespace Accessory_DesktopApp.Singletons
             {
                 var payload = new { email = email, password = password };
                 string json = JsonSerializer.Serialize(payload);
+
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
+
                 HttpResponseMessage response = await client.PostAsync(baseUrl + "login", content);
 
                 string result = await response.Content.ReadAsStringAsync();
 
-                ResponseBase<User>? res = JsonSerializer.Deserialize<ResponseBase<User>>(result);
+                LoginResponse? res = JsonSerializer.Deserialize<LoginResponse>(result);
 
-                if (res?.code == 200)
+                if (res?.status == true)
                 {
-                    MessageBox.Show("Đăng nhập thành công" + res.data?.name);
-                    currentUser = res?.data;
+                    currentUser = res.data?.user;
+
+                    if (currentUser != null)
+                    {
+                        currentUser.token = res.data?.token;
+                    }
+
+                    MessageBox.Show("Đăng nhập thành công " + currentUser?.name);
+
                     client.DefaultRequestHeaders.Add("Authorization", "Bearer " + currentUser?.token);
+
                     return true;
                 }
                 else
@@ -78,7 +88,8 @@ namespace Accessory_DesktopApp.Singletons
                     MessageBox.Show("Đăng nhập thất bại");
                     return false;
                 }
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show("Đã có lỗi xảy ra: " + ex.Message);
                 return false;
@@ -86,7 +97,6 @@ namespace Accessory_DesktopApp.Singletons
         }
 
         #endregion
-
         public async Task<T> HttpGetAsync<T>(string url)
         {
             try

@@ -1,14 +1,16 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Accessory_DesktopApp.Models
 {
-    public class CategoryItem
+    public partial class CategoryItem : ObservableObject
     {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public string ParentName { get; set; }
-        public string ImagePath { get; set; }
+        public int id { get; set; }
+        public string title { get; set; }
+        public int parent_id { get; set; }
+        public string thumbnail_url { get; set; }
+        public List<CategoryItem> children { get; set; }
     }
 }
