@@ -12,23 +12,39 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
 
-namespace Accessory_DesktopApp.Views.Pages
+namespace Accessory_DesktopApp.Views 
 {
-    /// <summary>
-    /// Interaction logic for AddCategoryDialog.xaml
-    /// </summary>
     public partial class AddCategoryDialog : Window
     {
-        private bool DialogResult;
-
+        public string CategoryName { get; private set; }  
+        public string ParentName { get; private set; }    
+        public string ImagePath { get; private set; }
         public AddCategoryDialog()
         {
             InitializeComponent();
         }
 
-        private void InitializeComponent()
+        private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            CategoryName = NameTextBox.Text;
+            ParentName = ParentTextBox.Text;
+            ImagePath = ImagePathTextBox.Text;
+            DialogResult = true;
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+        }
+
+        private void PickImageButton_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Microsoft.Win32.OpenFileDialog();
+            dialog.Filter = "Image files|*.jpg;*.jpeg;*.png;*.bmp";
+            if (dialog.ShowDialog() == true)
+            {
+                ImagePathTextBox.Text = dialog.FileName;
+            }
         }
     }
 }
