@@ -308,7 +308,8 @@
                             Margin="0,6,0,14"
                             VerticalAlignment="Center"
                             ItemsSource="{Binding Channels}"
-                            SelectedItem="{Binding SelectedChannel}"/>
+                            SelectedItem="{Binding SelectedChannel}"
+                            DisplayMemberPath="name"/>
 
                         <Border
                             Margin="0,0,0,16"

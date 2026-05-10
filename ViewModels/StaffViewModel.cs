@@ -21,6 +21,9 @@ namespace Accessory_DesktopApp.ViewModels
         private ObservableCollection<ProductDto> products = new();
 
         [ObservableProperty]
+        private ObservableCollection<Channel> channels = new();
+
+        [ObservableProperty]
         private ObservableCollection<ProductDto> filteredProducts = new();
 
         [ObservableProperty]
@@ -44,19 +47,24 @@ namespace Accessory_DesktopApp.ViewModels
             "online"
         ];
 
-        public ObservableCollection<string> Channels { get; set; } =
-        [
-            "store",
-            "shopee",
-            "tiktok",
-            "facebook"
-        ];
+        //public ObservableCollection<string> Channels { get; set; } =
+        //[
+        //    "store",
+        //    "shopee",
+        //    "tiktok",
+        //    "facebook"
+        //];
 
         [ObservableProperty]
         private string selectedPaymentMethod = "offline";
 
         [ObservableProperty]
-        private string selectedChannel = "store";
+        private Channel selectedChannel = new Channel
+        {
+            id = 1,
+            name = "store",
+            type = 1
+        };
 
         [ObservableProperty]
         private bool isBankingModalOpen;
@@ -69,6 +77,7 @@ namespace Accessory_DesktopApp.ViewModels
 
         public StaffViewModel()
         {
+            _ = FetchChannelAsync();
             _ = FetchProductsAsync();
         }
 
@@ -102,6 +111,43 @@ namespace Accessory_DesktopApp.ViewModels
                 }
 
                 ApplyFilter();
+            });
+        }
+
+        private async Task FetchChannelAsync()
+        {
+            var response = await ApiManager
+                .GetInstance()
+                .HttpGetAsync<ChannelListResponse>("channels")
+                .ConfigureAwait(false);
+
+            if (response == null)
+            {
+                MessageBox.Show(
+                    "Không thể tải danh sách kênh bán hàng",
+                    "Lỗi",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return;
+            }
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                Channels.Clear();
+
+                if (response.channels == null || response.channels.Count == 0)
+                {
+                    MessageBox.Show(
+                        "Không có kênh bán hàng nào được tìm thấy",
+                        "Thông báo",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information);
+                    return;
+                }
+
+                foreach (var item in response.channels)
+                {
+                    Channels.Add(item);
+                }
             });
         }
 
@@ -184,7 +230,7 @@ namespace Accessory_DesktopApp.ViewModels
             var body = new
             {
                 payment_method = SelectedPaymentMethod,
-                channel = SelectedChannel,
+                channelId = SelectedChannel?.id,
                 total_price = CartItems.Sum(x => (x.price ?? 0) * x.CartQuantity),
                 phone = Phone ?? "00",
                 address = Address ?? "Offline",

@@ -242,6 +242,25 @@
 
                     </DataGridTemplateColumn>
 
+                    <!-- Total -->
+                    <DataGridTemplateColumn
+                        Width="160"
+                        Header="Kênh bán">
+
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+
+                                <TextBlock
+                                    Margin="8"
+                                    FontWeight="Bold"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding DisplayChannelName}"/>
+
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+
+                    </DataGridTemplateColumn>
+
                     <!-- Status -->
                     <DataGridTemplateColumn
                         Width="140"

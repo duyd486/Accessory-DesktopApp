@@ -17,6 +17,7 @@ namespace Accessory_DesktopApp.Models.Dtos
         public decimal? total_price { get; set; }
 
         public DateTime? created_at { get; set; }
+        public long? channel_id { get; set; }
 
         public List<OrderProductDto> products { get; set; } = new();
 
@@ -25,5 +26,6 @@ namespace Accessory_DesktopApp.Models.Dtos
         public string? DisplayDate { get; set; }
 
         public string? DisplayTotalPrice { get; set; }
+        public string? DisplayChannelName { get; set; }
     }
 }

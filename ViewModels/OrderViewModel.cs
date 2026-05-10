@@ -1,4 +1,6 @@
-﻿using Accessory_DesktopApp.Models.Dtos;
+﻿using Accessory_DesktopApp.Models;
+using Accessory_DesktopApp.Models.Dtos;
+using Accessory_DesktopApp.Models.Response;
 using Accessory_DesktopApp.Singletons;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -18,6 +20,9 @@ namespace Accessory_DesktopApp.ViewModels
         private ObservableCollection<OrderDto> orders = new();
 
         [ObservableProperty]
+        private ObservableCollection<Channel> channels = new();
+
+        [ObservableProperty]
         private ObservableCollection<OrderDto> filteredOrders = new();
 
         [ObservableProperty]
@@ -28,12 +33,14 @@ namespace Accessory_DesktopApp.ViewModels
 
         public OrderViewModel()
         {
+            _ = FetchChannelAsync();
             _ = FetchOrdersAsync();
         }
 
         [RelayCommand]
         private void Refresh()
         {
+            _ = FetchChannelAsync();
             _ = FetchOrdersAsync();
         }
 
@@ -51,6 +58,43 @@ namespace Accessory_DesktopApp.ViewModels
         partial void OnFilterStatusChanged(string? value)
         {
             ApplyFilter();
+        }
+
+        private async Task FetchChannelAsync()
+        {
+            var response = await ApiManager
+                .GetInstance()
+                .HttpGetAsync<ChannelListResponse>("channels")
+                .ConfigureAwait(false);
+
+            if (response == null)
+            {
+                MessageBox.Show(
+                    "Không thể tải danh sách kênh bán hàng",
+                    "Lỗi",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return;
+            }
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                Channels.Clear();
+
+                if(response.channels == null || response.channels.Count == 0)
+                {
+                    MessageBox.Show(
+                        "Không có kênh bán hàng nào được tìm thấy",
+                        "Thông báo",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information);
+                    return;
+                }
+
+                foreach (var item in response.channels)
+                {
+                    Channels.Add(item);
+                }
+            });
         }
 
         private async Task FetchOrdersAsync()
@@ -83,11 +127,19 @@ namespace Accessory_DesktopApp.ViewModels
                             .ToString("dd/MM/yyyy HH:mm");
                     }
 
+
+                    item.DisplayChannelName = GetChannelName(item.channel_id);
                     Orders.Add(item);
                 }
 
                 ApplyFilter();
             });
+        }
+
+        private string GetChannelName(long? id)
+        {
+            var c = Channels.FirstOrDefault(x => x.id == id);
+            return c?.name ?? "---";
         }
 
         private void ApplyFilter()
