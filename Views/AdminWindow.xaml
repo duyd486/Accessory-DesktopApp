@@ -74,7 +74,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="80"/>
                 <RowDefinition Height="auto"/>
-                <RowDefinition Height="300"/>
+                <RowDefinition Height="200"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
                 <TextBlock Text="Accessory" FontWeight="Bold" Foreground="#FBEAD9" FontSize="36" VerticalAlignment="Center" HorizontalAlignment="Center" />
@@ -123,6 +123,9 @@
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:OrderViewModel}">
                     <views:OrderView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:ChannelViewModel}">
+                    <views:ChannelView/>
                 </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>
