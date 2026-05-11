@@ -22,14 +22,6 @@ namespace Accessory_DesktopApp.ViewModels
             _loginWindow = loginWindow;
         }
 
-        private void Dev()
-        {
-            MessageBox.Show("Đăng nhập thành công với quyền admin");
-            AdminWindow adminWindow = new AdminWindow();
-            adminWindow.Show();
-            _loginWindow.Close();
-        }
-
         private void AdminDev()
         {
             EmailText = "tomnguyenhieu2004@gmail.com";
@@ -51,9 +43,10 @@ namespace Accessory_DesktopApp.ViewModels
 
             if (EmailText == null || PasswordText == null)
             {
-                //MessageBox.Show("Vui lòng điền đủ tài khoản và mật khẩu");
                 AdminDev();
                 //StaffDev();
+
+                //MessageBox.Show("Vui lòng điền đủ tài khoản và mật khẩu");
                 //return;
             }
 

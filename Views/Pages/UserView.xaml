@@ -39,6 +39,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
                     <StackPanel>
@@ -64,6 +65,17 @@
                             VerticalAlignment="Top"
                             Command="{Binding SearchCommand}"
                             Content="Tìm kiếm" />
+
+                    <Button
+                            Background="DimGray"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            Grid.Column="2"
+                            Width="120"
+                            Height="40"
+                            Margin="16,24,0,0"
+                            VerticalAlignment="Top"
+                            Command="{Binding SearchCommand}"
+                            Content="Thêm" />
                 </Grid>
             </Border>
 

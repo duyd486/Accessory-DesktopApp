@@ -56,6 +56,7 @@ namespace Accessory_DesktopApp.Singletons
 
         public async Task<bool> LoginAsync(string email, string password)
         {
+            client.DefaultRequestHeaders.Remove("Authorization");
             try
             {
                 var payload = new { email = email, password = password };

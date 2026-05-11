@@ -148,6 +148,8 @@ namespace Accessory_DesktopApp.ViewModels
                 {
                     Channels.Add(item);
                 }
+
+                SelectedChannel = Channels[0];
             });
         }
 
