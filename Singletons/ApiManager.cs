@@ -61,7 +61,9 @@ namespace Accessory_DesktopApp.Singletons
             {
                 var payload = new { email = email, password = password };
                 string json = JsonSerializer.Serialize(payload);
+
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
+
                 HttpResponseMessage response = await client.PostAsync(baseUrl + "login", content);
 
                 string result = await response.Content.ReadAsStringAsync();
@@ -80,7 +82,8 @@ namespace Accessory_DesktopApp.Singletons
                     MessageBox.Show("Đăng nhập thất bại");
                     return false;
                 }
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show("Đã có lỗi xảy ra: " + ex.Message);
                 return false;
@@ -88,7 +91,6 @@ namespace Accessory_DesktopApp.Singletons
         }
 
         #endregion
-
         public async Task<T> HttpGetAsync<T>(string url)
         {
             try

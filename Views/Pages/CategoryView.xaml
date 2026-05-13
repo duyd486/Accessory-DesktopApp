@@ -4,9 +4,171 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Accessory_DesktopApp.Views.Pages"
+             xmlns:vm="clr-namespace:Accessory_DesktopApp.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="820">
-    <Grid>
-        <TextBlock Text="Category View" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
+    
+    <UserControl.DataContext>
+        <vm:CategoryViewModel/>
+    </UserControl.DataContext>
+    
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title -->
+        <StackPanel Grid.Row="0" Margin="0 0 0 5">
+            <TextBlock Text="Quản lý danh mục" FontSize="20" FontWeight="Bold" Foreground="Black"/>
+            <TextBlock Text="Quản lý danh mục chứa sản phẩm" FontSize="12" Foreground="#888" Margin="0 2 0 0"/>
+        </StackPanel>
+
+        <!-- Ô tìm kiếm -->
+        <Grid Grid.Row="1" Margin="0 15 0 15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="220"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" BorderBrush="#ccc" BorderThickness="1" CornerRadius="4" Background="White" Padding="8 5">
+                <StackPanel Orientation="Horizontal">
+                    <TextBox BorderThickness="0" Text="Tìm danh mục" Foreground="#aaa" VerticalAlignment="Center" Width="160"/>
+                </StackPanel>
+            </Border>
+
+            <Button Grid.Column="1" Content="+ Thêm" Command="{Binding AddCommand}" Margin="10 0 0 0"
+                    Background="#3b82f6" Foreground="White"
+                    BorderThickness="0" Padding="14 7"
+                    FontSize="13" Cursor="Hand">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </Grid>
+
+        <!-- Bảng -->
+        <Border Grid.Row="2" Background="White" BorderBrush="#e0e0e0" BorderThickness="1" CornerRadius="6">
+            <DataGrid x:Name="CategoryDataGrid"
+                      ItemsSource="{Binding Categories}"
+                      AutoGenerateColumns="False"
+                      HeadersVisibility="Column"
+                      GridLinesVisibility="Horizontal"
+                      HorizontalGridLinesBrush="#f0f0f0"
+                      BorderThickness="0"
+                      RowHeight="48"
+                      CanUserAddRows="False"
+                      CanUserResizeRows="False"
+                      SelectionMode="Single"
+                      Background="White"
+                      AlternatingRowBackground="#fafafa"
+                      FontFamily="Segoe UI"
+                      FontSize="13" SelectionChanged="CategoryDataGrid_SelectionChanged">
+
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="Foreground" Value="#555"/>
+                        <Setter Property="Padding" Value="12 10"/>
+                        <Setter Property="BorderBrush" Value="#ddd"/>
+                        <Setter Property="BorderThickness" Value="0 0 0 2"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Padding" Value="12 0"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="DataGridCell">
+                                    <Border Padding="12 0" Background="{TemplateBinding Background}">
+                                        <ContentPresenter VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </DataGrid.CellStyle>
+
+                <DataGrid.Columns>
+                   
+                    <DataGridTextColumn Header="ID" Binding="{Binding id}" Width="70">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="#666"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Header="Tên danh mục" Binding="{Binding title}" Width="*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Header="Danh mục cấp trên" Binding="{Binding parent_id}" Width="180">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="#555"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTemplateColumn Header="Ảnh bìa" Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding thumbnail_url}" Width="36" Height="36"
+                                       Stretch="UniformToFill" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Hành động" Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Content="✏" Width="32" Height="32"
+                                            Background="#f59e0b" Foreground="White"
+                                            BorderThickness="0" Cursor="Hand" Margin="0 0 6 0"
+                                            Command="{Binding DataContext.EditCommand,
+                                            RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                            CommandParameter="{Binding}">
+                                        <Button.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="4"/>
+                                            </Style>
+                                        </Button.Resources>
+                                    </Button>
+                                    <Button Content="🗑" Width="32" Height="32"
+                                        Background="#ef4444" Foreground="White"
+                                        BorderThickness="0" Cursor="Hand"
+                                        HorizontalAlignment="Center"
+                                        Command="{Binding DataContext.DeleteCommand,
+                                                  RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                        CommandParameter="{Binding id}">
+                                        <Button.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="4"/>
+                                            </Style>
+                                        </Button.Resources>
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
     </Grid>
 </UserControl>

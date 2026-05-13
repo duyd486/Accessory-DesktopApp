@@ -22,5 +22,10 @@ namespace Accessory_DesktopApp.Views.Pages
         {
             InitializeComponent();
         }
+
+        private void CategoryDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

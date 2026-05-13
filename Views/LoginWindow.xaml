@@ -6,42 +6,57 @@
         xmlns:local="clr-namespace:Accessory_DesktopApp.Views" xmlns:viewmodels="clr-namespace:Accessory_DesktopApp.ViewModels" 
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Background="#121212"
-        Title="LoginWindow" Height="500" Width="600">
+        Background="#f5f5f5"
+        Title="LoginWindow" Height="600" Width="1000">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="2*"/>
-        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-        <Grid Grid.Row="0">
 
-            <StackPanel Grid.Row="0" Margin="0 30 0 0" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <!---Panel gradient bên trái-->
+        <Border Grid.Column="0" Margin="20" CornerRadius="20" ClipToBounds="True">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="MidnightBlue" Offset="0.0"/>
+                    <GradientStop Color="#9333EA" Offset="0.5"/>
+                    <GradientStop Color="#EC4899" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Border.Background>
 
-                <TextBlock Text="Đăng nhập vào Accessory" FontWeight="Bold" FontSize="36" Margin="0 0 0 0" Foreground="White"/>
+            <StackPanel VerticalAlignment="Bottom" Margin="30">
+                <TextBlock Text="Accessory Desktop App" Foreground="White" FontSize="14" Opacity="0.8" Margin="10 0 0 5"/>
+                <TextBlock Text="Truy cập vào trung tâm cá nhân để làm việc hiệu quả và tăng năng suất hơn" 
+                   Foreground="White" FontSize="20" FontWeight="Bold" 
+                   TextWrapping="Wrap" Margin="10 0 0 0"/>
+            </StackPanel>
+        </Border>
+
+        <!--Title Đăng nhập-->
+        <Grid Grid.Column="1">
+
+            <StackPanel Margin="0 80 0 0" HorizontalAlignment="Center">
+
+                <TextBlock Text="Đăng nhập tài khoản" FontWeight="Bold" FontSize="36" Foreground="#00072d" HorizontalAlignment="Center"/>
+                <TextBlock Text="Chào mừng bạn đã quay trở lại! Vui lòng đăng nhập để tiếp tục" FontWeight="Light" FontSize="14" Foreground="SlateGray" Margin="0 10 0 30"/>
 
             </StackPanel>
-        </Grid>
-        <Grid Grid.Row="1" Margin="0 10 0 0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="4*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <Grid Grid.Row="0">
+            <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="2*"/>
                 </Grid.RowDefinitions>
+
+        <!--Ô đăng nhập (phần này của m t giữ nguyên ko thay đổi gì lứm)-->
 
                 <Grid.Resources>
                     <Style TargetType="PasswordBox">
-                        <Setter Property="Background" Value="AliceBlue"/>
-                        <Setter Property="Foreground" Value="Black"/>
-                        <Setter Property="FontSize" Value="18"/>
-                        <Setter Property="FontWeight" Value="Bold"/>
-                        <Setter Property="BorderBrush" Value="Gray"/>
+                        <Setter Property="Background" Value="WhiteSmoke"/>
+                        <Setter Property="Foreground" Value="#091540"/>
+                        <Setter Property="FontSize" Value="12"/>
+                        <Setter Property="FontWeight" Value="Light"/>
+                        <Setter Property="BorderBrush" Value="LightGray"/>
                         <Setter Property="BorderThickness" Value="1"/>
                         <Setter Property="Template">
                             <Setter.Value>
@@ -61,7 +76,7 @@
                                             <Setter TargetName="border" Property="BorderThickness" Value="2"/>
                                         </Trigger>
                                         <Trigger Property="IsFocused" Value="True">
-                                            <Setter TargetName="border" Property="BorderBrush" Value="White"/>
+                                            <Setter TargetName="border" Property="BorderBrush" Value="Gray"/>
                                             <Setter TargetName="border" Property="BorderThickness" Value="2"/>
                                         </Trigger>
                                     </ControlTemplate.Triggers>
@@ -72,11 +87,11 @@
 
 
                     <Style TargetType="TextBox">
-                        <Setter Property="Background" Value="AliceBlue"/>
-                        <Setter Property="Foreground" Value="Black"/>
-                        <Setter Property="FontSize" Value="18"/>
-                        <Setter Property="FontWeight" Value="Bold"/>
-                        <Setter Property="BorderBrush" Value="Gray"/>
+                        <Setter Property="Background" Value="WhiteSmoke"/>
+                        <Setter Property="Foreground" Value="#091540"/>
+                        <Setter Property="FontSize" Value="12"/>
+                        <Setter Property="FontWeight" Value="Light"/>
+                        <Setter Property="BorderBrush" Value="LightGray"/>
                         <Setter Property="BorderThickness" Value="1"/>
                         <Setter Property="Template">
                             <Setter.Value>
@@ -95,7 +110,7 @@
                                             <Setter TargetName="border" Property="BorderThickness" Value="2"/>
                                         </Trigger>
                                         <Trigger Property="IsFocused" Value="True">
-                                            <Setter TargetName="border" Property="BorderBrush" Value="White"/>
+                                            <Setter TargetName="border" Property="BorderBrush" Value="Gray"/>
                                             <Setter TargetName="border" Property="BorderThickness" Value="2"/>
                                         </Trigger>
                                     </ControlTemplate.Triggers>
@@ -105,23 +120,22 @@
                     </Style>
                 </Grid.Resources>
 
-                <StackPanel Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <TextBlock Text="Địa chỉ Email" Foreground="White" FontSize="16" FontWeight="Bold"  />
-                    <TextBox Text="{Binding EmailText}" Width="300" Height="40" FontSize="20" Margin="0 10 0 0" VerticalContentAlignment="Center"/>
-                </StackPanel>
-                <StackPanel Grid.Row="1" Margin="0 0 0 0" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <TextBlock Text="Mật khẩu" Foreground="White" FontSize="16" FontWeight="Bold"  />
-                    <PasswordBox PasswordChanged="PasswordBox_PasswordChanged" Width="300" Height="40" FontSize="20" Margin="0 10 0 0" VerticalContentAlignment="Center"/>
+                <StackPanel Grid.Row="1" HorizontalAlignment="Center">
+                    <TextBlock Text="Địa chỉ Email" Foreground="#00072d" FontSize="15" FontWeight="Bold" />
+                    <TextBox Text="{Binding EmailText}" Width="400" Height="40" FontSize="20" Margin="0 10 0 0" VerticalContentAlignment="Center"/>
 
+                    <TextBlock Text="Mật khẩu" Margin="0 15 0 0" Foreground="#00072d" FontSize="15" FontWeight="Bold" />
+                    <PasswordBox PasswordChanged="PasswordBox_PasswordChanged" Width="400" Height="40" FontSize="20" Margin="0 10 0 0" VerticalContentAlignment="Center"/>
                 </StackPanel>
-                <StackPanel Grid.Row="2" Margin="0 40 0 0" VerticalAlignment="Center" HorizontalAlignment="Center">
 
-                    <Button Width="300" Height="40" Content="Đăng nhập" FontWeight="SemiBold" Cursor="Hand" Background="Gray" Command="{Binding LoginCommand}">
+                <StackPanel Grid.Row="1"  VerticalAlignment="Center" HorizontalAlignment="Center">
+
+                    <Button Margin="0 30 0 0" Width="400" Height="45" FontSize="15" Content="Đăng nhập" Foreground="AntiqueWhite" FontWeight="SemiBold" Cursor="Hand" Background="#9333EA" Command="{Binding LoginCommand}">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Border x:Name="border"
                                         Background="{TemplateBinding Background}"
-                                        CornerRadius="20"
+                                        CornerRadius="10"
                                         BorderThickness="0">
                                     <ContentPresenter HorizontalAlignment="Center"
                                                       VerticalAlignment="Center"/>
