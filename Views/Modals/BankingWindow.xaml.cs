@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Accessory_DesktopApp.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -8,24 +9,24 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Accessory_DesktopApp.Views.Pages
+namespace Accessory_DesktopApp.Views.Modals
 {
     /// <summary>
-    /// Interaction logic for OrderView.xaml
+    /// Interaction logic for BankingWindow.xaml
     /// </summary>
-    public partial class OrderView : UserControl
+    public partial class BankingWindow : Window
     {
-        public OrderView()
+        public BankingWindow(StaffViewModel dataContext)
         {
             InitializeComponent();
+            DataContext = dataContext;
         }
 
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Close_Click(object sender, RoutedEventArgs e)
         {
-
+            Close();
         }
     }
 }

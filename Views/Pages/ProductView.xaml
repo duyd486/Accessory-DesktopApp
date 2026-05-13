@@ -1,12 +1,427 @@
 ﻿<UserControl x:Class="Accessory_DesktopApp.Views.Pages.ProductView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Accessory_DesktopApp.Views.Pages"
-             mc:Ignorable="d" 
-             d:DesignHeight="720" d:DesignWidth="820">
-    <Grid>
-        <TextBlock Text="Product View" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
+             mc:Ignorable="d"
+             d:DesignHeight="720"
+             d:DesignWidth="820">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+
+    <Grid Background="White">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Grid Grid.Row="0" Margin="24">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel>
+                <TextBlock Text="Danh sách sản phẩm" FontSize="22" FontWeight="Bold" />
+                <TextBlock Text="Quản lý danh sách sản phẩm có trong cửa hàng" Foreground="#7A7A7A" Margin="0,6,0,0" />
+            </StackPanel>
+
+            <Button Style="{StaticResource PrimaryButtonStyle}" Background="Gray" Width="80" Height="40" Grid.Column="1" Content="Làm mới" Padding="12,6" Margin="12,0,0,0" Command="{Binding RefreshCommand}" />
+        </Grid>
+
+        <Separator Grid.Row="1" Margin="24,-144,24,0" />
+
+        <!-- Search -->
+        <Border
+            Style="{StaticResource StatCardStyle}"
+            Grid.Row="1"
+            Padding="0"
+            Margin="24,16,24,20">
+
+            <Grid Margin="16">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+
+                    <TextBlock
+                        Margin="0,0,0,6"
+                        FontWeight="SemiBold"
+                        Text="Tìm kiếm"/>
+
+                    <TextBox
+                        Height="38"
+                        VerticalContentAlignment="Center"
+                        Text="{Binding SearchKey, UpdateSourceTrigger=PropertyChanged}"/>
+
+                </StackPanel>
+
+                <Button
+                    Background="DimGray"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    Grid.Column="1"
+                    Width="100"
+                    Height="38"
+                    Margin="12,24,0,0"
+                    Command="{Binding SearchCommand}"
+                    Content="Tìm kiếm"/>
+
+                <Button
+                    Background="DimGray"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    Grid.Column="2"
+                    Width="100"
+                    Height="38"
+                    Margin="12,24,0,0"
+                    Command="{Binding OpenAddCommand}"
+                    Content="+ Thêm"/>
+
+            </Grid>
+
+        </Border>
+
+        <!-- Table -->
+        <Border
+            Style="{StaticResource StatCardStyle}"
+            Grid.Row="2"
+            Margin="24,0,24,24"
+            Padding="10"
+            CornerRadius="10">
+
+            <DataGrid
+                Style="{StaticResource MinimalDataGrid}"
+                ItemsSource="{Binding FilteredProducts}"
+                AutoGenerateColumns="False"
+                FontSize="14"
+                CanUserAddRows="False"
+                HeadersVisibility="Column"
+                IsReadOnly="True"
+                BorderThickness="0.4"
+                GridLinesVisibility="Horizontal"
+                SelectionMode="Single"
+                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                ScrollViewer.CanContentScroll="True"
+                ScrollViewer.HorizontalScrollBarVisibility="Auto">
+
+                <DataGrid.Columns>
+
+                    <!-- Category -->
+                    <DataGridTemplateColumn
+                        Width="140"
+                        Header="Danh mục">
+
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+
+                                <TextBlock
+                                    Margin="10"
+                                    Text="{Binding CategoryTitle}"
+                                    TextWrapping="Wrap"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"/>
+
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+
+                    </DataGridTemplateColumn>
+
+                    <!-- Product Name -->
+                    <DataGridTemplateColumn
+                        Width="240"
+                        Header="Tên sản phẩm">
+
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+
+                                <TextBlock
+                                    Margin="8"
+                                    Text="{Binding name}"
+                                    TextWrapping="Wrap"
+                                    VerticalAlignment="Center"/>
+
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+
+                    </DataGridTemplateColumn>
+
+                    <!-- Price -->
+                    <DataGridTemplateColumn
+                        Width="120"
+                        Header="Giá">
+
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+
+                                <TextBlock
+                                    Text="{Binding DisplayPrice}"
+                                    TextWrapping="Wrap"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"/>
+
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+
+                    </DataGridTemplateColumn>
+
+                    <!-- Thumbnail -->
+                    <DataGridTemplateColumn
+                        Width="90"
+                        Header="Ảnh">
+
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+
+                                <Border
+                                    Width="50"
+                                    Height="50"
+                                    Margin="0 8 0 8"
+                                    HorizontalAlignment="Left"
+                                    CornerRadius="6"
+                                    ClipToBounds="True">
+
+                                    <Image
+                                        Stretch="UniformToFill"
+                                        Source="{Binding thumbnail_url,
+                                        Converter={StaticResource NoCacheImageConverter}}"/>
+
+                                </Border>
+
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+
+                    </DataGridTemplateColumn>
+
+                    <!-- Quantity -->
+
+                    <DataGridTemplateColumn
+                        Width="90"
+                        Header="Số lượng">
+
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+
+                                <TextBlock
+                                    Text="{Binding quantity}"
+                                    TextWrapping="Wrap"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"/>
+
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+
+                    </DataGridTemplateColumn>
+
+                    <!-- Sold -->
+                    <DataGridTemplateColumn
+                        Width="90"
+                        Header="Đã bán">
+
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+
+                                <TextBlock
+                                    Text="{Binding total_sold}"
+                                    TextWrapping="Wrap"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"/>
+
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+
+                    </DataGridTemplateColumn>
+
+                    <!-- Description -->
+                    <DataGridTemplateColumn
+                        Width="250"
+                        Header="Mô tả">
+
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+
+                                <TextBlock
+                                    Margin="8"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding ShortDescription}"
+                                    TextWrapping="Wrap"/>
+
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+
+                    </DataGridTemplateColumn>
+
+                    <!-- Actions -->
+                    <DataGridTemplateColumn
+                        Width="160"
+                        Header="Hành động">
+
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+
+                                <StackPanel
+                                    Orientation="Horizontal"
+                                    HorizontalAlignment="Center">
+
+                                    <Button
+                                        Background="LightSlateGray"
+                                        Style="{StaticResource PrimaryButtonStyle}"
+                                        Width="60"
+                                        Height="32"
+                                        Margin="0,0,6,0"
+                                        Command="{Binding DataContext.OpenEditCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                        CommandParameter="{Binding}"
+                                        Content="Sửa"/>
+
+                                    <Button
+                                        Style="{StaticResource PrimaryButtonStyle}"
+                                        Width="60"
+                                        Height="32"
+                                        Background="#B84A4A"
+                                        Foreground="White"
+                                        Command="{Binding DataContext.DeleteProductCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                        CommandParameter="{Binding id}"
+                                        Content="Xóa"/>
+
+                                </StackPanel>
+
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+
+                    </DataGridTemplateColumn>
+
+                </DataGrid.Columns>
+
+            </DataGrid>
+
+        </Border>
+
+        <!-- Dialog -->
+        <Border
+            Grid.RowSpan="3"
+            Background="#80000000"
+            Visibility="{Binding IsDialogOpen, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+            <Border
+                Width="500"
+                Background="White"
+                CornerRadius="10"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+
+                    <StackPanel Margin="24">
+
+                        <TextBlock
+                            Margin="0,0,0,20"
+                            FontSize="22"
+                            FontWeight="Bold"
+                            Text="{Binding DialogTitle}"/>
+
+                        <Grid Margin="0,0,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="140"/>
+                                <ColumnDefinition Width="16"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- IMAGE -->
+                            <StackPanel Grid.Column="0">
+
+                                <Border
+                                    Width="140"
+                                    Height="140"
+                                    CornerRadius="8"
+                                    BorderBrush="#DDD"
+                                    BorderThickness="1"
+                                    Background="Transparent">
+
+                                    <Image
+                                        Stretch="UniformToFill"
+                                        Source="{Binding ThumbnailPreview}"/>
+                                </Border>
+
+                                <Button
+                                    Margin="0,10,0,0"
+                                    Content="Chọn ảnh"
+                                    Command="{Binding PickImageCommand}"/>
+                            </StackPanel>
+
+                            <!-- FORM -->
+                            <StackPanel Grid.Column="2">
+
+                                <TextBlock Text="Tên sản phẩm"/>
+
+                                <TextBox
+                                    Margin="0,6,0,12"
+                                    Text="{Binding ProductForm.name}"/>
+
+                                <TextBlock Text="Danh mục"/>
+
+                                <ComboBox
+                                    Margin="0,6,0,12"
+                                    ItemsSource="{Binding Categories}"
+                                    DisplayMemberPath="title"
+                                    SelectedValuePath="id"
+                                    SelectedValue="{Binding ProductForm.category_id}"/>
+
+                            </StackPanel>
+                        </Grid>
+
+                        <TextBlock Text="Giá"/>
+                        <TextBox
+                            Margin="0,6,0,12"
+                            Text="{Binding ProductForm.price}"/>
+
+                        <TextBlock Text="Số lượng"/>
+                        <TextBox
+                            Margin="0,6,0,12"
+                            Text="{Binding ProductForm.quantity}"/>
+
+                        <TextBlock Text="Mô tả"/>
+                        <TextBox
+                            Height="100"
+                            Margin="0,6,0,20"
+                            AcceptsReturn="True"
+                            TextWrapping="Wrap"
+                            VerticalScrollBarVisibility="Auto"
+                            Text="{Binding ProductForm.description}"/>
+
+                        <StackPanel
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+
+                            <Button
+                                Width="100"
+                                Margin="0,0,10,0"
+                                Command="{Binding CloseDialogCommand}"
+                                Content="Hủy"/>
+
+                            <Button
+                                Width="100"
+                                Command="{Binding SubmitProductCommand}"
+                                Content="Lưu"/>
+
+                        </StackPanel>
+
+                    </StackPanel>
+
+                </ScrollViewer>
+
+            </Border>
+
+        </Border>
+
     </Grid>
+
 </UserControl>

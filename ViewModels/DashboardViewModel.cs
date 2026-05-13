@@ -1,4 +1,4 @@
-﻿using Accessory_DesktopApp.Models;
+﻿using Accessory_DesktopApp.Models.Dtos;
 using Accessory_DesktopApp.Singletons;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;

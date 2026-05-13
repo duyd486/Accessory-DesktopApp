@@ -1,4 +1,5 @@
 ﻿using Accessory_DesktopApp.Models;
+using Accessory_DesktopApp.Models.Response;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -55,6 +56,7 @@ namespace Accessory_DesktopApp.Singletons
 
         public async Task<bool> LoginAsync(string email, string password)
         {
+            client.DefaultRequestHeaders.Remove("Authorization");
             try
             {
                 var payload = new { email = email, password = password };
@@ -66,21 +68,13 @@ namespace Accessory_DesktopApp.Singletons
 
                 string result = await response.Content.ReadAsStringAsync();
 
-                LoginResponse? res = JsonSerializer.Deserialize<LoginResponse>(result);
+                ResponseBase<UserResponse>? res = JsonSerializer.Deserialize<ResponseBase<UserResponse>>(result);
 
                 if (res?.status == true)
                 {
-                    currentUser = res.data?.user;
-
-                    if (currentUser != null)
-                    {
-                        currentUser.token = res.data?.token;
-                    }
-
-                    MessageBox.Show("Đăng nhập thành công " + currentUser?.name);
-
-                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + currentUser?.token);
-
+                    currentUser = res?.data?.user;
+                    MessageBox.Show("Đăng nhập thành công, xin chào " + res?.data?.user?.name);
+                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + res?.data?.token);
                     return true;
                 }
                 else
@@ -133,18 +127,67 @@ namespace Accessory_DesktopApp.Singletons
 
         public async Task HttpPostNoDataAsync(string url, object? payload = null)
         {
-            var json = JsonSerializer.Serialize(payload ?? new { });
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            try
+            {
+                var json = JsonSerializer.Serialize(payload ?? new { });
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync(baseUrl + url, content);
-            response.EnsureSuccessStatusCode();
+                var response = await client.PostAsync(baseUrl + url, content);
+                response.EnsureSuccessStatusCode();
+            } catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
-        public async Task<T> HttpPostFormAsync<T>(string url, MultipartFormDataContent form)
+        public async Task<T?> HttpPostFormAsync<T>(
+            string url,
+            MultipartFormDataContent form)
         {
             try
             {
-                var response = await client.PostAsync(baseUrl + url, form).ConfigureAwait(false);
+                var response = await client
+                    .PostAsync(baseUrl + url, form)
+                    .ConfigureAwait(false);
+
+                var result = await response.Content
+                    .ReadAsStringAsync()
+                    .ConfigureAwait(false);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                        MessageBox.Show(result));
+
+                    return default;
+                }
+
+                var res = JsonSerializer.Deserialize<ResponseBase<T>>(
+                    result,
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+                return res!.data;
+            }
+            catch (Exception ex)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                    MessageBox.Show(ex.ToString()));
+
+                return default;
+            }
+        }
+
+        public async Task<T> HttpPostJsonAsync<T>(string url, object? payload = null)
+        {
+            try
+            {
+                var json = JsonSerializer.Serialize(payload ?? new { });
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync(baseUrl + url, content).ConfigureAwait(false);
                 response.EnsureSuccessStatusCode();
 
                 var result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -178,7 +221,7 @@ namespace Accessory_DesktopApp.Singletons
 
     public class ResponseBase<T>
     {
-        public int? code { get; set; }
+        public bool status { get; set; }
         public T data { get; set; } = default!;
         public string? message { get; set; }
     }

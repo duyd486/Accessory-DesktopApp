@@ -14,18 +14,13 @@ using System.Windows.Shapes;
 namespace Accessory_DesktopApp.Views.Pages
 {
     /// <summary>
-    /// Interaction logic for OrderView.xaml
+    /// Interaction logic for ChannelView.xaml
     /// </summary>
-    public partial class OrderView : UserControl
+    public partial class ChannelView : UserControl
     {
-        public OrderView()
+        public ChannelView()
         {
             InitializeComponent();
-        }
-
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
     }
 }

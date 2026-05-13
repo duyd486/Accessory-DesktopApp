@@ -1,11 +1,11 @@
-﻿<UserControl x:Class="Accessory_DesktopApp.Views.Pages.UserView"
+﻿<UserControl x:Class="Accessory_DesktopApp.Views.Pages.ChannelView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Accessory_DesktopApp.Views.Pages"
              mc:Ignorable="d" 
-             d:DesignHeight="720" d:DesignWidth="820">
+             d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="White">
         <StackPanel Margin="24">
             <!-- Title -->
@@ -17,8 +17,8 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel>
-                    <TextBlock Text="Quản lý khách hàng" FontSize="22" FontWeight="Bold" />
-                    <TextBlock Text="Quản lý tài khoản và quyền hạn" Foreground="#7A7A7A" Margin="0,6,0,0" />
+                    <TextBlock Text="Quản lý kênh bán hàng" FontSize="22" FontWeight="Bold" />
+                    <TextBlock Text="Quản lý bán hàng từ mọi nơi" Foreground="#7A7A7A" Margin="0,6,0,0" />
                 </StackPanel>
 
                 <Button Style="{StaticResource PrimaryButtonStyle}" Background="Gray" Width="80" Grid.Column="1" Content="Làm mới" Padding="12,6" Margin="12,0,0,0" Command="{Binding RefreshCommand}" />
@@ -38,7 +38,6 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
@@ -65,17 +64,6 @@
                             VerticalAlignment="Top"
                             Command="{Binding SearchCommand}"
                             Content="Tìm kiếm" />
-
-                    <Button
-                            Background="DimGray"
-                            Style="{StaticResource PrimaryButtonStyle}"
-                            Grid.Column="2"
-                            Width="120"
-                            Height="40"
-                            Margin="16,24,0,0"
-                            VerticalAlignment="Top"
-                            Command="{Binding SearchCommand}"
-                            Content="Thêm" />
                 </Grid>
             </Border>
 
@@ -88,7 +76,7 @@
 
                 <DataGrid
                         Style="{StaticResource MinimalDataGrid}"
-                        ItemsSource="{Binding FilteredCustomers}"
+                        ItemsSource="{Binding Channels}"
                         AutoGenerateColumns="False"
                         CanUserAddRows="False"
                         HeadersVisibility="Column"
@@ -104,23 +92,18 @@
 
                         <DataGridTextColumn
                                 Width="2*"
-                                Header="Người dùng"
+                                Header="Id"
+                                Binding="{Binding id}" />
+
+                        <DataGridTextColumn
+                                Width="2*"
+                                Header="Tên kênh"
                                 Binding="{Binding name}" />
 
                         <DataGridTextColumn
-                                Width="2*"
-                                Header="Email"
-                                Binding="{Binding email}" />
-
-                        <DataGridTextColumn
                                 Width="*"
-                                Header="Số điện thoại"
-                                Binding="{Binding phone}" />
-
-                        <DataGridTextColumn
-                                Width="2*"
-                                Header="Địa chỉ"
-                                Binding="{Binding address}" />
+                                Header="Kiểu kênh"
+                                Binding="{Binding DisplayType}" />
 
                     </DataGrid.Columns>
 
