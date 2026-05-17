@@ -18,7 +18,7 @@ namespace Accessory_DesktopApp.ViewModels
 
         public ObservableCollection<string> MenuItems { get; } = new()
         {
-            "Thống kê", "Người dùng", "Sản phẩm", "Danh mục", "Đơn hàng", "Kênh bán"
+            "Thống kê", "Nhân viên", "Người dùng", "Sản phẩm", "Danh mục", "Đơn hàng", "Kênh bán"
         };
 
         public AdminViewModel(AdminWindow adminWindow)
@@ -35,6 +35,9 @@ namespace Accessory_DesktopApp.ViewModels
             {
                 case "Thống kê":
                     CurrentViewModel = new DashboardViewModel();
+                    break;
+                case "Nhân viên":
+                    CurrentViewModel = new EmployeeViewModel();
                     break;
                 case "Người dùng":
                     CurrentViewModel = new UserViewModel();

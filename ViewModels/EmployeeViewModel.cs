@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Accessory_DesktopApp.ViewModels
 {
-    public partial class UserViewModel : ObservableObject
+    public partial class EmployeeViewModel : ObservableObject
     {
         [ObservableProperty]
         private ObservableCollection<User> customers = new();
@@ -20,7 +20,7 @@ namespace Accessory_DesktopApp.ViewModels
         [ObservableProperty]
         private string? searchKeyword;
 
-        public UserViewModel()
+        public EmployeeViewModel()
         {
             _ = FetchCustomersAsync();
         }
@@ -36,7 +36,7 @@ namespace Accessory_DesktopApp.ViewModels
                 return;
 
             items = items
-                .Where(x => x.role == 1)
+                .Where(x => x.role == 0 || x.role == 2)
                 .ToList();
 
             if (App.Current?.Dispatcher?.CheckAccess() == true)
