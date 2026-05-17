@@ -8,7 +8,7 @@ namespace Accessory_DesktopApp.Models.Dtos
     {
         public int? id { get; set; }
 
-        public int? order_code { get; set; }
+        public string? order_code { get; set; }
 
         public int? status { get; set; }
 

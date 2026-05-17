@@ -46,6 +46,7 @@
                     <ColumnDefinition Width="260"/>
                     <ColumnDefinition Width="220"/>
                     <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="160"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
@@ -104,6 +105,17 @@
                     VerticalAlignment="Top"
                     Command="{Binding SearchCommand}"
                     Content="Tìm kiếm"/>
+
+                <Button
+                    Background="#F57C00"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    Grid.Column="3"
+                    Width="150"
+                    Height="38"
+                    Margin="12,24,0,0"
+                    VerticalAlignment="Top"
+                    Command="{Binding OpenShopeeSyncModalCommand}"
+                    Content="Đồng bộ Shopee"/>
 
             </Grid>
 
@@ -319,6 +331,189 @@
             </DataGrid>
 
         </Border>
+
+        <!-- Shopee Sync Modal -->
+        <Grid
+            Grid.RowSpan="3"
+            Background="#80000000"
+            Visibility="{Binding IsShopeeSyncModalOpen, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+            <Border
+                Width="700"
+                Height="650"
+                Padding="16"
+                Background="White"
+                CornerRadius="10"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Header -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock
+                            FontSize="18"
+                            FontWeight="Bold"
+                            Text="Đồng bộ đơn hàng Shopee"/>
+
+                        <Button
+                            Grid.Column="1"
+                            Width="34"
+                            Height="34"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            FontWeight="Bold"
+                            Content="✕"
+                            Command="{Binding CloseShopeeSyncModalCommand}"/>
+                    </Grid>
+
+                    <!-- Content -->
+                    <Grid Grid.Row="1" Margin="0,12,0,12">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="12"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock
+                                FontWeight="SemiBold"
+                                Margin="0,0,0,8"
+                                Text="Đơn Shopee đã có trên hệ thống"/>
+
+                            <DataGrid
+                                Grid.Row="1"
+                                Style="{StaticResource MinimalDataGrid}"
+                                ItemsSource="{Binding SystemShopeeOrders}"
+                                AutoGenerateColumns="False"
+                                CanUserAddRows="False"
+                                IsReadOnly="True"
+                                BorderThickness="0.2"
+                                FontSize="13"
+                                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                ScrollViewer.HorizontalScrollBarVisibility="Auto">
+
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Width="160" Header="Mã đơn" Binding="{Binding DisplayOrderCode}"/>
+                                    <DataGridTextColumn Width="170" Header="Ngày đặt" Binding="{Binding DisplayDate}"/>
+
+                                    <DataGridTemplateColumn Width="350" Header="Tên sản phẩm">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ItemsControl ItemsSource="{Binding products}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Margin="4" TextWrapping="Wrap">
+                                                                <Run Text="- "/>
+                                                                <Run Text="{Binding product_name}"/>
+                                                                <Run Text=" (SL: "/>
+                                                                <Run Text="{Binding quantity}"/>
+                                                                <Run Text=")"/>
+                                                            </TextBlock>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+
+                                    <DataGridTextColumn Width="170" Header="Người đặt" Binding="{Binding user_name}"/>
+                                    <DataGridTextColumn Width="140" Header="Tổng tiền" Binding="{Binding DisplayTotalPrice}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+
+                        <Grid Grid.Row="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock
+                                FontWeight="SemiBold"
+                                Margin="0,0,0,8"
+                                Text="Đơn hàng trên Shopee"/>
+
+                            <DataGrid
+                                Grid.Row="1"
+                                Style="{StaticResource MinimalDataGrid}"
+                                ItemsSource="{Binding ShopeeOrders}"
+                                AutoGenerateColumns="False"
+                                CanUserAddRows="False"
+                                IsReadOnly="True"
+                                BorderThickness="0.2"
+                                FontSize="13"
+                                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                ScrollViewer.HorizontalScrollBarVisibility="Auto">
+
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Width="160" Header="Mã đơn" Binding="{Binding DisplayOrderCode}"/>
+                                    <DataGridTextColumn Width="170" Header="Ngày đặt" Binding="{Binding DisplayDate}"/>
+
+                                    <DataGridTemplateColumn Width="350" Header="Tên sản phẩm">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ItemsControl ItemsSource="{Binding products}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Margin="4" TextWrapping="Wrap">
+                                                                <Run Text="- "/>
+                                                                <Run Text="{Binding product_name}"/>
+                                                                <Run Text=" (SL: "/>
+                                                                <Run Text="{Binding quantity}"/>
+                                                                <Run Text=")"/>
+                                                            </TextBlock>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+
+                                    <DataGridTextColumn Width="170" Header="Người đặt" Binding="{Binding user_name}"/>
+                                    <DataGridTextColumn Width="140" Header="Tổng tiền" Binding="{Binding DisplayTotalPrice}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </Grid>
+
+                    <!-- Bottom -->
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button
+                            Width="100"
+                            Height="38"
+                            Margin="0,0,12,0"
+                            Background="#B0B0B0"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            Content="Đóng"
+                            Command="{Binding CloseShopeeSyncModalCommand}"/>
+
+                        <Button
+                            Width="160"
+                            Height="38"
+                            Background="#F57C00"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            Content="Tiến hành đồng bộ"
+                            Command="{Binding ProceedShopeeSyncCommand}"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
 
     </Grid>
 </UserControl>

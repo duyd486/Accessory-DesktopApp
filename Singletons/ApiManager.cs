@@ -119,6 +119,36 @@ namespace Accessory_DesktopApp.Singletons
             }
         }
 
+        public async Task<T?> HttpGetPlainAsync<T>(string url)
+        {
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync(baseUrl + url).ConfigureAwait(false);
+                response.EnsureSuccessStatusCode();
+
+                string result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                return JsonSerializer.Deserialize<T>(
+                    result,
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+            }
+            catch (Exception ex)
+            {
+                if (Application.Current?.Dispatcher?.CheckAccess() == true)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                else
+                {
+                    Application.Current?.Dispatcher?.Invoke(() => MessageBox.Show(ex.Message));
+                }
+                return default;
+            }
+        }
+
         public async Task HttpGetNoDataAsync(string url)
         {
             HttpResponseMessage response = await client.GetAsync(baseUrl + url);
@@ -198,6 +228,40 @@ namespace Accessory_DesktopApp.Singletons
             {
                 Application.Current.Dispatcher.Invoke(() => MessageBox.Show(ex.Message));
                 return default!;
+            }
+        }
+
+        public async Task<T?> HttpPostPlainAsync<T>(string url, object? payload = null)
+        {
+            try
+            {
+                var json = JsonSerializer.Serialize(payload ?? new { });
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync(baseUrl + url, content).ConfigureAwait(false);
+                response.EnsureSuccessStatusCode();
+
+                var result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                return JsonSerializer.Deserialize<T>(
+                    result,
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+            }
+            catch (Exception ex)
+            {
+                if (Application.Current?.Dispatcher?.CheckAccess() == true)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                else
+                {
+                    Application.Current?.Dispatcher?.Invoke(() => MessageBox.Show(ex.Message));
+                }
+
+                return default;
             }
         }
 
