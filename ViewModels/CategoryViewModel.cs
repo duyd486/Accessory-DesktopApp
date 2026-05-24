@@ -30,15 +30,7 @@ namespace Accessory_DesktopApp.ViewModels
             {
                 var result = await ApiManager.GetInstance().HttpGetAsync<CategoryResponse>("list-category");
 
-                var allItems = new List<CategoryItem>();
-                foreach (var item in result.categories)
-                {
-                    allItems.Add(item);
-                    if (item.children != null)
-                        allItems.AddRange(item.children);
-                }
-
-                Categories = new ObservableCollection<CategoryItem>(allItems);
+                Categories = new ObservableCollection<CategoryItem>(result.categories);
             }
             catch (Exception ex)
             {
@@ -48,27 +40,49 @@ namespace Accessory_DesktopApp.ViewModels
         }
 
         [RelayCommand]
-        private void Add()
+        private async void Add()
         {
-            var dialog = new AddCategoryDialog();
+            var dialog = new AddCategoryDialog(); // KHÔNG truyền parent list
             dialog.Owner = Application.Current.MainWindow;
 
             if (dialog.ShowDialog() == true)
             {
-                Categories.Add(new CategoryItem
+                await ApiManager.GetInstance().HttpPostNoDataAsync("update-or-create-cate", new
                 {
-                    id = Categories.Count + 1,
+                    id = 0,
                     title = dialog.title,
-                    parent_id = 0,
+                    parent_id = 0, // CHA
                     thumbnail_url = dialog.thumbnail_url
                 });
+
+                LoadCategories();
+            }
+        }
+
+        [RelayCommand]
+        private async void AddChild(CategoryItem parent)
+        {
+            var dialog = new AddCategoryDialog(parent, Categories.ToList());
+            dialog.Owner = Application.Current.MainWindow;
+
+            if (dialog.ShowDialog() == true)
+            {
+                await ApiManager.GetInstance().HttpPostNoDataAsync("update-or-create-cate", new
+                {
+                    id = 0,
+                    title = dialog.title,
+                    parent_id = parent.id,
+                    thumbnail_url = dialog.thumbnail_url
+                });
+
+                LoadCategories();
             }
         }
 
         [RelayCommand]
         private async Task Edit(CategoryItem item)
         {
-            var dialog = new AddCategoryDialog(item);
+            var dialog = new AddCategoryDialog(item, Categories.ToList());
             dialog.Owner = Application.Current.MainWindow;
 
             if (dialog.ShowDialog() == true)
