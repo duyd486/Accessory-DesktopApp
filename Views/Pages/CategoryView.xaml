@@ -12,143 +12,296 @@
         <vm:CategoryViewModel/>
     </UserControl.DataContext>
     
-    <Grid Margin="20">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+
+    <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Title -->
-        <StackPanel Grid.Row="0" Margin="0 0 0 5">
-            <TextBlock Text="Quản lý danh mục" FontSize="20" FontWeight="Bold" Foreground="Black"/>
-            <TextBlock Text="Quản lý danh mục chứa sản phẩm" FontSize="12" Foreground="#888" Margin="0 2 0 0"/>
-        </StackPanel>
-
-        <!-- Ô tìm kiếm -->
-        <Grid Grid.Row="1" Margin="0 15 0 15">
+        <!-- Header -->
+        <Grid Grid.Row="0" Margin="24">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="220"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" BorderBrush="#ccc" BorderThickness="1" CornerRadius="4" Background="White" Padding="8 5">
-                <StackPanel Orientation="Horizontal">
-                    <TextBox BorderThickness="0" Text="Tìm danh mục" Foreground="#aaa" VerticalAlignment="Center" Width="160"/>
-                </StackPanel>
-            </Border>
+            <StackPanel>
+                <TextBlock Text="Danh sách danh mục" FontSize="22" FontWeight="Bold" />
+                <TextBlock Text="Quản lý danh mục chứa sản phẩm" Foreground="#7A7A7A" Margin="0,6,0,0" />
+            </StackPanel>
 
-            <Button Grid.Column="1" Content="+ Thêm" Command="{Binding AddCommand}" Margin="10 0 0 0"
-                    Background="#3b82f6" Foreground="White"
-                    BorderThickness="0" Padding="14 7"
-                    FontSize="13" Cursor="Hand">
-                <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
+            <Button
+                Style="{StaticResource PrimaryButtonStyle}"
+                Background="Gray"
+                Width="80"
+                Height="40"
+                Grid.Column="1"
+                Content="Làm mới"
+                Padding="12,6"
+                Margin="12,0,0,0"
+                Command="{Binding RefreshCommand}" />
         </Grid>
 
-        <!-- Bảng -->
-        <Border Grid.Row="2"
-        Background="White"
-        BorderBrush="#E5E7EB"
-        BorderThickness="1"
-        CornerRadius="10"
-        Padding="10">
+        <Separator Grid.Row="1" Margin="24,-144,24,0" />
 
-            <TreeView ItemsSource="{Binding Categories}"
-              BorderThickness="0">
+        <!-- Search -->
+        <Border
+            Style="{StaticResource StatCardStyle}"
+            Grid.Row="1"
+            Padding="0"
+            Margin="24,16,24,20">
+
+            <Grid Margin="16">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+
+                    <TextBlock
+                        Margin="0,0,0,6"
+                        FontWeight="SemiBold"
+                        Text="Tìm kiếm"/>
+
+                    <TextBox
+                        Height="38"
+                        VerticalContentAlignment="Center"
+                        Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+
+                </StackPanel>
+
+                <Button
+                    Background="DimGray"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    Grid.Column="1"
+                    Width="100"
+                    Height="38"
+                    Margin="12,24,0,0"
+                    Command="{Binding SearchCommand}"
+                    Content="Tìm kiếm"/>
+
+                <Button
+                    Background="DimGray"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    Grid.Column="2"
+                    Width="100"
+                    Height="38"
+                    Margin="12,24,0,0"
+                    Command="{Binding OpenAddCommand}"
+                    Content="+ Thêm"/>
+
+            </Grid>
+
+        </Border>
+
+        <!-- Tree -->
+        <Border
+            Style="{StaticResource StatCardStyle}"
+            Grid.Row="2"
+            Margin="24,0,24,24"
+            Padding="10"
+            CornerRadius="10">
+
+            <TreeView
+                ItemsSource="{Binding FilteredCategories}"
+                BorderThickness="0"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled">
 
                 <TreeView.Resources>
-
-                    <!-- ITEM STYLE -->
                     <Style TargetType="TreeViewItem">
                         <Setter Property="Margin" Value="0 4"/>
                         <Setter Property="Padding" Value="4"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                     </Style>
-
                 </TreeView.Resources>
 
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding children}">
-
                         <Border Background="#F9FAFB"
-                CornerRadius="8"
-                Padding="10"
-                Margin="0 4">
+                                CornerRadius="8"
+                                Padding="0 10 0 10"
+                                Margin="0 4"
+                                HorizontalAlignment="Stretch">
 
-                            <Grid Width="675">
+                            <DockPanel
+                                LastChildFill="True"
+                                HorizontalAlignment="Stretch"
+                                Width="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=ActualWidth}">
 
-                                <!-- 2 COLUMNS -->
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
+                                <StackPanel
+                                    DockPanel.Dock="Right"
+                                    Margin="0 0 60 0"
+                                    Orientation="Horizontal"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center">
 
-                                <StackPanel Orientation="Horizontal"
-                            VerticalAlignment="Center">
+                                    <Button
+                                        Background="LightSlateGray"
+                                        Style="{StaticResource PrimaryButtonStyle}"
+                                        Width="60"
+                                        Height="32"
+                                        Margin="0,0,6,0"
+                                        Command="{Binding DataContext.OpenEditCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        CommandParameter="{Binding}"
+                                        Content="Sửa"/>
 
+                                    <Button
+                                        Style="{StaticResource PrimaryButtonStyle}"
+                                        Width="60"
+                                        Height="32"
+                                        Background="#B84A4A"
+                                        Foreground="White"
+                                        Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        CommandParameter="{Binding id}"
+                                        Content="Xóa"/>
+
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                     <TextBlock Text="{Binding id}"
-                               Width="40"
-                               Foreground="#9CA3AF"
-                               VerticalAlignment="Center"/>
+                                               Width="40"
+                                               Foreground="#9CA3AF"
+                                               VerticalAlignment="Center"/>
 
                                     <Border Width="34" Height="34"
-                            CornerRadius="6"
-                            Background="#E5E7EB"
-                            Margin="0 0 10 0">
+                                            CornerRadius="6"
+                                            Background="#E5E7EB"
+                                            Margin="0 0 10 0"
+                                            ClipToBounds="True">
 
-                                        <Image Source="{Binding thumbnail_url}"
-                               Stretch="UniformToFill"/>
+                                        <Image
+                                            Stretch="UniformToFill"
+                                            Source="{Binding thumbnail_url, Converter={StaticResource NoCacheImageConverter}}"/>
                                     </Border>
 
                                     <TextBlock Text="{Binding title}"
-                               FontSize="14"
-                               FontWeight="SemiBold"
-                               VerticalAlignment="Center"
-                               Foreground="#111827"/>
+                                               FontSize="14"
+                                               FontWeight="SemiBold"
+                                               VerticalAlignment="Center"
+                                               Foreground="#111827"/>
                                 </StackPanel>
 
-                             
-                                <StackPanel Grid.Column="1"
-                            Orientation="Horizontal"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center">
-
-                                    <Button Content="✏"
-                            Width="30"
-                            Height="30"
-                            Margin="0 0 6 0"
-                            Background="#FBBF24"
-                            Foreground="White"
-                            BorderThickness="0"
-                                            Command="{Binding DataContext.EditCommand,
-RelativeSource={RelativeSource AncestorType=UserControl}}"
-CommandParameter="{Binding}"/>
-
-                                    <Button Content="🗑"
-                            Width="30"
-                            Height="30"
-                            Background="#EF4444"
-                            Foreground="White"
-                            BorderThickness="0"
-                            Command="{Binding DataContext.DeleteCommand,
-                            RelativeSource={RelativeSource AncestorType=UserControl}}"
-                            CommandParameter="{Binding id}" />
-
-                                </StackPanel>
-
-                            </Grid>
+                            </DockPanel>
 
                         </Border>
-
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>
 
             </TreeView>
+
+        </Border>
+
+        <!-- Dialog (Add/Edit) -->
+        <Border
+            Grid.RowSpan="3"
+            Background="#80000000"
+            Visibility="{Binding IsDialogOpen, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+            <Border
+                Width="520"
+                Background="White"
+                CornerRadius="10"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+
+                    <StackPanel Margin="24">
+
+                        <TextBlock
+                            Margin="0,0,0,20"
+                            FontSize="22"
+                            FontWeight="Bold"
+                            Text="{Binding DialogTitle}"/>
+
+                        <Grid Margin="0,0,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="140"/>
+                                <ColumnDefinition Width="16"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- IMAGE -->
+                            <StackPanel Grid.Column="0">
+
+                                <Border
+                                    Width="140"
+                                    Height="140"
+                                    CornerRadius="8"
+                                    BorderBrush="#DDD"
+                                    BorderThickness="1"
+                                    Background="Transparent">
+
+                                    <Image
+                                        Stretch="UniformToFill"
+                                        Source="{Binding ThumbnailPreview}"/>
+                                </Border>
+
+                                <Button
+                                    Margin="0,10,0,0"
+                                    Content="Chọn ảnh"
+                                    Command="{Binding PickImageCommand}"/>
+                            </StackPanel>
+
+                            <!-- FORM -->
+                            <StackPanel Grid.Column="2">
+
+                                <TextBlock Text="Tên danh mục"/>
+
+                                <TextBox
+                                    Margin="0,6,0,12"
+                                    Text="{Binding CategoryForm.title}"/>
+
+                                <CheckBox
+                                    Margin="0,0,0,12"
+                                    Content="Đặt làm danh mục cha"
+                                    IsChecked="{Binding IsParentCategory}"/>
+
+                                <TextBlock Text="Danh mục cha"/>
+
+                                <ComboBox
+                                    Margin="0,6,0,12"
+                                    ItemsSource="{Binding ParentCandidates}"
+                                    DisplayMemberPath="title"
+                                    SelectedValuePath="id"
+                                    SelectedValue="{Binding CategoryForm.parent_id}"
+                                    IsEnabled="{Binding IsChildCategory}"/>
+
+                            </StackPanel>
+                        </Grid>
+
+                        <StackPanel
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+
+                            <Button
+                                Width="100"
+                                Margin="0,0,10,0"
+                                Command="{Binding CloseDialogCommand}"
+                                Content="Hủy"/>
+
+                            <Button
+                                Width="100"
+                                Command="{Binding SubmitCategoryCommand}"
+                                Content="Lưu"/>
+
+                        </StackPanel>
+
+                    </StackPanel>
+
+                </ScrollViewer>
+
+            </Border>
+
         </Border>
     </Grid>
 </UserControl>
