@@ -52,123 +52,103 @@
         </Grid>
 
         <!-- Bảng -->
-        <Border Grid.Row="2" Background="White" BorderBrush="#e0e0e0" BorderThickness="1" CornerRadius="6">
-            <DataGrid x:Name="CategoryDataGrid"
-                      ItemsSource="{Binding Categories}"
-                      AutoGenerateColumns="False"
-                      HeadersVisibility="Column"
-                      GridLinesVisibility="Horizontal"
-                      HorizontalGridLinesBrush="#f0f0f0"
-                      BorderThickness="0"
-                      RowHeight="48"
-                      CanUserAddRows="False"
-                      CanUserResizeRows="False"
-                      SelectionMode="Single"
-                      Background="White"
-                      AlternatingRowBackground="#fafafa"
-                      FontFamily="Segoe UI"
-                      FontSize="13" SelectionChanged="CategoryDataGrid_SelectionChanged">
+        <Border Grid.Row="2"
+        Background="White"
+        BorderBrush="#E5E7EB"
+        BorderThickness="1"
+        CornerRadius="10"
+        Padding="10">
 
-                <DataGrid.ColumnHeaderStyle>
-                    <Style TargetType="DataGridColumnHeader">
-                        <Setter Property="Background" Value="White"/>
-                        <Setter Property="FontWeight" Value="SemiBold"/>
-                        <Setter Property="Foreground" Value="#555"/>
-                        <Setter Property="Padding" Value="12 10"/>
-                        <Setter Property="BorderBrush" Value="#ddd"/>
-                        <Setter Property="BorderThickness" Value="0 0 0 2"/>
+            <TreeView ItemsSource="{Binding Categories}"
+              BorderThickness="0">
+
+                <TreeView.Resources>
+
+                    <!-- ITEM STYLE -->
+                    <Style TargetType="TreeViewItem">
+                        <Setter Property="Margin" Value="0 4"/>
+                        <Setter Property="Padding" Value="4"/>
                     </Style>
-                </DataGrid.ColumnHeaderStyle>
 
-                <DataGrid.CellStyle>
-                    <Style TargetType="DataGridCell">
-                        <Setter Property="BorderThickness" Value="0"/>
-                        <Setter Property="Padding" Value="12 0"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="DataGridCell">
-                                    <Border Padding="12 0" Background="{TemplateBinding Background}">
-                                        <ContentPresenter VerticalAlignment="Center"/>
+                </TreeView.Resources>
+
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding children}">
+
+                        <Border Background="#F9FAFB"
+                CornerRadius="8"
+                Padding="10"
+                Margin="0 4">
+
+                            <Grid Width="675">
+
+                                <!-- 2 COLUMNS -->
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Orientation="Horizontal"
+                            VerticalAlignment="Center">
+
+                                    <TextBlock Text="{Binding id}"
+                               Width="40"
+                               Foreground="#9CA3AF"
+                               VerticalAlignment="Center"/>
+
+                                    <Border Width="34" Height="34"
+                            CornerRadius="6"
+                            Background="#E5E7EB"
+                            Margin="0 0 10 0">
+
+                                        <Image Source="{Binding thumbnail_url}"
+                               Stretch="UniformToFill"/>
                                     </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </DataGrid.CellStyle>
 
-                <DataGrid.Columns>
-                   
-                    <DataGridTextColumn Header="ID" Binding="{Binding id}" Width="70">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Foreground" Value="#666"/>
-                                <Setter Property="VerticalAlignment" Value="Center"/>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-
-                    <DataGridTextColumn Header="Tên danh mục" Binding="{Binding title}" Width="*">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="VerticalAlignment" Value="Center"/>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-
-                    <DataGridTextColumn Header="Danh mục cấp trên" Binding="{Binding parent_id}" Width="180">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Foreground" Value="#555"/>
-                                <Setter Property="VerticalAlignment" Value="Center"/>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-
-                    <DataGridTemplateColumn Header="Ảnh bìa" Width="100">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Image Source="{Binding thumbnail_url}" Width="36" Height="36"
-                                       Stretch="UniformToFill" HorizontalAlignment="Center"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-
-                    <DataGridTemplateColumn Header="Hành động" Width="100">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Button Content="✏" Width="32" Height="32"
-                                            Background="#f59e0b" Foreground="White"
-                                            BorderThickness="0" Cursor="Hand" Margin="0 0 6 0"
-                                            Command="{Binding DataContext.EditCommand,
-                                            RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                            CommandParameter="{Binding}">
-                                        <Button.Resources>
-                                            <Style TargetType="Border">
-                                                <Setter Property="CornerRadius" Value="4"/>
-                                            </Style>
-                                        </Button.Resources>
-                                    </Button>
-                                    <Button Content="🗑" Width="32" Height="32"
-                                        Background="#ef4444" Foreground="White"
-                                        BorderThickness="0" Cursor="Hand"
-                                        HorizontalAlignment="Center"
-                                        Command="{Binding DataContext.DeleteCommand,
-                                                  RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                        CommandParameter="{Binding id}">
-                                        <Button.Resources>
-                                            <Style TargetType="Border">
-                                                <Setter Property="CornerRadius" Value="4"/>
-                                            </Style>
-                                        </Button.Resources>
-                                    </Button>
+                                    <TextBlock Text="{Binding title}"
+                               FontSize="14"
+                               FontWeight="SemiBold"
+                               VerticalAlignment="Center"
+                               Foreground="#111827"/>
                                 </StackPanel>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
+
+                             
+                                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center">
+
+                                    <Button Content="✏"
+                            Width="30"
+                            Height="30"
+                            Margin="0 0 6 0"
+                            Background="#FBBF24"
+                            Foreground="White"
+                            BorderThickness="0"
+                                            Command="{Binding DataContext.EditCommand,
+RelativeSource={RelativeSource AncestorType=UserControl}}"
+CommandParameter="{Binding}"/>
+
+                                    <Button Content="🗑"
+                            Width="30"
+                            Height="30"
+                            Background="#EF4444"
+                            Foreground="White"
+                            BorderThickness="0"
+                            Command="{Binding DataContext.DeleteCommand,
+                            RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            CommandParameter="{Binding id}" />
+
+                                </StackPanel>
+
+                            </Grid>
+
+                        </Border>
+
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+
+            </TreeView>
         </Border>
     </Grid>
 </UserControl>

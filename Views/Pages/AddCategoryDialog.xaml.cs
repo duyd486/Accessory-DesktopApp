@@ -12,31 +12,36 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
 using Accessory_DesktopApp.Models;
+using System.Collections.Generic;
 
 namespace Accessory_DesktopApp.Views 
 {
     public partial class AddCategoryDialog : Window
     {
-        public string title { get; private set; }  
-        public int parent_id { get; private set; }    
+        public string title { get; private set; }
+        public int parent_id { get; private set; }
         public string thumbnail_url { get; private set; }
-        public AddCategoryDialog(CategoryItem item = null)
+
+        public AddCategoryDialog(CategoryItem parent, List<CategoryItem> categoryItems)
         {
             InitializeComponent();
-            if (item != null)
-            {
-                NameTextBox.Text = item.title;
-                ImagePathTextBox.Text = item.thumbnail_url;
-            }
+
+            // mặc định: tạo category CHA
+            parent_id = 0;
+        }
+
+        public AddCategoryDialog()
+        {
         }
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
             title = NameTextBox.Text;
-            int temp;
-            int.TryParse(ParentTextBox.Text, out temp);
-            parent_id = temp;
             thumbnail_url = ImagePathTextBox.Text;
+
+            // luôn là CHA
+            parent_id = 0;
+
             DialogResult = true;
         }
 
@@ -49,6 +54,7 @@ namespace Accessory_DesktopApp.Views
         {
             var dialog = new Microsoft.Win32.OpenFileDialog();
             dialog.Filter = "Image files|*.jpg;*.jpeg;*.png;*.bmp";
+
             if (dialog.ShowDialog() == true)
             {
                 ImagePathTextBox.Text = dialog.FileName;
