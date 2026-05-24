@@ -1,4 +1,6 @@
 ﻿using Accessory_DesktopApp.Models;
+using Accessory_DesktopApp.Models.Dtos;
+using Accessory_DesktopApp.Models.Response;
 using Accessory_DesktopApp.Singletons;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -6,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Windows;
 
 namespace Accessory_DesktopApp.ViewModels
 {
@@ -19,6 +22,24 @@ namespace Accessory_DesktopApp.ViewModels
 
         [ObservableProperty]
         private string? searchKeyword;
+
+        [ObservableProperty]
+        private CreateEmployeeRequest employeeForm = new();
+
+        [ObservableProperty]
+        private bool isDialogOpen;
+
+        [ObservableProperty]
+        private string dialogTitle = "Thêm nhân viên";
+
+        public ObservableCollection<string> RoleOptions { get; } =
+        [
+            "Nhân viên",
+            "Admin"
+        ];
+
+        [ObservableProperty]
+        private string selectedRole = "Nhân viên";
 
         public EmployeeViewModel()
         {
@@ -74,6 +95,97 @@ namespace Accessory_DesktopApp.ViewModels
         private void Search()
         {
             ApplyFilter();
+        }
+
+        [RelayCommand]
+        private void OpenAdd()
+        {
+            DialogTitle = "Thêm nhân viên";
+            EmployeeForm = new CreateEmployeeRequest();
+            SelectedRole = RoleOptions.FirstOrDefault() ?? "Nhân viên";
+            IsDialogOpen = true;
+        }
+
+        [RelayCommand]
+        private void CloseDialog()
+        {
+            IsDialogOpen = false;
+        }
+
+        [RelayCommand]
+        private async Task SubmitEmployeeAsync()
+        {
+            if (string.IsNullOrWhiteSpace(EmployeeForm.name)
+                || string.IsNullOrWhiteSpace(EmployeeForm.email)
+                || string.IsNullOrWhiteSpace(EmployeeForm.password)
+                || string.IsNullOrWhiteSpace(EmployeeForm.password_confirmation))
+            {
+                MessageBox.Show("Vui lòng nhập đầy đủ thông tin (tên, email, mật khẩu).", "Thiếu dữ liệu");
+                return;
+            }
+
+            var endpoint = string.Equals(SelectedRole, "Admin", StringComparison.OrdinalIgnoreCase)
+                ? "create-admin"
+                : "create-staff";
+
+            var response = await ApiManager
+                .GetInstance()
+                .HttpPostPlainAsync<ResponseBase<CreateEmployeeResponse>>(endpoint, EmployeeForm)
+                .ConfigureAwait(false);
+
+            if (response?.status != true)
+            {
+                var message = response?.message;
+                if (string.IsNullOrWhiteSpace(message))
+                    message = "Tạo nhân viên thất bại.";
+
+                if (Application.Current?.Dispatcher?.CheckAccess() == true)
+                {
+                    MessageBox.Show(message, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    Application.Current?.Dispatcher?.Invoke(() =>
+                        MessageBox.Show(message, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error));
+                }
+
+                return;
+            }
+
+            var user = response.data?.user;
+
+            IsDialogOpen = false;
+
+            if (Application.Current?.Dispatcher?.CheckAccess() == true)
+            {
+                MessageBox.Show(response.message ?? "Tạo nhân viên thành công.", "Thành công");
+            }
+            else
+            {
+                Application.Current?.Dispatcher?.Invoke(() =>
+                    MessageBox.Show(response.message ?? "Tạo nhân viên thành công.", "Thành công"));
+            }
+
+            if (user != null)
+            {
+                if (Application.Current?.Dispatcher?.CheckAccess() == true)
+                {
+                    Customers.Insert(0, user);
+                    ApplyFilter();
+                }
+                else
+                {
+                    Application.Current?.Dispatcher?.Invoke(() =>
+                    {
+                        Customers.Insert(0, user);
+                        ApplyFilter();
+                    });
+                }
+            }
+            else
+            {
+                await FetchCustomersAsync().ConfigureAwait(false);
+            }
         }
 
         private void ApplyFilter()

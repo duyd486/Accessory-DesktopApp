@@ -74,8 +74,8 @@
                         Height="40"
                         Margin="16,24,0,0"
                         VerticalAlignment="Top"
-                        Command="{Binding SearchCommand}"
-                        Content="Thêm" />
+                         Command="{Binding OpenAddCommand}"
+                         Content="+ Thêm" />
                 </Grid>
             </Border>
 
@@ -128,5 +128,88 @@
             </Border>
 
         </StackPanel>
+
+        <!-- Dialog -->
+        <Border
+            Background="#80000000"
+            Visibility="{Binding IsDialogOpen, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+            <Border
+                Width="520"
+                Background="White"
+                CornerRadius="10"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+
+                    <StackPanel Margin="24">
+
+                        <TextBlock
+                            Margin="0,0,0,20"
+                            FontSize="22"
+                            FontWeight="Bold"
+                            Text="{Binding DialogTitle}"/>
+
+                        <TextBlock Text="Vai trò"/>
+                        <ComboBox
+                            Margin="0,6,0,12"
+                            ItemsSource="{Binding RoleOptions}"
+                            SelectedItem="{Binding SelectedRole}"/>
+
+                        <TextBlock Text="Họ tên"/>
+                        <TextBox
+                            Margin="0,6,0,12"
+                            Text="{Binding EmployeeForm.name, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <TextBlock Text="Email"/>
+                        <TextBox
+                            Margin="0,6,0,12"
+                            Text="{Binding EmployeeForm.email, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <TextBlock Text="Mật khẩu"/>
+                        <TextBox
+                            Margin="0,6,0,12"
+                            Text="{Binding EmployeeForm.password, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <TextBlock Text="Nhập lại mật khẩu"/>
+                        <TextBox
+                            Margin="0,6,0,12"
+                            Text="{Binding EmployeeForm.password_confirmation, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <TextBlock Text="Số điện thoại"/>
+                        <TextBox
+                            Margin="0,6,0,12"
+                            Text="{Binding EmployeeForm.phone, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <TextBlock Text="Địa chỉ"/>
+                        <TextBox
+                            Margin="0,6,0,20"
+                            Text="{Binding EmployeeForm.address, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <StackPanel
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+
+                            <Button
+                                Width="100"
+                                Margin="0,0,10,0"
+                                Command="{Binding CloseDialogCommand}"
+                                Content="Hủy"/>
+
+                            <Button
+                                Width="100"
+                                Command="{Binding SubmitEmployeeCommand}"
+                                Content="Lưu"/>
+
+                        </StackPanel>
+
+                    </StackPanel>
+
+                </ScrollViewer>
+
+            </Border>
+
+        </Border>
     </Grid>
 </UserControl>
