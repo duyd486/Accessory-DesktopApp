@@ -74,7 +74,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="80"/>
                 <RowDefinition Height="auto"/>
-                <RowDefinition Height="200"/>
+                <RowDefinition Height="80"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
                 <TextBlock Text="Accessory" FontWeight="Bold" Foreground="#FBEAD9" FontSize="36" VerticalAlignment="Center" HorizontalAlignment="Center" />
@@ -111,6 +111,9 @@
             <ContentControl.Resources>
                 <DataTemplate DataType="{x:Type viewmodels:DashboardViewModel}">
                     <views:DashboardView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:EmployeeViewModel}">
+                    <views:EmployeeView/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:UserViewModel}">
                     <views:UserView/>

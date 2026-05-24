@@ -35,6 +35,10 @@ namespace Accessory_DesktopApp.ViewModels
             if (items is null)
                 return;
 
+            items = items
+                .Where(x => x.role == 1)
+                .ToList();
+
             if (App.Current?.Dispatcher?.CheckAccess() == true)
             {
                 ReplaceCustomers(items);
