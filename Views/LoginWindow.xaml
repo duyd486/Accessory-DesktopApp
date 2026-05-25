@@ -19,9 +19,9 @@
         <Border Grid.Column="0" Margin="20" CornerRadius="20" ClipToBounds="True">
             <Border.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                    <GradientStop Color="MidnightBlue" Offset="0.0"/>
-                    <GradientStop Color="#9333EA" Offset="0.5"/>
-                    <GradientStop Color="#EC4899" Offset="1.0"/>
+                    <GradientStop Color="#0EA5E9" Offset="0.0"/>
+                    <GradientStop Color="#2563EB" Offset="0.5"/>
+                    <GradientStop Color="#1E3A8A" Offset="1.0"/>
                 </LinearGradientBrush>
             </Border.Background>
 
@@ -48,7 +48,7 @@
                     <RowDefinition Height="2*"/>
                 </Grid.RowDefinitions>
 
-        <!--Ô đăng nhập (phần này của m t giữ nguyên ko thay đổi gì lứm)-->
+                <!--Ô đăng nhập (phần này của m t giữ nguyên ko thay đổi gì lứm)-->
 
                 <Grid.Resources>
                     <Style TargetType="PasswordBox">
@@ -130,7 +130,7 @@
 
                 <StackPanel Grid.Row="1"  VerticalAlignment="Center" HorizontalAlignment="Center">
 
-                    <Button Margin="0 30 0 0" Width="400" Height="45" FontSize="15" Content="Đăng nhập" Foreground="AntiqueWhite" FontWeight="SemiBold" Cursor="Hand" Background="#9333EA" Command="{Binding LoginCommand}">
+                    <Button Margin="0 30 0 0" Width="400" Height="45" FontSize="15" Content="Đăng nhập" Foreground="AntiqueWhite" FontWeight="SemiBold" Cursor="Hand" Background="#1D4ED8" Command="{Binding LoginCommand}">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Border x:Name="border"

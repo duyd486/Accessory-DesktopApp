@@ -37,7 +37,7 @@
 
             <Button
                 Style="{StaticResource PrimaryButtonStyle}"
-                Background="Gray"
+                Background="#1E3A8A"
                 Width="80"
                 Height="40"
                 Grid.Column="1"
@@ -80,7 +80,7 @@
                 </StackPanel>
 
                 <Button
-                    Background="DimGray"
+                    Background="#1E3A8A"
                     Style="{StaticResource PrimaryButtonStyle}"
                     Grid.Column="1"
                     Width="100"
@@ -90,7 +90,7 @@
                     Content="Tìm kiếm"/>
 
                 <Button
-                    Background="DimGray"
+                    Background="#1E3A8A"
                     Style="{StaticResource PrimaryButtonStyle}"
                     Grid.Column="2"
                     Width="100"

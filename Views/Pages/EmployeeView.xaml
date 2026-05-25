@@ -21,7 +21,7 @@
                     <TextBlock Text="Quản lý tài khoản và quyền hạn" Foreground="#7A7A7A" Margin="0,6,0,0" />
                 </StackPanel>
 
-                <Button Style="{StaticResource PrimaryButtonStyle}" Background="Gray" Width="80" Grid.Column="1" Content="Làm mới" Padding="12,6" Margin="12,0,0,0" Command="{Binding RefreshCommand}" />
+                <Button Style="{StaticResource PrimaryButtonStyle}" Background="#1E3A8A" Width="80" Grid.Column="1" Content="Làm mới" Padding="12,6" Margin="12,0,0,0" Command="{Binding RefreshCommand}" />
             </Grid>
 
             <Separator Grid.Row="1" Margin="0,16,0,20" />
@@ -56,7 +56,7 @@
                     </StackPanel>
 
                     <Button
-                        Background="DimGray"
+                        Background="#1E3A8A"
                         Style="{StaticResource PrimaryButtonStyle}"
                         Grid.Column="1"
                         Width="120"
@@ -67,7 +67,7 @@
                         Content="Tìm kiếm" />
 
                     <Button
-                        Background="DimGray"
+                        Background="#1E3A8A"
                         Style="{StaticResource PrimaryButtonStyle}"
                         Grid.Column="2"
                         Width="120"
