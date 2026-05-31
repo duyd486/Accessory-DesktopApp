@@ -145,7 +145,7 @@
                                     VerticalAlignment="Center">
 
                                     <Button
-                                        Background="LightSlateGray"
+                                        Background="#FFD54F"
                                         Style="{StaticResource PrimaryButtonStyle}"
                                         Width="60"
                                         Height="32"

@@ -33,12 +33,12 @@
 
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="border" Property="Background" Value="#1D4ED8"/>
+                                    <Setter TargetName="border" Property="Background" Value="#2563EB"/>
                                     <Setter Property="Foreground" Value="White"/>
                                 </Trigger>
 
                                 <Trigger Property="IsPressed" Value="True">
-                                    <Setter TargetName="border" Property="Background" Value="#2563EB"/>
+                                    <Setter TargetName="border" Property="Background" Value="#1E3A8A"/>
                                 </Trigger>
 
                                 <Trigger Property="IsEnabled" Value="False">
@@ -50,7 +50,7 @@
                 </Setter>
             </Style>
             <Style TargetType="ListBoxItem">
-                <Setter Property="Background" Value="#1E3A8A"/>
+                <Setter Property="Background" Value="#2563EB"/>
                 <Setter Property="Height" Value="60"/>
                 <Setter Property="Margin" Value="12 0 12 12"/>
                 <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -67,15 +67,15 @@
 
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="#1E3A8A"/>
+                        <Setter Property="Background" Value="#2563EB"/>
                     </Trigger>
                     <Trigger Property="IsSelected" Value="True">
-                        <Setter Property="Background" Value="#2563EB"/>
+                        <Setter Property="Background" Value="#1E3A8A"/>
                     </Trigger>
                 </Style.Triggers>
             </Style>
             <Style TargetType="ListBox">
-                <Setter Property="Background" Value="#1E3A8A"/>
+                <Setter Property="Background" Value="#2563EB"/>
             </Style>
         </ResourceDictionary>
     </Window.Resources>
@@ -86,7 +86,14 @@
             <ColumnDefinition Width="820"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0" Background="#1E3A8A">
+        <Grid Grid.Column="0">
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#0EA5E9" Offset="0.0"/>
+                    <GradientStop Color="#2563EB" Offset="0.5"/>
+                    <GradientStop Color="#1E3A8A" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Grid.Background>
             <Grid.RowDefinitions>
                 <RowDefinition Height="80"/>
                 <RowDefinition Height="auto"/>
@@ -120,7 +127,7 @@
                 </ListBox>
             </Grid>
 
-            <Button Grid.Row="2" Content="Đăng xuất" Command="{Binding LogoutCommand}" FontSize="15" Height="44" Background="#2563EB" Style="{StaticResource SidebarButtonStyle}" />
+            <Button Grid.Row="2" Content="Đăng xuất" Command="{Binding LogoutCommand}" FontSize="15" Height="44" Background="#60A5FA" Style="{StaticResource SidebarButtonStyle}" />
         </Grid>
 
         <ContentControl Grid.Column="1" Content="{Binding CurrentViewModel}">

@@ -60,7 +60,7 @@
 
                         <Border
                         Background="{TemplateBinding Background}"
-                        CornerRadius="2">
+                        CornerRadius="6">
 
                             <ContentPresenter
                             HorizontalAlignment="Center"
