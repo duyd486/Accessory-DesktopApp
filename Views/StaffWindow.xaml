@@ -18,7 +18,33 @@
         <Border
             Grid.Row="0"
             Background="#111111">
-            <TextBlock Text="Accessory Store" Margin="20 7 0 0" FontSize="30" FontWeight="Bold" Foreground="White"></TextBlock>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock
+                    Grid.Column="0"
+                    Text="Accessory Store"
+                    Margin="20 7 0 0"
+                    FontSize="30"
+                    FontWeight="Bold"
+                    Foreground="White" />
+
+                <Button
+                    Grid.Column="1"
+                    Margin="0,0,20,0"
+                    VerticalAlignment="Center"
+                    Padding="14,0"
+                    Height="34"
+                    Width="120"
+                    Content="Đăng xuất"
+                    Background="#B84A4A"
+                    Foreground="White"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    Command="{Binding LogoutCommand}" />
+            </Grid>
         </Border>
 
         <Grid Grid.Row="1" Background="#F5F5F5">
