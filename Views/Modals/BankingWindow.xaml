@@ -29,15 +29,12 @@
                 Height="240"
                 Margin="0,24,0,20"
                 Background="White"
-                CornerRadius="12">
+                CornerRadius="12"
+                ClipToBounds="True">
 
-                <!-- sau này thay QR thật -->
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="24"
-                    FontWeight="Bold"
-                    Text="QR CODE"/>
+                <Image
+                    Stretch="Uniform"
+                    Source="{Binding ModalQrImageUrl}" />
 
             </Border>
 
@@ -58,19 +55,11 @@
 
                     <TextBlock
                         FontWeight="SemiBold"
-                        Text="Ngân hàng"/>
+                        Text="Mã đơn hàng"/>
 
                     <TextBlock
                         Margin="0,4,0,14"
-                        Text="MB Bank"/>
-
-                    <TextBlock
-                        FontWeight="SemiBold"
-                        Text="Số tài khoản"/>
-
-                    <TextBlock
-                        Margin="0,4,0,14"
-                        Text="123456789"/>
+                        Text="{Binding ModalOrderCode}"/>
 
                     <TextBlock
                         FontWeight="SemiBold"
@@ -89,7 +78,7 @@
                         FontSize="24"
                         FontWeight="Bold"
                         Foreground="#D32F2F"
-                        Text="{Binding DataContext.ModalTotalPrice}"/>
+                        Text="{Binding ModalTotalPrice}"/>
 
                 </StackPanel>
 

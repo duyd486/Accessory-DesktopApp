@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Windows;
 
 namespace Accessory_DesktopApp.ViewModels
@@ -19,6 +20,11 @@ namespace Accessory_DesktopApp.ViewModels
     public partial class StaffViewModel : ObservableObject
     {
         private readonly StaffWindow _staffWindow;
+
+        private CancellationTokenSource? _checkPaymentCts;
+
+
+        public event EventHandler? PaymentPaid;
 
         [ObservableProperty]
         private ObservableCollection<ProductDto> products = new();
@@ -44,30 +50,21 @@ namespace Accessory_DesktopApp.ViewModels
         [ObservableProperty]
         private string? modalTotalPrice;
 
+        [ObservableProperty]
+        private string? modalQrImageUrl;
+
+        [ObservableProperty]
+        private string? modalOrderCode;
+
         public ObservableCollection<string> PaymentMethods { get; set; } =
         [
-            "offline",
-            "online"
+            "Tiền mặt",
+            "Chuyển khoản",
+            "Shopee"
         ];
 
-        //public ObservableCollection<string> Channels { get; set; } =
-        //[
-        //    "store",
-        //    "shopee",
-        //    "tiktok",
-        //    "facebook"
-        //];
-
         [ObservableProperty]
-        private string selectedPaymentMethod = "offline";
-
-        [ObservableProperty]
-        private Channel selectedChannel = new Channel
-        {
-            id = 1,
-            name = "store",
-            type = 1
-        };
+        private string selectedPaymentMethod = "Tiền mặt";
 
         [ObservableProperty]
         private bool isBankingModalOpen;
@@ -81,7 +78,6 @@ namespace Accessory_DesktopApp.ViewModels
         public StaffViewModel(StaffWindow staffWindow)
         {
             _staffWindow = staffWindow;
-            _ = FetchChannelAsync();
             _ = FetchProductsAsync();
         }
 
@@ -127,43 +123,62 @@ namespace Accessory_DesktopApp.ViewModels
             });
         }
 
-        private async Task FetchChannelAsync()
+        private int GetChannelIdFromPaymentMethod()
         {
-            var response = await ApiManager
-                .GetInstance()
-                .HttpGetAsync<ChannelListResponse>("channels")
-                .ConfigureAwait(false);
-
-            if (response == null)
+            return SelectedPaymentMethod switch
             {
-                MessageBox.Show(
-                    "Không thể tải danh sách kênh bán hàng",
-                    "Lỗi",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                "Shopee" => 2,
+                "Tiền mặt" => 1,
+                "Chuyển khoản" => 1,
+                _ => 1
+            };
+        }
+
+        public void StartCheckPaymentStatusPolling()
+        {
+            if (string.IsNullOrWhiteSpace(ModalOrderCode))
                 return;
-            }
-            App.Current.Dispatcher.Invoke(() =>
+
+            StopCheckPaymentStatusPolling();
+
+            _checkPaymentCts = new CancellationTokenSource();
+            _ = PollCheckPaymentStatusAsync(ModalOrderCode!, _checkPaymentCts.Token);
+        }
+
+        public void StopCheckPaymentStatusPolling()
+        {
+            _checkPaymentCts?.Cancel();
+            _checkPaymentCts = null;
+        }
+
+        private async Task PollCheckPaymentStatusAsync(string orderCode, CancellationToken cancellationToken)
+        {
+            try
             {
-                Channels.Clear();
-
-                if (response.channels == null || response.channels.Count == 0)
+                while (!cancellationToken.IsCancellationRequested)
                 {
-                    MessageBox.Show(
-                        "Không có kênh bán hàng nào được tìm thấy",
-                        "Thông báo",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Information);
-                    return;
-                }
+                    var encodedOrderCode = Uri.EscapeDataString(orderCode);
+                    var res = await ApiManager
+                        .GetInstance()
+                        .HttpGetPlainAsync<ResponseBase<CheckPaymentStatusData>>(
+                            $"check-payment-status?orderCode={encodedOrderCode}")
+                        .ConfigureAwait(false);
 
-                foreach (var item in response.channels)
-                {
-                    Channels.Add(item);
-                }
+                    if (res?.status == true &&
+                        string.Equals(res.data?.status, "PAID", StringComparison.OrdinalIgnoreCase))
+                    {
+                        StopCheckPaymentStatusPolling();
+                        PaymentPaid?.Invoke(this, EventArgs.Empty);
+                        return;
+                    }
 
-                SelectedChannel = Channels[0];
-            });
+                    await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken).ConfigureAwait(false);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                // ignored
+            }
         }
 
         private void ApplyFilter()
@@ -242,10 +257,12 @@ namespace Accessory_DesktopApp.ViewModels
             if (CartItems.Count == 0)
                 return;
 
+            StopCheckPaymentStatusPolling();
+
             var body = new
             {
                 payment_method = SelectedPaymentMethod,
-                channelId = SelectedChannel?.id,
+                channelId = GetChannelIdFromPaymentMethod(),
                 total_price = CartItems.Sum(x => (x.price ?? 0) * x.CartQuantity),
                 phone = Phone ?? "00",
                 address = Address ?? "Offline",
@@ -263,14 +280,25 @@ namespace Accessory_DesktopApp.ViewModels
                 .HttpPostJsonAsync<CreateOrderResponse>("create-bill", body);
 
 
-            if (SelectedPaymentMethod == "online")
+            if (SelectedPaymentMethod == "Chuyển khoản")
             {
                 ModalTotalPrice = string.Format(
                     new CultureInfo("vi-VN"),
                     "{0:c0}",
                     body.total_price);
 
-                MessageBox.Show("Cost: " + ModalTotalPrice);
+                //MessageBox.Show("Cost: " + ModalTotalPrice);
+
+                //MessageBox.Show(response?.bill.qr_image_url);
+
+                ModalQrImageUrl = response?.bill.qr_image_url;
+
+                ModalOrderCode = response?.bill.order_code;
+
+                ModalTotalPrice = string.Format(
+                    new CultureInfo("vi-VN"),
+                    "{0:c0}",
+                    response?.bill.total_price ?? 0);
 
                 var window = new BankingWindow(this);
 

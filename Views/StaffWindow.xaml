@@ -327,16 +327,6 @@
                             ItemsSource="{Binding PaymentMethods}"
                             SelectedItem="{Binding SelectedPaymentMethod}"/>
 
-                        <TextBlock Text="Kênh bán hàng (Dev Only)"/>
-
-                        <ComboBox
-                            Height="28"
-                            Margin="0,6,0,14"
-                            VerticalAlignment="Center"
-                            ItemsSource="{Binding Channels}"
-                            SelectedItem="{Binding SelectedChannel}"
-                            DisplayMemberPath="name"/>
-
                         <Border
                             Margin="0,0,0,16"
                             Padding="14"
