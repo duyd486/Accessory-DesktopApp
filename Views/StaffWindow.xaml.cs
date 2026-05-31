@@ -21,7 +21,7 @@ namespace Accessory_DesktopApp.Views
         public StaffWindow()
         {
             InitializeComponent();
-            DataContext = new StaffViewModel();
+            DataContext = new StaffViewModel(this);
         }
     }
 }

@@ -6,7 +6,124 @@
         xmlns:local="clr-namespace:Accessory_DesktopApp.Views"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="StaffWindow" Height="900" Width="1600">
+        Title="StaffWindow" Height="800" Width="1200">
+
+    <Window.Resources>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="WhiteSmoke"/>
+            <Setter Property="Foreground" Value="#091540"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="BorderBrush" Value="LightGray"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="Gray"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="Gray"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Background" Value="WhiteSmoke"/>
+            <Setter Property="Foreground" Value="#091540"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="BorderBrush" Value="LightGray"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton
+                                x:Name="PART_ToggleButton"
+                                IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border x:Name="border"
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="5">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="30"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock
+                                                    Grid.Column="1"
+                                                    Text="▾"
+                                                    FontSize="11"
+                                                    VerticalAlignment="Center"
+                                                    HorizontalAlignment="Center"
+                                                    Foreground="#091540"/>
+                                            </Grid>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="border" Property="BorderBrush" Value="Gray"/>
+                                                <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+
+                            <ContentPresenter
+                                Margin="{TemplateBinding Padding}"
+                                VerticalAlignment="Center"
+                                IsHitTestVisible="False"
+                                Content="{TemplateBinding SelectionBoxItem}"
+                                ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"/>
+
+                            <Popup
+                                x:Name="PART_Popup"
+                                IsOpen="{TemplateBinding IsDropDownOpen}"
+                                AllowsTransparency="True"
+                                Placement="Bottom"
+                                PlacementTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}">
+                                <Border
+                                    Background="White"
+                                    BorderBrush="LightGray"
+                                    BorderThickness="1"
+                                    CornerRadius="5"
+                                    MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ComboBox}}">
+                                    <ScrollViewer>
+                                        <ItemsPresenter/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -15,14 +132,36 @@
         </Grid.RowDefinitions>
 
         <!-- HEADER -->
-        <Border
-            Grid.Row="0"
-            Background="#111111">
-            <TextBlock Text="Accessory Store" Margin="20 7 0 0" FontSize="30" FontWeight="Bold" Foreground="White"></TextBlock>
+        <Border Grid.Row="0" Background="#111111">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock
+                    Grid.Column="0"
+                    Text="Accessory Store"
+                    Margin="20,7,0,0"
+                    FontSize="30"
+                    FontWeight="Bold"
+                    Foreground="White"/>
+
+                <Button
+                    Grid.Column="1"
+                    Margin="0,0,20,0"
+                    VerticalAlignment="Center"
+                    Height="34"
+                    Width="120"
+                    Content="Đăng xuất"
+                    Background="#B84A4A"
+                    Foreground="White"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    Command="{Binding LogoutCommand}"/>
+            </Grid>
         </Border>
 
         <Grid Grid.Row="1" Background="#F5F5F5">
-
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="1*"/>
@@ -30,7 +169,6 @@
 
             <!-- LEFT -->
             <Grid Grid.Column="0" Margin="24">
-
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
@@ -41,39 +179,30 @@
                     Style="{StaticResource StatCardStyle}"
                     Grid.Row="0"
                     Margin="0,0,0,20">
-
                     <Grid Margin="16">
-
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="120"/>
                         </Grid.ColumnDefinitions>
 
                         <TextBox
-                        Height="40"
-                        VerticalContentAlignment="Center"
-                        FontSize="15"
-                        Text="{Binding SearchKey, UpdateSourceTrigger=PropertyChanged}"/>
+                            Height="40"
+                            FontSize="14"
+                            Text="{Binding SearchKey, UpdateSourceTrigger=PropertyChanged}"/>
 
                         <Button
                             Style="{StaticResource SecondaryButtonStyle}"
-                        Grid.Column="1"
-                        Height="40"
-                        Margin="12,0,0,0"
-                        Content="Tìm kiếm"
-                        Command="{Binding SearchCommand}"/>
-
+                            Grid.Column="1"
+                            Height="40"
+                            Margin="12,0,0,0"
+                            Content="Tìm kiếm"
+                            Command="{Binding SearchCommand}"/>
                     </Grid>
-
                 </Border>
-                
-                
 
                 <!-- Product List -->
                 <ScrollViewer Grid.Row="1">
-
                     <ItemsControl ItemsSource="{Binding FilteredProducts}">
-
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel/>
@@ -82,231 +211,169 @@
 
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-
                                 <Border
-                                    Width="220"
-                                    Margin="0,0,16,16"
-                                    Background="White"
-                                    BorderBrush="#DDDDDD"
-                                    BorderThickness="1"
-                                    CornerRadius="12">
+        Width="220"
+        Margin="0,0,16,16"
+        Background="White"
+        BorderBrush="#DDDDDD"
+        BorderThickness="1"
+        CornerRadius="12">
 
                                     <Grid Margin="14">
-
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="140"/>
-                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="60"/>
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
 
                                         <!-- Image -->
-                                        <Border
-                                        Grid.Row="0"
-                                        CornerRadius="10"
-                                        ClipToBounds="True">
-
-                                            <Image
-                                            Stretch="UniformToFill"
-                                            Source="{Binding thumbnail_url}"/>
-
+                                        <Border Grid.Row="0" CornerRadius="10" ClipToBounds="True">
+                                            <Image Stretch="UniformToFill" Source="{Binding thumbnail_url}"/>
                                         </Border>
 
-                                        <!-- Name -->
+                                        <!-- Name — chiều cao cố định 60 để đều nhau -->
                                         <TextBlock
-                                        Grid.Row="1"
-                                        Margin="0,12,0,0"
-                                        FontSize="15"
-                                        FontWeight="SemiBold"
-                                        Text="{Binding name}"
-                                        TextWrapping="Wrap"/>
+                Grid.Row="1"
+                Margin="0,12,0,0"
+                FontSize="15"
+                FontWeight="SemiBold"
+                Text="{Binding name}"
+                TextWrapping="Wrap"
+                VerticalAlignment="Top"/>
 
                                         <!-- Price -->
                                         <TextBlock
-                                        Grid.Row="2"
-                                        Margin="0,8,0,0"
-                                        FontSize="16"
-                                        FontWeight="Bold"
-                                        Foreground="#D32F2F"
-                                        Text="{Binding DisplayPrice}"/>
+                Grid.Row="2"
+                Margin="0,0,0,0"
+                FontSize="16"
+                FontWeight="Bold"
+                Foreground="#D32F2F"
+                Text="{Binding DisplayPrice}"/>
 
-                                        <!-- Button -->
+                                        <!-- Button luôn ở row cuối -->
                                         <Button
-                                            Style="{StaticResource PrimaryButtonStyle}"
-                                        Grid.Row="3"
-                                        Height="36"
-                                        Margin="0,14,0,0"
-                                        Content="Thêm vào giỏ"
-                                        Command="{Binding DataContext.AddToCartCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                        CommandParameter="{Binding}"/>
-
+                Style="{StaticResource PrimaryButtonStyle}"
+                Grid.Row="3"
+                Height="36"
+                Margin="0,14,0,0"
+                Content="Thêm vào giỏ"
+                Command="{Binding DataContext.AddToCartCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                CommandParameter="{Binding}"/>
                                     </Grid>
-
                                 </Border>
-
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
-
                     </ItemsControl>
-
                 </ScrollViewer>
-
             </Grid>
 
             <!-- RIGHT -->
             <Border
                 Style="{StaticResource StatCardStyle}"
-            Grid.Column="1"
-            Margin="0,24,24,24"
-            CornerRadius="12">
-
+                Grid.Column="1"
+                Margin="0,24,24,24"
+                CornerRadius="12">
                 <Grid Margin="20">
-
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <!-- Title -->
-                    <TextBlock
-                    FontSize="24"
-                    FontWeight="Bold"
-                    Text="Giỏ hàng"/>
+                    <TextBlock FontSize="24" FontWeight="Bold" Text="Giỏ hàng"/>
 
                     <!-- Cart -->
                     <ScrollViewer Grid.Row="1" Margin="0,20,0,20">
-
                         <ItemsControl ItemsSource="{Binding CartItems}">
-
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-
                                     <Border
-                                    Margin="0,0,0,12"
-                                    Padding="12"
-                                    Background="#FAFAFA"
-                                    BorderBrush="#E0E0E0"
-                                    BorderThickness="1"
-                                    CornerRadius="10">
-
+                                        Margin="0,0,0,12"
+                                        Padding="12"
+                                        Background="#FAFAFA"
+                                        BorderBrush="#E0E0E0"
+                                        BorderThickness="1"
+                                        CornerRadius="10">
                                         <Grid>
-
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="100"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <!-- Info -->
                                             <StackPanel>
+                                                <TextBlock FontWeight="SemiBold" Text="{Binding name}" TextWrapping="Wrap"/>
+                                                <TextBlock Margin="0,6,0,0" Foreground="#D32F2F" Text="{Binding DisplayPrice}"/>
 
-                                                <TextBlock
-                                                FontWeight="SemiBold"
-                                                Text="{Binding name}"
-                                                TextWrapping="Wrap"/>
-
-                                                <TextBlock
-                                                Margin="0,6,0,0"
-                                                Foreground="#D32F2F"
-                                                Text="{Binding DisplayPrice}"/>
-
-                                                <!-- Quantity -->
-                                                <StackPanel
-                                                Margin="0,10,0,0"
-                                                Orientation="Horizontal">
-
+                                                <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
                                                     <Button
-                                                    Width="28"
-                                                    Height="28"
-                                                    Content="-"
-                                                    Command="{Binding DataContext.DecreaseQuantityCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                    CommandParameter="{Binding}"/>
+                                                        Width="28" Height="28"
+                                                        Content="-"
+                                                        Command="{Binding DataContext.DecreaseQuantityCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                        CommandParameter="{Binding}"/>
 
                                                     <TextBlock
-                                                    Width="40"
-                                                    VerticalAlignment="Center"
-                                                    TextAlignment="Center"
-                                                    FontWeight="Bold"
-                                                    Text="{Binding CartQuantity}"/>
+                                                        Width="40"
+                                                        VerticalAlignment="Center"
+                                                        TextAlignment="Center"
+                                                        FontWeight="Bold"
+                                                        Text="{Binding CartQuantity}"/>
 
                                                     <Button
-                                                    Width="28"
-                                                    Height="28"
-                                                    Content="+"
-                                                    Command="{Binding DataContext.IncreaseQuantityCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                    CommandParameter="{Binding}"/>
-
+                                                        Width="28" Height="28"
+                                                        Content="+"
+                                                        Command="{Binding DataContext.IncreaseQuantityCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                        CommandParameter="{Binding}"/>
                                                 </StackPanel>
-
                                             </StackPanel>
 
-                                            <!-- Total -->
                                             <StackPanel Grid.Column="1">
-
                                                 <Button
                                                     Style="{StaticResource PrimaryButtonStyle}"
-                                                Height="28"
-                                                Background="#E53935"
-                                                Foreground="White"
-                                                Content="Xóa"
-                                                Command="{Binding DataContext.RemoveCartItemCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                CommandParameter="{Binding}"/>
+                                                    Height="28"
+                                                    Background="#E53935"
+                                                    Foreground="White"
+                                                    Content="Xóa"
+                                                    Command="{Binding DataContext.RemoveCartItemCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                    CommandParameter="{Binding}"/>
 
                                                 <TextBlock
-                                                Margin="0,18,0,0"
-                                                HorizontalAlignment="Right"
-                                                FontWeight="Bold"
-                                                Text="{Binding CartTotalPrice}"/>
-
+                                                    Margin="0,18,0,0"
+                                                    HorizontalAlignment="Right"
+                                                    FontWeight="Bold"
+                                                    Text="{Binding CartTotalPrice}"/>
                                             </StackPanel>
-
                                         </Grid>
-
                                     </Border>
-
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
-
                         </ItemsControl>
-
                     </ScrollViewer>
 
                     <!-- Bottom -->
                     <StackPanel Grid.Row="2">
 
-                        <TextBlock Text="Số điện thoại"/>
-                        <TextBox
-                            Height="28"
-                            Margin="0,6,0,14"
-                            FontSize="17"
-                            VerticalContentAlignment="Center"
-                            Text="{Binding Phone}"/>
+                        <TextBlock Text="Số điện thoại" FontWeight="SemiBold" Foreground="#00072D" Margin="0,0,0,6"/>
+                        <TextBox Height="38" Margin="0,0,0,14" Text="{Binding Phone}"/>
 
-                        <TextBlock Text="Địa chỉ"/>
+                        <TextBlock Text="Địa chỉ" FontWeight="SemiBold" Foreground="#00072D" Margin="0,0,0,6"/>
                         <TextBox
-                            Height="32"
-                            Margin="0,6,0,14"
+                            Height="38"
+                            Margin="0,0,0,14"
                             AcceptsReturn="True"
                             TextWrapping="Wrap"
-                            FontSize="17"
-                            VerticalContentAlignment="Center"
+                            VerticalContentAlignment="Top"
                             Text="{Binding Address}"/>
 
-                        <TextBlock Text="Phương thức thanh toán"/>
-
+                        <TextBlock Text="Phương thức thanh toán" FontWeight="SemiBold" Foreground="#00072D" Margin="0,0,0,6"/>
                         <ComboBox
-                            Height="28"
-                            Margin="0,6,0,14"
-                            VerticalContentAlignment="Center"
+                            Margin="0,0,0,14"
                             ItemsSource="{Binding PaymentMethods}"
                             SelectedItem="{Binding SelectedPaymentMethod}"/>
 
-                        <TextBlock Text="Kênh bán hàng (Dev Only)"/>
-
+                        <TextBlock Text="Kênh bán hàng (Dev Only)" FontWeight="SemiBold" Foreground="#00072D" Margin="0,0,0,6"/>
                         <ComboBox
-                            Height="28"
-                            Margin="0,6,0,14"
-                            VerticalAlignment="Center"
+                            Margin="0,0,0,14"
                             ItemsSource="{Binding Channels}"
                             SelectedItem="{Binding SelectedChannel}"
                             DisplayMemberPath="name"/>
@@ -316,28 +383,20 @@
                             Padding="14"
                             Background="#F7F7F7"
                             CornerRadius="10">
-
                             <Grid>
-
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock
-                                    FontSize="18"
-                                    FontWeight="SemiBold"
-                                    Text="Tổng tiền"/>
-
+                                <TextBlock FontSize="18" FontWeight="SemiBold" Text="Tổng tiền"/>
                                 <TextBlock
                                     Grid.Column="1"
                                     FontSize="22"
                                     FontWeight="Bold"
                                     Foreground="#D32F2F"
                                     Text="{Binding TotalPriceDisplay}"/>
-
                             </Grid>
-
                         </Border>
 
                         <Button
@@ -349,12 +408,8 @@
                             Command="{Binding CheckoutCommand}"/>
 
                     </StackPanel>
-
                 </Grid>
-
             </Border>
-
         </Grid>
     </Grid>
-
 </Window>

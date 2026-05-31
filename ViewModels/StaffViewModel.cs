@@ -2,6 +2,7 @@
 using Accessory_DesktopApp.Models.Dtos;
 using Accessory_DesktopApp.Models.Response;
 using Accessory_DesktopApp.Singletons;
+using Accessory_DesktopApp.Views;
 using Accessory_DesktopApp.Views.Modals;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -17,6 +18,8 @@ namespace Accessory_DesktopApp.ViewModels
 {
     public partial class StaffViewModel : ObservableObject
     {
+        private readonly StaffWindow _staffWindow;
+
         [ObservableProperty]
         private ObservableCollection<ProductDto> products = new();
 
@@ -75,10 +78,20 @@ namespace Accessory_DesktopApp.ViewModels
                 "{0:c0}",
                 CartItems.Sum(x => (x.price ?? 0) * x.CartQuantity));
 
-        public StaffViewModel()
+        public StaffViewModel(StaffWindow staffWindow)
         {
+            _staffWindow = staffWindow;
             _ = FetchChannelAsync();
             _ = FetchProductsAsync();
+        }
+
+        [RelayCommand]
+        private void Logout()
+        {
+            LoginWindow loginWindow = new LoginWindow();
+            loginWindow.Show();
+
+            _staffWindow.Close();
         }
 
         partial void OnSearchKeyChanged(string? value)

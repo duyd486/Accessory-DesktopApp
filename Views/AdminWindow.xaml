@@ -33,12 +33,12 @@
 
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="border" Property="Background" Value="#1E3A8A"/>
+                                    <Setter TargetName="border" Property="Background" Value="#1D4ED8"/>
                                     <Setter Property="Foreground" Value="White"/>
                                 </Trigger>
 
                                 <Trigger Property="IsPressed" Value="True">
-                                    <Setter TargetName="border" Property="Background" Value="#1E3A8A"/>
+                                    <Setter TargetName="border" Property="Background" Value="#1D4ED8"/>
                                 </Trigger>
 
                                 <Trigger Property="IsEnabled" Value="False">
@@ -50,7 +50,7 @@
                 </Setter>
             </Style>
             <Style TargetType="ListBoxItem">
-                <Setter Property="Background" Value="#1D4ED8"/>
+                <Setter Property="Background" Value="#1E3A8A"/>
                 <Setter Property="Height" Value="60"/>
                 <Setter Property="Margin" Value="12 0 12 12"/>
                 <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -58,7 +58,7 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="ListBoxItem">
-                            <Border Background="{TemplateBinding Background}" CornerRadius="4" BorderThickness="0">
+                            <Border Background="{TemplateBinding Background}" CornerRadius="6" BorderThickness="0">
                                 <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
                         </ControlTemplate>
