@@ -37,7 +37,7 @@
 
             <Button
                 Style="{StaticResource PrimaryButtonStyle}"
-                Background="Gray"
+                Background="#1E3A8A"
                 Width="80"
                 Height="40"
                 Grid.Column="1"
@@ -80,7 +80,7 @@
                 </StackPanel>
 
                 <Button
-                    Background="DimGray"
+                    Background="#1E3A8A"
                     Style="{StaticResource PrimaryButtonStyle}"
                     Grid.Column="1"
                     Width="100"
@@ -90,7 +90,7 @@
                     Content="Tìm kiếm"/>
 
                 <Button
-                    Background="DimGray"
+                    Background="#1E3A8A"
                     Style="{StaticResource PrimaryButtonStyle}"
                     Grid.Column="2"
                     Width="100"
@@ -145,7 +145,7 @@
                                     VerticalAlignment="Center">
 
                                     <Button
-                                        Background="LightSlateGray"
+                                        Background="#FFD54F"
                                         Style="{StaticResource PrimaryButtonStyle}"
                                         Width="60"
                                         Height="32"
@@ -202,26 +202,170 @@
 
         <!-- Dialog (Add/Edit) -->
         <Border
-            Grid.RowSpan="3"
-            Background="#80000000"
-            Visibility="{Binding IsDialogOpen, Converter={StaticResource BooleanToVisibilityConverter}}">
+    Grid.RowSpan="3"
+    Background="#80000000"
+    Visibility="{Binding IsDialogOpen, Converter={StaticResource BooleanToVisibilityConverter}}">
 
             <Border
-                Width="520"
-                Background="White"
-                CornerRadius="10"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center">
+        Width="520"
+        Background="White"
+        CornerRadius="12"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center">
+
+                <Border.Resources>
+                    <Style TargetType="TextBox">
+                        <Setter Property="Background" Value="WhiteSmoke"/>
+                        <Setter Property="Foreground" Value="#091540"/>
+                        <Setter Property="FontSize" Value="13"/>
+                        <Setter Property="BorderBrush" Value="LightGray"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="Height" Value="38"/>
+                        <Setter Property="Padding" Value="10,0"/>
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="TextBox">
+                                    <Border x:Name="border"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="5">
+                                        <ScrollViewer x:Name="PART_ContentHost"
+                                              Margin="{TemplateBinding Padding}"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="border" Property="BorderBrush" Value="Gray"/>
+                                            <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                                        </Trigger>
+                                        <Trigger Property="IsFocused" Value="True">
+                                            <Setter TargetName="border" Property="BorderBrush" Value="Gray"/>
+                                            <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
+                    <Style TargetType="ComboBox">
+                        <Setter Property="Background" Value="WhiteSmoke"/>
+                        <Setter Property="Foreground" Value="#091540"/>
+                        <Setter Property="FontSize" Value="13"/>
+                        <Setter Property="BorderBrush" Value="LightGray"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="Height" Value="38"/>
+                        <Setter Property="Padding" Value="10,0"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ComboBox">
+                                    <Grid>
+                                        <ToggleButton
+                                    x:Name="PART_ToggleButton"
+                                    IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}">
+                                            <ToggleButton.Template>
+                                                <ControlTemplate TargetType="ToggleButton">
+                                                    <Border x:Name="border"
+                                                    Background="{TemplateBinding Background}"
+                                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                                    CornerRadius="5">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="30"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock
+                                                        Grid.Column="1"
+                                                        Text="▾"
+                                                        FontSize="11"
+                                                        VerticalAlignment="Center"
+                                                        HorizontalAlignment="Center"
+                                                        Foreground="#091540"/>
+                                                        </Grid>
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="border" Property="BorderBrush" Value="Gray"/>
+                                                            <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </ToggleButton.Template>
+                                        </ToggleButton>
+
+                                        <ContentPresenter
+                                    Margin="{TemplateBinding Padding}"
+                                    VerticalAlignment="Center"
+                                    IsHitTestVisible="False"
+                                    Content="{TemplateBinding SelectionBoxItem}"
+                                    ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"/>
+
+                                        <Popup
+                                    x:Name="PART_Popup"
+                                    IsOpen="{TemplateBinding IsDropDownOpen}"
+                                    AllowsTransparency="True"
+                                    Placement="Bottom"
+                                    PlacementTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}">
+                                            <Border
+                                        Background="White"
+                                        BorderBrush="LightGray"
+                                        BorderThickness="1"
+                                        CornerRadius="5"
+                                        MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ComboBox}}">
+                                                <ScrollViewer>
+                                                    <ItemsPresenter/>
+                                                </ScrollViewer>
+                                            </Border>
+                                        </Popup>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
+                    <Style TargetType="Button">
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="FontSize" Value="13"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border x:Name="border"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="6">
+                                        <ContentPresenter HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="border" Property="Opacity" Value="0.85"/>
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter TargetName="border" Property="Opacity" Value="0.7"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Border.Resources>
 
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-
-                    <StackPanel Margin="24">
+                    <StackPanel Margin="28">
 
                         <TextBlock
-                            Margin="0,0,0,20"
-                            FontSize="22"
-                            FontWeight="Bold"
-                            Text="{Binding DialogTitle}"/>
+                    Margin="0,0,0,20"
+                    FontSize="20"
+                    FontWeight="Bold"
+                    Foreground="#00072D"
+                    Text="{Binding DialogTitle}"/>
 
                         <Grid Margin="0,0,0,20">
                             <Grid.ColumnDefinitions>
@@ -230,78 +374,79 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <!-- IMAGE -->
+                            <!-- Ảnh -->
                             <StackPanel Grid.Column="0">
-
                                 <Border
-                                    Width="140"
-                                    Height="140"
-                                    CornerRadius="8"
-                                    BorderBrush="#DDD"
-                                    BorderThickness="1"
-                                    Background="Transparent">
-
+                            Width="140"
+                            Height="140"
+                            CornerRadius="8"
+                            BorderBrush="#DDD"
+                            BorderThickness="1"
+                            Background="WhiteSmoke">
                                     <Image
-                                        Stretch="UniformToFill"
-                                        Source="{Binding ThumbnailPreview}"/>
+                                Stretch="UniformToFill"
+                                Source="{Binding ThumbnailPreview}"/>
                                 </Border>
 
                                 <Button
-                                    Margin="0,10,0,0"
-                                    Content="Chọn ảnh"
-                                    Command="{Binding PickImageCommand}"/>
+                            Margin="0,10,0,0"
+                            Height="34"
+                            Background="#1E3A8A"
+                            Foreground="White"
+                            Content="Chọn ảnh"
+                            Command="{Binding PickImageCommand}"/>
                             </StackPanel>
 
-                            <!-- FORM -->
+                            <!-- Form -->
                             <StackPanel Grid.Column="2">
 
-                                <TextBlock Text="Tên danh mục"/>
-
-                                <TextBox
-                                    Margin="0,6,0,12"
-                                    Text="{Binding CategoryForm.title}"/>
+                                <TextBlock Text="Tên danh mục" FontWeight="SemiBold" Foreground="#00072D" Margin="0,0,0,6"/>
+                                <TextBox Margin="0,0,0,14" Text="{Binding CategoryForm.title}"/>
 
                                 <CheckBox
-                                    Margin="0,0,0,12"
-                                    Content="Đặt làm danh mục cha"
-                                    IsChecked="{Binding IsParentCategory}"/>
+                            Margin="0,0,0,14"
+                            FontSize="13"
+                            Foreground="#091540"
+                            Content="Đặt làm danh mục cha"
+                            IsChecked="{Binding IsParentCategory}"/>
 
-                                <TextBlock Text="Danh mục cha"/>
-
+                                <TextBlock Text="Danh mục cha" FontWeight="SemiBold" Foreground="#00072D" Margin="0,0,0,6"/>
                                 <ComboBox
-                                    Margin="0,6,0,12"
-                                    ItemsSource="{Binding ParentCandidates}"
-                                    DisplayMemberPath="title"
-                                    SelectedValuePath="id"
-                                    SelectedValue="{Binding CategoryForm.parent_id}"
-                                    IsEnabled="{Binding IsChildCategory}"/>
+                            ItemsSource="{Binding ParentCandidates}"
+                            DisplayMemberPath="title"
+                            SelectedValuePath="id"
+                            SelectedValue="{Binding CategoryForm.parent_id}"
+                            IsEnabled="{Binding IsChildCategory}"/>
 
                             </StackPanel>
                         </Grid>
 
                         <StackPanel
-                            Orientation="Horizontal"
-                            HorizontalAlignment="Right">
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right">
 
                             <Button
-                                Width="100"
-                                Margin="0,0,10,0"
-                                Command="{Binding CloseDialogCommand}"
-                                Content="Hủy"/>
+                        Width="100" Height="40"
+                        Margin="0,0,10,0"
+                        Background="#F1F5F9"
+                        Foreground="#374151"
+                        BorderBrush="LightGray"
+                        BorderThickness="1"
+                        Command="{Binding CloseDialogCommand}"
+                        Content="Hủy"/>
 
                             <Button
-                                Width="100"
-                                Command="{Binding SubmitCategoryCommand}"
-                                Content="Lưu"/>
+                        Width="100" Height="40"
+                        Background="#2563EB"
+                        Foreground="White"
+                        Command="{Binding SubmitCategoryCommand}"
+                        Content="Lưu"/>
 
                         </StackPanel>
 
                     </StackPanel>
-
                 </ScrollViewer>
-
             </Border>
-
         </Border>
     </Grid>
 </UserControl>

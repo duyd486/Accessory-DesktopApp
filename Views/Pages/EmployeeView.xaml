@@ -21,7 +21,7 @@
                     <TextBlock Text="Quản lý tài khoản và quyền hạn" Foreground="#7A7A7A" Margin="0,6,0,0" />
                 </StackPanel>
 
-                <Button Style="{StaticResource PrimaryButtonStyle}" Background="Gray" Width="80" Grid.Column="1" Content="Làm mới" Padding="12,6" Margin="12,0,0,0" Command="{Binding RefreshCommand}" />
+                <Button Style="{StaticResource PrimaryButtonStyle}" Background="#1E3A8A" Width="80" Grid.Column="1" Content="Làm mới" Padding="12,6" Margin="12,0,0,0" Command="{Binding RefreshCommand}" />
             </Grid>
 
             <Separator Grid.Row="1" Margin="0,16,0,20" />
@@ -56,7 +56,7 @@
                     </StackPanel>
 
                     <Button
-                        Background="DimGray"
+                        Background="#1E3A8A"
                         Style="{StaticResource PrimaryButtonStyle}"
                         Grid.Column="1"
                         Width="120"
@@ -67,7 +67,7 @@
                         Content="Tìm kiếm" />
 
                     <Button
-                        Background="DimGray"
+                        Background="#1E3A8A"
                         Style="{StaticResource PrimaryButtonStyle}"
                         Grid.Column="2"
                         Width="120"
@@ -131,85 +131,283 @@
 
         <!-- Dialog -->
         <Border
-            Background="#80000000"
-            Visibility="{Binding IsDialogOpen, Converter={StaticResource BooleanToVisibilityConverter}}">
+    Background="#80000000"
+    Visibility="{Binding IsDialogOpen, Converter={StaticResource BooleanToVisibilityConverter}}">
 
             <Border
-                Width="520"
-                Background="White"
-                CornerRadius="10"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center">
+        Width="520"
+        Background="White"
+        CornerRadius="12"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center">
+
+                <Border.Resources>
+                    <Style TargetType="TextBox">
+                        <Setter Property="Background" Value="WhiteSmoke"/>
+                        <Setter Property="Foreground" Value="#091540"/>
+                        <Setter Property="FontSize" Value="13"/>
+                        <Setter Property="BorderBrush" Value="LightGray"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="Height" Value="38"/>
+                        <Setter Property="Padding" Value="10,0"/>
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="TextBox">
+                                    <Border x:Name="border"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="5">
+                                        <ScrollViewer x:Name="PART_ContentHost"
+                                              Margin="{TemplateBinding Padding}"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="border" Property="BorderBrush" Value="Gray"/>
+                                            <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                                        </Trigger>
+                                        <Trigger Property="IsFocused" Value="True">
+                                            <Setter TargetName="border" Property="BorderBrush" Value="Gray"/>
+                                            <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
+                    <Style TargetType="PasswordBox">
+                        <Setter Property="Background" Value="WhiteSmoke"/>
+                        <Setter Property="Foreground" Value="#091540"/>
+                        <Setter Property="FontSize" Value="13"/>
+                        <Setter Property="BorderBrush" Value="LightGray"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="Height" Value="38"/>
+                        <Setter Property="Padding" Value="10,0"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="PasswordBox">
+                                    <Border x:Name="border"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="5">
+                                        <ScrollViewer x:Name="PART_ContentHost"
+                                              Margin="{TemplateBinding Padding}"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="border" Property="BorderBrush" Value="Gray"/>
+                                            <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                                        </Trigger>
+                                        <Trigger Property="IsFocused" Value="True">
+                                            <Setter TargetName="border" Property="BorderBrush" Value="Gray"/>
+                                            <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="FontSize" Value="13"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border x:Name="border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="6">
+                                        <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="border" Property="Opacity" Value="0.85"/>
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter TargetName="border" Property="Opacity" Value="0.7"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                    <Style TargetType="ComboBox">
+                        <Setter Property="Background" Value="WhiteSmoke"/>
+                        <Setter Property="Foreground" Value="#091540"/>
+                        <Setter Property="FontSize" Value="13"/>
+                        <Setter Property="BorderBrush" Value="LightGray"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="Height" Value="38"/>
+                        <Setter Property="Padding" Value="10,0"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ComboBox">
+                                    <Grid>
+                                        <ToggleButton
+                        x:Name="PART_ToggleButton"
+                        IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                                            <ToggleButton.Template>
+                                                <ControlTemplate TargetType="ToggleButton">
+                                                    <Border x:Name="border"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        CornerRadius="5">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="30"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock
+                                            Grid.Column="1"
+                                            Text="▾"
+                                            FontSize="11"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
+                                            Foreground="#091540"/>
+                                                        </Grid>
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="border" Property="BorderBrush" Value="Gray"/>
+                                                            <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </ToggleButton.Template>
+                                        </ToggleButton>
+
+                                        <ContentPresenter
+                        Margin="{TemplateBinding Padding}"
+                        VerticalAlignment="Center"
+                        IsHitTestVisible="False"
+                        Content="{TemplateBinding SelectionBoxItem}"
+                        ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"/>
+
+                                        <Popup
+                        x:Name="PART_Popup"
+                        IsOpen="{TemplateBinding IsDropDownOpen}"
+                        AllowsTransparency="True"
+                        Placement="Bottom"
+                        PlacementTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}">
+                                            <Border
+                            Background="White"
+                            BorderBrush="LightGray"
+                            BorderThickness="1"
+                            CornerRadius="5"
+                            MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ComboBox}}">
+                                                <ScrollViewer>
+                                                    <ItemsPresenter/>
+                                                </ScrollViewer>
+                                            </Border>
+                                        </Popup>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Border.Resources>
 
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-
-                    <StackPanel Margin="24">
+                    <StackPanel Margin="28">
 
                         <TextBlock
-                            Margin="0,0,0,20"
-                            FontSize="22"
-                            FontWeight="Bold"
-                            Text="{Binding DialogTitle}"/>
+                    Margin="0,0,0,20"
+                    FontSize="20"
+                    FontWeight="Bold"
+                    Foreground="#00072D"
+                    Text="{Binding DialogTitle}"/>
 
-                        <TextBlock Text="Vai trò"/>
+                        <!-- Vai trò -->
+                        <TextBlock Text="Vai trò" FontWeight="SemiBold" Foreground="#00072D" Margin="0,0,0,6"/>
                         <ComboBox
-                            Margin="0,6,0,12"
-                            ItemsSource="{Binding RoleOptions}"
-                            SelectedItem="{Binding SelectedRole}"/>
+                    Margin="0,0,0,16"
+                    Height="38"
+                    ItemsSource="{Binding RoleOptions}"
+                    SelectedItem="{Binding SelectedRole}"/>
 
-                        <TextBlock Text="Họ tên"/>
-                        <TextBox
-                            Margin="0,6,0,12"
-                            Text="{Binding EmployeeForm.name, UpdateSourceTrigger=PropertyChanged}"/>
+                        <!-- 2 cột -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="16"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
 
-                        <TextBlock Text="Email"/>
-                        <TextBox
-                            Margin="0,6,0,12"
-                            Text="{Binding EmployeeForm.email, UpdateSourceTrigger=PropertyChanged}"/>
+                            <!-- Họ tên -->
+                            <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,0,14">
+                                <TextBlock Text="Họ tên" FontWeight="SemiBold" Foreground="#00072D" Margin="0,0,0,6"/>
+                                <TextBox Text="{Binding EmployeeForm.name, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
 
-                        <TextBlock Text="Mật khẩu"/>
-                        <TextBox
-                            Margin="0,6,0,12"
-                            Text="{Binding EmployeeForm.password, UpdateSourceTrigger=PropertyChanged}"/>
+                            <!-- Email -->
+                            <StackPanel Grid.Column="2" Grid.Row="0" Margin="0,0,0,14">
+                                <TextBlock Text="Email" FontWeight="SemiBold" Foreground="#00072D" Margin="0,0,0,6"/>
+                                <TextBox Text="{Binding EmployeeForm.email, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
 
-                        <TextBlock Text="Nhập lại mật khẩu"/>
-                        <TextBox
-                            Margin="0,6,0,12"
-                            Text="{Binding EmployeeForm.password_confirmation, UpdateSourceTrigger=PropertyChanged}"/>
+                            <!-- Mật khẩu -->
+                            <StackPanel Grid.Column="0" Grid.Row="1" Margin="0,0,0,14">
+                                <TextBlock Text="Mật khẩu" FontWeight="SemiBold" Foreground="#00072D" Margin="0,0,0,6"/>
+                                <TextBox Text="{Binding EmployeeForm.password, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
 
-                        <TextBlock Text="Số điện thoại"/>
-                        <TextBox
-                            Margin="0,6,0,12"
-                            Text="{Binding EmployeeForm.phone, UpdateSourceTrigger=PropertyChanged}"/>
+                            <!-- Nhập lại mật khẩu -->
+                            <StackPanel Grid.Column="2" Grid.Row="1" Margin="0,0,0,14">
+                                <TextBlock Text="Nhập lại mật khẩu" FontWeight="SemiBold" Foreground="#00072D" Margin="0,0,0,6"/>
+                                <TextBox Text="{Binding EmployeeForm.password_confirmation, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
 
-                        <TextBlock Text="Địa chỉ"/>
-                        <TextBox
-                            Margin="0,6,0,20"
-                            Text="{Binding EmployeeForm.address, UpdateSourceTrigger=PropertyChanged}"/>
+                            <!-- Số điện thoại -->
+                            <StackPanel Grid.Column="0" Grid.Row="2">
+                                <TextBlock Text="Số điện thoại" FontWeight="SemiBold" Foreground="#00072D" Margin="0,0,0,6"/>
+                                <TextBox Text="{Binding EmployeeForm.phone, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
 
+                            <!-- Địa chỉ -->
+                            <StackPanel Grid.Column="2" Grid.Row="2">
+                                <TextBlock Text="Địa chỉ" FontWeight="SemiBold" Foreground="#00072D" Margin="0,0,0,6"/>
+                                <TextBox Text="{Binding EmployeeForm.address, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Actions -->
                         <StackPanel
-                            Orientation="Horizontal"
-                            HorizontalAlignment="Right">
+                    Margin="0,24,0,0"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right">
 
                             <Button
-                                Width="100"
-                                Margin="0,0,10,0"
-                                Command="{Binding CloseDialogCommand}"
-                                Content="Hủy"/>
+                        Width="100" Height="40"
+                        Margin="0,0,10,0"
+                        Command="{Binding CloseDialogCommand}"
+                        Content="Hủy"/>
 
                             <Button
-                                Width="100"
-                                Command="{Binding SubmitEmployeeCommand}"
-                                Content="Lưu"/>
+                        Width="100" Height="40"
+                        Background="#2563EB"
+                        Foreground="White"
+                        Command="{Binding SubmitEmployeeCommand}"
+                        Content="Lưu"/>
 
                         </StackPanel>
-
                     </StackPanel>
-
                 </ScrollViewer>
-
             </Border>
-
         </Border>
     </Grid>
 </UserControl>
