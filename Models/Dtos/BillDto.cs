@@ -15,5 +15,6 @@ namespace Accessory_DesktopApp.Models.Dtos
         public string? address { get; set; }
         public int? status { get; set; }
         public string? checkout_url { get; set; }
+        public string? qr_image_url { get; set; }
     }
 }

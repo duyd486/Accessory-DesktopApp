@@ -18,10 +18,40 @@ namespace Accessory_DesktopApp.Views.Modals
     /// </summary>
     public partial class BankingWindow : Window
     {
+        private readonly StaffViewModel _staffViewModel;
+
         public BankingWindow(StaffViewModel dataContext)
         {
             InitializeComponent();
+            _staffViewModel = dataContext;
             DataContext = dataContext;
+
+            Loaded += BankingWindow_Loaded;
+            Closed += BankingWindow_Closed;
+            _staffViewModel.PaymentPaid += StaffViewModel_PaymentPaid;
+        }
+
+        private void BankingWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            _staffViewModel.StartCheckPaymentStatusPolling();
+        }
+
+        private void BankingWindow_Closed(object? sender, EventArgs e)
+        {
+            _staffViewModel.PaymentPaid -= StaffViewModel_PaymentPaid;
+            _staffViewModel.StopCheckPaymentStatusPolling();
+        }
+
+        private void StaffViewModel_PaymentPaid(object? sender, EventArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                if (IsVisible)
+                {
+                    Close();
+                    MessageBox.Show("Chuyển khoản thành công");
+                }
+            });
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)
