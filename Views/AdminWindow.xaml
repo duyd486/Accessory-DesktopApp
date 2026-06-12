@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Accessory_DesktopApp.Views"
+        xmlns:models="clr-namespace:Accessory_DesktopApp.Models"
         xmlns:viewmodels="clr-namespace:Accessory_DesktopApp.ViewModels"
         xmlns:views="clr-namespace:Accessory_DesktopApp.Views.Pages"
         mc:Ignorable="d"
@@ -13,12 +14,13 @@
         <ResourceDictionary>
             <Style x:Key="SidebarButtonStyle" TargetType="Button">
                 <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="FontSize" Value="16"/>
                 <Setter Property="Foreground" Value="#FBEAD9"/>
                 <Setter Property="HorizontalAlignment" Value="Stretch"/>
                 <Setter Property="Width" Value="200"/>
                 <Setter Property="Height" Value="48"/>
-                <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+                <Setter Property="Padding" Value="16,0"/>
+                <Setter Property="HorizontalContentAlignment" Value="Left"/>
                 <Setter Property="Cursor" Value="Hand"/>
                 <Setter Property="Template">
                     <Setter.Value>
@@ -27,7 +29,10 @@
                                 Background="{TemplateBinding Background}"
                                 BorderThickness="0"
                                 CornerRadius="0">
-                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <ContentPresenter
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="Center"
+                                    Margin="{TemplateBinding Padding}"/>
                             </Border>
                         </ControlTemplate>
                     </Setter.Value>
@@ -94,11 +99,21 @@
                         BorderThickness="0"
                         Grid.Row="0">
                     <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Button Content="{Binding}" 
-                                    Command="{Binding DataContext.ChangeViewCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                    CommandParameter="{Binding}" 
-                                    Style="{StaticResource SidebarButtonStyle}"/>
+                        <DataTemplate DataType="{x:Type models:AdminMenuItem}">
+                            <Button Command="{Binding DataContext.ChangeViewCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="{Binding}"
+                                    Style="{StaticResource SidebarButtonStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding IconGlyph}"
+                                               FontFamily="Segoe MDL2 Assets"
+                                               FontSize="18"
+                                               Margin="10,0,12,0"
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding Title}"
+                                               Margin="10 0 0 0"
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
