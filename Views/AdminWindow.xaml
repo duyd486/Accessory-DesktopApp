@@ -14,32 +14,44 @@
         <ResourceDictionary>
             <Style x:Key="SidebarButtonStyle" TargetType="Button">
                 <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Foreground" Value="#E5E7EB"/>
                 <Setter Property="FontSize" Value="16"/>
-                <Setter Property="Foreground" Value="#FBEAD9"/>
-                <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                <Setter Property="Width" Value="200"/>
-                <Setter Property="Height" Value="48"/>
-                <Setter Property="Padding" Value="16,0"/>
-                <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                <Setter Property="Height" Value="44"/>
+                <Setter Property="Margin" Value="8"/>
                 <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
-                            <Border
-                                Background="{TemplateBinding Background}"
-                                BorderThickness="0"
-                                CornerRadius="0">
-                                <ContentPresenter
-                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                    VerticalAlignment="Center"
-                                    Margin="{TemplateBinding Padding}"/>
+                            <Border x:Name="border"
+                        Background="{TemplateBinding Background}"
+                        CornerRadius="10"
+                        Padding="10,6">
+
+                                <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
                             </Border>
+
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="#1D4ED8"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Trigger>
+
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="#1D4ED8"/>
+                                </Trigger>
+
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="0.5"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
             </Style>
             <Style TargetType="ListBoxItem">
-                <Setter Property="Background" Value="#3A3935"/>
+                <Setter Property="Background" Value="#1E3A8A"/>
                 <Setter Property="Height" Value="60"/>
                 <Setter Property="Margin" Value="12 0 12 12"/>
                 <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -47,7 +59,7 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="ListBoxItem">
-                            <Border Background="{TemplateBinding Background}" CornerRadius="4" BorderThickness="0">
+                            <Border Background="{TemplateBinding Background}" CornerRadius="6" BorderThickness="0">
                                 <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
                         </ControlTemplate>
@@ -56,15 +68,15 @@
 
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="#40443F"/>
+                        <Setter Property="Background" Value="#1D4ED8"/>
                     </Trigger>
                     <Trigger Property="IsSelected" Value="True">
-                        <Setter Property="Background" Value="#646963"/>
+                        <Setter Property="Background" Value="#1D4ED8"/>
                     </Trigger>
                 </Style.Triggers>
             </Style>
             <Style TargetType="ListBox">
-                <Setter Property="Background" Value="#3A3935"/>
+                <Setter Property="Background" Value="#1E3A8A"/>
             </Style>
         </ResourceDictionary>
     </Window.Resources>
@@ -75,7 +87,7 @@
             <ColumnDefinition Width="820"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0" Background="#3A3935">
+        <Grid Grid.Column="0" Background="#1E3A8A">
             <Grid.RowDefinitions>
                 <RowDefinition Height="80"/>
                 <RowDefinition Height="auto"/>
@@ -119,7 +131,7 @@
                 </ListBox>
             </Grid>
 
-            <Button Grid.Row="2" Content="Đăng xuất" Command="{Binding LogoutCommand}" FontSize="15" Height="44" Background="#B84A4A" Style="{StaticResource SidebarButtonStyle}" />
+            <Button Grid.Row="2" Content="Đăng xuất" Command="{Binding LogoutCommand}" FontSize="15" Width="200" Height="44" Background="#1D4ED8" Style="{StaticResource SidebarButtonStyle}" />
         </Grid>
 
         <ContentControl Grid.Column="1" Content="{Binding CurrentViewModel}">

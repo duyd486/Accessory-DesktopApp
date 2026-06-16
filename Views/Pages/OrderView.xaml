@@ -27,7 +27,7 @@
                 <TextBlock Text="Kiểm duyệt cập nhật đơn hàng" Foreground="#7A7A7A" Margin="0,6,0,0" />
             </StackPanel>
 
-            <Button Style="{StaticResource PrimaryButtonStyle}" Background="Gray" Width="80" Grid.Column="1" Content="Làm mới" Padding="12,6" Margin="12,0,0,0" Command="{Binding RefreshCommand}" />
+            <Button Style="{StaticResource PrimaryButtonStyle}" Background="#1E3A8A" Width="80" Grid.Column="1" Content="Làm mới" Padding="12,6" Margin="12,0,0,0" Command="{Binding RefreshCommand}" />
         </Grid>
 
         <Separator Grid.Row="1" Margin="24,-144,24,0" />
@@ -46,7 +46,7 @@
                     <ColumnDefinition Width="260"/>
                     <ColumnDefinition Width="220"/>
                     <ColumnDefinition Width="120"/>
-                    <ColumnDefinition Width="160"/>
+                    <ColumnDefinition Width="150"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
@@ -96,7 +96,7 @@
 
                 <!-- Search Button -->
                 <Button
-                    Background="DimGray"
+                    Background="#1E3A8A"
                     Style="{StaticResource PrimaryButtonStyle}"
                     Grid.Column="2"
                     Width="100"
@@ -110,10 +110,10 @@
                     Background="#F57C00"
                     Style="{StaticResource PrimaryButtonStyle}"
                     Grid.Column="3"
-                    Width="150"
+                    Width="130"
                     Height="38"
-                    Margin="12,24,0,0"
-                    VerticalAlignment="Top"
+                    Margin="0,24,0,0"
+                    VerticalAlignment="Center"
                     Command="{Binding OpenShopeeSyncModalCommand}"
                     Content="Đồng bộ Shopee"/>
 
