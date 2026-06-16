@@ -119,10 +119,10 @@
                                     <TextBlock Text="{Binding IconGlyph}"
                                                FontFamily="Segoe MDL2 Assets"
                                                FontSize="18"
-                                               Margin="10,0,12,0"
+                                               Margin="10,0,20,0"
                                                VerticalAlignment="Center"/>
                                     <TextBlock Text="{Binding Title}"
-                                               Margin="10 0 0 0"
+                                               Margin="10 0 30 0"
                                                VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Button>
