@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Accessory_DesktopApp.Views"
+        xmlns:models="clr-namespace:Accessory_DesktopApp.Models"
         xmlns:viewmodels="clr-namespace:Accessory_DesktopApp.ViewModels"
         xmlns:views="clr-namespace:Accessory_DesktopApp.Views.Pages"
         mc:Ignorable="d"
@@ -110,11 +111,21 @@
                         BorderThickness="0"
                         Grid.Row="0">
                     <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Button Content="{Binding}" 
-                                    Command="{Binding DataContext.ChangeViewCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                    CommandParameter="{Binding}" 
-                                    Style="{StaticResource SidebarButtonStyle}"/>
+                        <DataTemplate DataType="{x:Type models:AdminMenuItem}">
+                            <Button Command="{Binding DataContext.ChangeViewCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="{Binding}"
+                                    Style="{StaticResource SidebarButtonStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding IconGlyph}"
+                                               FontFamily="Segoe MDL2 Assets"
+                                               FontSize="18"
+                                               Margin="10,0,12,0"
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding Title}"
+                                               Margin="10 0 0 0"
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
