@@ -105,12 +105,12 @@
                         </Grid.ColumnDefinitions>
 
                         <StackPanel>
-                            <TextBlock Text="Vi phạm chưa xử lý" Style="{StaticResource StatTitleStyle}" />
-                            <TextBlock Text="0" Style="{StaticResource StatValueStyle}" />
+                            <TextBlock Text="Tổng nhân viên" Style="{StaticResource StatTitleStyle}" />
+                            <TextBlock Text="{Binding CountStaff}" Style="{StaticResource StatValueStyle}" />
                         </StackPanel>
 
                         <Border Grid.Column="1" Style="{StaticResource IconBadgeStyle}" Background="#1EDC3545">
-                            <TextBlock Text="⚠" FontSize="18" />
+                            <TextBlock Text="👥" FontSize="18" />
                         </Border>
                     </Grid>
                 </Border>

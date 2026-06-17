@@ -230,8 +230,16 @@
                                         </Grid.RowDefinitions>
 
                                         <!-- Image -->
-                                        <Border Grid.Row="0" CornerRadius="10" ClipToBounds="True">
-                                            <Image Stretch="UniformToFill" Source="{Binding thumbnail_url}"/>
+                                        <Border
+                                            Grid.Row="0"
+                                            CornerRadius="10"
+                                            ClipToBounds="True"
+                                            Background="Gray" >
+
+                                            <Image
+                                            Stretch="UniformToFill"
+                                            Source="{Binding thumbnail_url}"/>
+
                                         </Border>
 
                                         <!-- Name — chiều cao cố định 60 để đều nhau -->
