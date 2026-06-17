@@ -375,12 +375,11 @@
                             VerticalContentAlignment="Top"
                             Text="{Binding Address}"/>
 
-                        <TextBlock Text="Kênh bán hàng (Dev Only)" FontWeight="SemiBold" Foreground="#00072D" Margin="0,0,0,6"/>
+                        <TextBlock Text="Phương thức thanh toán" FontWeight="SemiBold" Foreground="#00072D" Margin="0,0,0,6"/>
                         <ComboBox
                             Margin="0,0,0,14"
-                            ItemsSource="{Binding Channels}"
-                            SelectedItem="{Binding SelectedChannel}"
-                            DisplayMemberPath="name"/>
+                            ItemsSource="{Binding PaymentMethods}"
+                            SelectedItem="{Binding SelectedPaymentMethod}"/>
 
                         <Border
                             Margin="0,0,0,16"
