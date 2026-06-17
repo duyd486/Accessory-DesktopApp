@@ -164,7 +164,8 @@ namespace Accessory_DesktopApp.Singletons
 
                 var response = await client.PostAsync(baseUrl + url, content);
                 response.EnsureSuccessStatusCode();
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }

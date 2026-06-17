@@ -305,7 +305,8 @@
                                 BorderThickness="{TemplateBinding BorderThickness}">
 
                                         <ContentPresenter
-                                    VerticalAlignment="Center"/>
+                                    VerticalAlignment="Center"
+                                            Margin="10 10 0 10"/>
 
                                     </Border>
 

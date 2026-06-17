@@ -131,7 +131,6 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- HEADER -->
         <Border Grid.Row="0" Background="#111111">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -142,15 +141,17 @@
                 <TextBlock
                     Grid.Column="0"
                     Text="Accessory Store"
-                    Margin="20,7,0,0"
+                    Margin="20 7 0 0"
                     FontSize="30"
                     FontWeight="Bold"
-                    Foreground="White"/>
+                    Foreground="White" />
+
 
                 <Button
                     Grid.Column="1"
                     Margin="0,0,20,0"
                     VerticalAlignment="Center"
+                    Padding="14,0"
                     Height="34"
                     Width="120"
                     Content="Đăng xuất"
@@ -158,6 +159,7 @@
                     Foreground="White"
                     Style="{StaticResource PrimaryButtonStyle}"
                     Command="{Binding LogoutCommand}"/>
+
             </Grid>
         </Border>
 
@@ -365,13 +367,6 @@
                             VerticalContentAlignment="Top"
                             Text="{Binding Address}"/>
 
-                        <TextBlock Text="Phương thức thanh toán" FontWeight="SemiBold" Foreground="#00072D" Margin="0,0,0,6"/>
-                        <ComboBox
-                            Margin="0,0,0,14"
-                            ItemsSource="{Binding PaymentMethods}"
-                            SelectedItem="{Binding SelectedPaymentMethod}"/>
-
-<<<<<<< HEAD
                         <TextBlock Text="Kênh bán hàng (Dev Only)" FontWeight="SemiBold" Foreground="#00072D" Margin="0,0,0,6"/>
                         <ComboBox
                             Margin="0,0,0,14"
@@ -379,8 +374,6 @@
                             SelectedItem="{Binding SelectedChannel}"
                             DisplayMemberPath="name"/>
 
-=======
->>>>>>> 6cb690c6eee08f7b0309b25bbb3b6567f135865d
                         <Border
                             Margin="0,0,0,16"
                             Padding="14"

@@ -1,4 +1,5 @@
 ﻿using Accessory_DesktopApp.Views;
+using Accessory_DesktopApp.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
@@ -12,26 +13,32 @@ namespace Accessory_DesktopApp.ViewModels
     {
         private readonly AdminWindow _adminWindow;
 
-        [ObservableProperty] public string selectedMenuItem;
+        [ObservableProperty] public AdminMenuItem selectedMenuItem;
 
         [ObservableProperty] public object currentViewModel;
 
-        public ObservableCollection<string> MenuItems { get; } = new()
+        public ObservableCollection<AdminMenuItem> MenuItems { get; } = new()
         {
-            "Thống kê", "Nhân viên", "Người dùng", "Sản phẩm", "Danh mục", "Đơn hàng", "Kênh bán"
+            new AdminMenuItem { Title = "Thống kê", IconGlyph = "\uE9D2" },
+            new AdminMenuItem { Title = "Nhân viên", IconGlyph = "\uE716" },
+            new AdminMenuItem { Title = "Người dùng", IconGlyph = "\uE77B" },
+            new AdminMenuItem { Title = "Sản phẩm", IconGlyph = "\uE719" },
+            new AdminMenuItem { Title = "Danh mục", IconGlyph = "\uE8FD" },
+            new AdminMenuItem { Title = "Đơn hàng", IconGlyph = "\uE7BF" },
+            new AdminMenuItem { Title = "Kênh bán", IconGlyph = "\uE774" }
         };
 
         public AdminViewModel(AdminWindow adminWindow)
         {
             _adminWindow = adminWindow;
-            ChangeView("Thống kê");
+            ChangeView(MenuItems[0]);
         }
 
         [RelayCommand]
-        private void ChangeView(string view)
+        private void ChangeView(AdminMenuItem view)
         {
             SelectedMenuItem = view;
-            switch (view)
+            switch (view?.Title)
             {
                 case "Thống kê":
                     CurrentViewModel = new DashboardViewModel();

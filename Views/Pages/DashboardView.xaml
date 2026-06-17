@@ -118,11 +118,10 @@
 
             <Grid Grid.Row="3" Margin="0,24,0,0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*" />
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="3*" />
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="0" Style="{StaticResource StatCardStyle}" Margin="0,0,12,0">
+                <Border Grid.Column="0" Style="{StaticResource StatCardStyle}" Margin="0,0,0,0">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -155,7 +154,7 @@
                                                         <RowDefinition Height="Auto" />
                                                     </Grid.RowDefinitions>
 
-                                                    <TextBlock Grid.Row="0" FontSize="10" Foreground="#666" HorizontalAlignment="Center" Margin="0,0,0,6"
+                                                    <TextBlock Grid.Row="0" FontSize="7" Foreground="#666" HorizontalAlignment="Center" Margin="0,0,0,6"
                                                                Text="{Binding Total, Converter={StaticResource MoneyVnd}}" />
 
                                                     <Border Grid.Row="1" Background="#0D6EFD" CornerRadius="4" VerticalAlignment="Bottom" HorizontalAlignment="Stretch">
@@ -168,7 +167,7 @@
                                                         </Border.Height>
                                                     </Border>
 
-                                                    <TextBlock Grid.Row="2" FontSize="10" Foreground="#666" HorizontalAlignment="Center" Margin="0,6,0,0"
+                                                    <TextBlock Grid.Row="2" FontSize="9" Foreground="#666" HorizontalAlignment="Center" Margin="0,6,0,0"
                                                                TextWrapping="Wrap" TextAlignment="Center" Text="{Binding Label}" />
                                                 </Grid>
                                             </DataTemplate>
@@ -176,18 +175,12 @@
                                     </ItemsControl>
                                 </Border>
 
-                                <TextBlock Grid.Row="1" Text="* Biểu đồ cột đơn giản (không dùng Chart.js)" Foreground="#7A7A7A" FontSize="11" Margin="0,12,0,0" />
                             </Grid>
                         </Border>
                     </Grid>
                 </Border>
 
-                <Border Grid.Column="1" Style="{StaticResource StatCardStyle}">
-                    <StackPanel>
-                        <TextBlock Text="Tỉ lệ đặt đơn" FontWeight="Bold" />
-                        <TextBlock Text="Chưa triển khai" Foreground="#7A7A7A" Margin="0,12,0,0" />
-                    </StackPanel>
-                </Border>
+
             </Grid>
 
             <Border Grid.Row="4" Style="{StaticResource StatCardStyle}" Margin="0,24,0,0">
