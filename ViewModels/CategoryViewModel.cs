@@ -322,6 +322,9 @@ namespace Accessory_DesktopApp.ViewModels
                 if (excludeId != null && item.id == excludeId)
                     continue;
 
+                if(item.parent_id != 0)
+                    continue;
+
                 ParentCandidates.Add(item);
             }
         }

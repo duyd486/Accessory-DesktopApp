@@ -17,6 +17,9 @@ namespace Accessory_DesktopApp.ViewModels
         [ObservableProperty]
         private int countOrders;
 
+        [ObservableProperty]
+        private int countStaff;
+
         public ObservableCollection<MonthlyRevenueDto> MonthlyRevenue { get; } = new();
 
         public ObservableCollection<RevenueByYearDto> RevenueByYear { get; } = new();
@@ -48,6 +51,7 @@ namespace Accessory_DesktopApp.ViewModels
             CountCustomers = dto.CountCustomers;
             CountProducts = dto.CountProducts;
             CountOrders = dto.CountOrders;
+            CountStaff = dto.CountStaff;
         }
 
         private async Task FetchMonthlyRevenueAsync()

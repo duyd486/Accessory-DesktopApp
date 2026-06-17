@@ -12,4 +12,7 @@ public sealed class StatisticsDto
 
     [JsonPropertyName("count_orders")]
     public int CountOrders { get; set; }
+
+    [JsonPropertyName("count_staff")]
+    public int CountStaff { get; set; }
 }
