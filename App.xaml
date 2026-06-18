@@ -48,43 +48,34 @@
         <Style x:Key="PrimaryButtonStyle" TargetType="Button">
             <Setter Property="Height" Value="40"/>
             <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Background" Value="#111111"/>
+            <Setter Property="Background" Value="#1E3A8A"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Cursor" Value="Hand"/>
 
             <Setter Property="Template">
                 <Setter.Value>
-
                     <ControlTemplate TargetType="Button">
-
                         <Border
-                        Background="{TemplateBinding Background}"
-                        CornerRadius="6">
+                    x:Name="border"
+                    Background="{TemplateBinding Background}"
+                    CornerRadius="6">
 
                             <ContentPresenter
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"/>
-
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"/>
                         </Border>
-
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#2563EB"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#1E3A8A"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
-
                 </Setter.Value>
             </Setter>
-
-            <Style.Triggers>
-
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#222222"/>
-                </Trigger>
-
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="#000000"/>
-                </Trigger>
-
-            </Style.Triggers>
-
         </Style>
 
         <Style x:Key="SecondaryButtonStyle" TargetType="Button" BasedOn="{StaticResource PrimaryButtonStyle}">
